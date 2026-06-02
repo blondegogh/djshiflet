@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
   <meta name="description" content="Selected works by Photographer, DJ Shiflet.">
   <meta name="author" content="DJ Shiflet">
   <meta property="og:site_name" content="DJ Shiflet">
@@ -14,7 +14,7 @@
   <meta name="twitter:title" content="DJ Shiflet">
   <meta name="twitter:description" content="Selected works by Photographer, DJ Shiflet.">
   <meta name="theme-color" content="#000000">
-  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/></svg>">
   <title>DJ Shiflet</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <style>
@@ -59,6 +59,8 @@
       --z-page: 1;
       --z-overlay: 4;
       --z-cursor: 5;
+      --z-nav: 10;
+      --z-mobile-drawer: 9;
       --z-preloader: 12;
     }
 
@@ -88,10 +90,7 @@
       z-index: var(--z-preloader);
       font-size: 1.25em;
     }
-    #preloader span {
-      position: relative;
-      z-index: 1;
-    }
+    #preloader span { position: relative; z-index: 1; }
     #preloader-images {
       position: absolute;
       inset: 0;
@@ -115,14 +114,10 @@
     /* ============================================================
        PAGE SHELL
     ============================================================ */
-    #app {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
+    #app { position: absolute; inset: 0; overflow: hidden; }
 
     /* ============================================================
-       NAVIGATION
+       DESKTOP NAVIGATION
     ============================================================ */
     nav {
       position: absolute;
@@ -130,7 +125,7 @@
       left: 0;
       width: 100%;
       height: var(--nav-height);
-      z-index: 10;
+      z-index: var(--z-nav);
       align-items: end;
       padding-bottom: 22px;
       padding-left: var(--grid-gutter);
@@ -144,11 +139,10 @@
       padding-bottom: 0;
       align-items: start;
     }
-
     .nav-item {
       position: relative;
       cursor: pointer;
-      opacity: 0; /* revealed by GSAP after preloader */
+      opacity: 0;
     }
     .nav-item a,
     .nav-item span {
@@ -159,13 +153,10 @@
     }
     .nav-item a.active,
     .nav-item span.active { color: var(--color-primary); }
-    .nav-item .count {
-      display: block;
-      color: var(--color-secondary);
-    }
+    .nav-item .count { display: block; color: var(--color-secondary); }
     #nav-logo a { color: var(--color-primary); }
 
-    /* Nav previews */
+    /* Desktop nav previews */
     .nav-preview {
       position: absolute;
       bottom: calc(100% + 8px);
@@ -178,10 +169,7 @@
       gap: 0.277778vw;
       align-items: flex-end;
     }
-    .nav-preview.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .nav-preview.visible { opacity: 1; pointer-events: auto; }
     .nav-preview img {
       display: block;
       height: calc(0.68056vw + 5svh);
@@ -195,7 +183,7 @@
       top: calc(100% + 8px);
     }
 
-    /* Mobile row wrappers — hidden on desktop */
+    /* Mobile row wrappers — desktop ignores these */
     .nav-row-1, .nav-row-2 { display: none; }
 
     /* ============================================================
@@ -227,9 +215,7 @@
       -webkit-user-drag: none;
       pointer-events: none;
     }
-    #view-shuffler,
-    #shuffle-overlay,
-    .shuffler-wrapper { pointer-events: auto; }
+    #view-shuffler, #shuffle-overlay, .shuffler-wrapper { pointer-events: auto; }
     #view-shuffler.active { display: flex; }
 
     .shuffler-wrapper {
@@ -249,12 +235,7 @@
       transform: translateX(-50%);
     }
     .shuffler-img.current { display: block; }
-    .shuffler-img img {
-      height: 100%;
-      width: auto;
-      display: block;
-      object-fit: cover;
-    }
+    .shuffler-img img { height: 100%; width: auto; display: block; object-fit: cover; }
 
     #shuffle-overlay {
       position: absolute;
@@ -265,13 +246,10 @@
       pointer-events: none;
     }
 
-    /* Custom cursor */
     #cursor {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 16px;
-      height: 16px;
+      top: 0; left: 0;
+      width: 16px; height: 16px;
       pointer-events: none;
       z-index: var(--z-cursor);
       opacity: 0;
@@ -300,7 +278,6 @@
     ============================================================ */
     #view-photographs { cursor: pointer; }
     #view-photographs.active { display: block; }
-
     #photo-stage {
       position: absolute;
       inset: 0;
@@ -332,7 +309,6 @@
       padding: 0 0 20px;
     }
     #view-commissions.active { display: block; }
-
     #commissions-grid {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
@@ -366,7 +342,6 @@
       padding: 0 0 20px;
     }
     #view-books.active { display: block; }
-
     #books-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -406,7 +381,6 @@
       bottom: 0;
     }
     #view-info.active { display: block; }
-
     .info-content {
       grid-column: span 4;
       padding: var(--grid-gutter);
@@ -434,12 +408,8 @@
     /* ============================================================
        DETAIL VIEWER
     ============================================================ */
-    #view-detail {
-      display: none;
-      cursor: pointer;
-    }
+    #view-detail { display: none; cursor: pointer; }
     #view-detail.active { display: block; }
-
     #detail-stage {
       position: absolute;
       inset: 0;
@@ -455,7 +425,7 @@
       object-fit: cover;
     }
 
-    /* Detail nav overrides */
+    /* Desktop detail nav */
     nav.detail-mode .nav-item { display: none; }
     nav.detail-mode #nav-logo,
     nav.detail-mode #detail-nav-title,
@@ -467,7 +437,6 @@
     #detail-nav-overview,
     #detail-nav-counter,
     #detail-nav-close { display: none; }
-
     #detail-nav-title span { color: var(--color-primary); }
     #detail-nav-overview span,
     #detail-nav-counter span,
@@ -489,10 +458,7 @@
       padding: 0 var(--grid-gutter);
       flex-wrap: wrap;
     }
-    #overview-strip.visible {
-      display: flex;
-      pointer-events: auto;
-    }
+    #overview-strip.visible { display: flex; pointer-events: auto; }
     #overview-strip img {
       height: calc(0.68056vw + 5svh);
       width: auto;
@@ -503,128 +469,204 @@
     #overview-strip img:hover { opacity: 1; }
     #detail-stage.overview-open img { opacity: 0.15; }
 
-    /* Placeholder */
-    .placeholder-img {
-      background: #e8e5e0;
-    }
+    .placeholder-img { background: #e8e5e0; }
 
     /* ============================================================
-       RESPONSIVE — TABLET (≤1024px)
+       TABLET (≤1024px)
     ============================================================ */
     @media (max-width: 1024px) {
       #commissions-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     /* ============================================================
-       RESPONSIVE — MOBILE (≤767px)
+       MOBILE (≤767px)
+       Nav: single bottom bar — logo left, active section center,
+       count + MORE/LESS right. Tapping MORE reveals a full-width
+       drawer above the bar listing all sections.
     ============================================================ */
     @media (max-width: 767px) {
       :root { --grid-columns: 8; }
-
-      body { font-size: 12px; }
-
+      body { font-size: 12px; overflow: hidden; }
       #cursor { display: none; }
 
-      /* Nav — two-row flex layout */
-      nav {
-        height: auto;
-        display: flex !important;
+      /* ---- DESKTOP NAV HIDDEN ---- */
+      nav.grid {
+        display: none !important;
+      }
+
+      /* ---- MOBILE NAV BAR ---- */
+      #mobile-nav {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: var(--z-nav);
+        background: var(--color-surface);
+        padding: 0 20px calc(16px + env(safe-area-inset-bottom));
+        padding-top: 16px;
+      }
+      /* Info mode — nav moves to top */
+      #mobile-nav.info-mode {
+        top: 0;
+        bottom: auto;
+        padding-top: 16px;
+        padding-bottom: 16px;
+      }
+
+      /* Single bar row */
+      #mobile-nav-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+      #mobile-nav-logo {
+        color: var(--color-primary);
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      #mobile-nav-center {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--color-secondary);
+        white-space: nowrap;
+      }
+      #mobile-nav-center.active-section { color: var(--color-secondary); }
+      #mobile-nav-section { color: var(--color-secondary); }
+      #mobile-nav-count  { color: var(--color-secondary); }
+      #mobile-nav-toggle {
+        color: var(--color-secondary);
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      /* Info mode bar: logo | INFO | CLOSE */
+      #mobile-nav-info-bar {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+      #mobile-nav.info-mode #mobile-nav-bar  { display: none; }
+      #mobile-nav.info-mode #mobile-nav-info-bar { display: flex; }
+
+      /* Drawer — slides up from nav bar */
+      #mobile-nav-drawer {
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.35s ease-out, opacity 0.25s ease-out;
+        opacity: 0;
+        pointer-events: none;
+      }
+      #mobile-nav-drawer.open {
+        max-height: 200px;
+        opacity: 1;
+        pointer-events: auto;
+      }
+      #mobile-nav-drawer ul {
+        padding-top: 14px;
+        display: flex;
         flex-direction: column;
-        padding: 14px max(4vw, 16px) calc(14px + env(safe-area-inset-bottom));
         gap: 10px;
       }
-      nav.info-mode {
-        padding-top: 14px;
-        padding-bottom: 10px;
+      #mobile-nav-drawer li {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        cursor: pointer;
+        color: var(--color-secondary);
       }
-      .nav-row-1 {
-        display: flex !important;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
+      #mobile-nav-drawer li.active { color: var(--color-primary); }
+      #mobile-nav-drawer li .drawer-count { color: var(--color-secondary); }
+
+      /* ---- VIEWS on mobile ---- */
+      .view {
+        bottom: var(--nav-height);
       }
-      .nav-row-2 {
-        display: flex !important;
-        justify-content: flex-start;
-        gap: max(4vw, 20px);
+
+      /* Shuffler — taller on phone */
+      .shuffler-wrapper { height: 60vw; }
+      #preloader-images img { height: 60vw; max-width: 92vw; }
+
+      /* Photographs — full bleed width, auto height */
+      #photo-stage {
         align-items: flex-start;
-        width: 100%;
+        justify-content: center;
       }
-      /* Slot overrides no longer needed — JS moves elements into rows */
-      .nav-item { grid-column: unset !important; }
-      .nav-preview { display: none !important; }
-
-      /* Detail nav on mobile */
-      nav.detail-mode {
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        gap: 8px;
-      }
-      nav.detail-mode #nav-logo { flex: 1; }
-      nav.detail-mode #detail-nav-title { width: 100%; order: -1; }
-      nav.detail-mode #detail-nav-overview,
-      nav.detail-mode #detail-nav-counter,
-      nav.detail-mode #detail-nav-close { flex-shrink: 0; }
-
-      /* Shuffler */
-      .shuffler-wrapper { height: 55vw; }
-      #preloader-images img { height: 55vw; }
-
-      /* Photographs */
-      #photo-stage { align-items: center; }
       #photo-stage img {
         height: auto;
         width: 100%;
         max-height: var(--stage-height);
-        object-fit: contain;
+        object-fit: cover;
       }
       #photo-caption {
         bottom: 10px;
-        right: max(4vw, 16px);
+        right: 20px;
       }
 
-      /* Grids */
+      /* Grids — 2 columns */
       #commissions-grid {
         grid-template-columns: repeat(2, 1fr);
-        padding: max(4vw, 16px);
-        row-gap: max(4vw, 20px);
+        padding: 16px;
+        row-gap: 20px;
+        column-gap: 16px;
       }
       #books-grid {
         grid-template-columns: repeat(2, 1fr);
-        padding: max(4vw, 16px);
-        row-gap: max(4vw, 20px);
+        padding: 16px;
+        row-gap: 20px;
+        column-gap: 16px;
       }
 
       /* Info */
       #view-info { padding-top: 20px; }
       .info-content {
         grid-column: 1 / -1;
-        padding: max(4vw, 16px);
+        padding: 16px;
       }
-      .about { margin-bottom: max(4vw, 20px); }
-      .listing { margin-bottom: max(4vw, 20px); }
+      .about { margin-bottom: 20px; }
+      .listing { margin-bottom: 20px; }
 
-      /* Detail */
+      /* Detail — full bleed */
+      #detail-stage {
+        align-items: flex-start;
+        justify-content: center;
+      }
       #detail-stage img {
         height: auto;
         width: 100%;
         max-height: var(--stage-height);
-        object-fit: contain;
+        object-fit: cover;
       }
-      #overview-strip img { height: 12vw; }
+
+      /* Overview filmstrip on mobile — bottom of screen, horizontally scrollable */
+      #overview-strip {
+        top: auto;
+        bottom: 10px;
+        transform: none;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding: 0 16px;
+        gap: 6px;
+        -webkit-overflow-scrolling: touch;
+      }
+      #overview-strip img { height: 14vw; flex-shrink: 0; }
+
+      /* Mobile detail nav — different structure handled by JS */
+      #mobile-nav.detail-mode #mobile-nav-bar { display: flex; }
     }
 
     /* ============================================================
-       RESPONSIVE — SMALL (≤375px)
+       SMALL MOBILE (≤375px)
     ============================================================ */
     @media (max-width: 375px) {
       body { font-size: 11px; }
-      .nav-row-2 { gap: max(3vw, 14px); }
     }
 
     /* ============================================================
-       RESPONSIVE — LARGE DESKTOP
+       LARGE DESKTOP
     ============================================================ */
     @media (min-width: 1440px) { :root { font-size: 11.5px; } }
     @media (min-width: 1728px) { :root { font-size: 12px; } }
@@ -718,9 +760,8 @@
     <div id="overview-strip"></div>
   </div>
 
-  <!-- NAVIGATION -->
+  <!-- DESKTOP NAVIGATION -->
   <nav class="grid" id="main-nav">
-    <!-- Mobile row wrappers (flex on mobile, invisible on desktop) -->
     <div class="nav-row-1" id="nav-row-1"></div>
     <div class="nav-row-2" id="nav-row-2"></div>
 
@@ -751,8 +792,6 @@
     <div class="nav-item w-2" id="nav-info">
       <a href="#" data-view="info" id="info-toggle">Info</a>
     </div>
-
-    <!-- Detail nav (hidden until detail mode) -->
     <div class="nav-item w-4" id="detail-nav-title">
       <span id="detail-title-text" class="active"></span>
     </div>
@@ -766,6 +805,29 @@
       <span id="detail-close">Close</span>
     </div>
   </nav>
+
+  <!-- MOBILE NAVIGATION (injected by JS on mobile only) -->
+  <div id="mobile-nav" style="display:none;">
+    <!-- Normal bar: logo | section+count | MORE -->
+    <div id="mobile-nav-bar">
+      <span id="mobile-nav-logo" data-view="shuffler">DJ Shiflet</span>
+      <div id="mobile-nav-center">
+        <span id="mobile-nav-section"></span>
+        <span id="mobile-nav-count"></span>
+      </div>
+      <span id="mobile-nav-toggle">More</span>
+    </div>
+    <!-- Info mode bar: logo | INFO | CLOSE -->
+    <div id="mobile-nav-info-bar">
+      <span id="mobile-nav-logo-info" data-view="shuffler">DJ Shiflet</span>
+      <span>Info</span>
+      <span id="mobile-info-close" data-view="shuffler">Close</span>
+    </div>
+    <!-- Expandable drawer -->
+    <div id="mobile-nav-drawer">
+      <ul id="mobile-nav-drawer-list"></ul>
+    </div>
+  </div>
 
 </div>
 
@@ -808,64 +870,75 @@ const commissions = [
 ];
 
 const books = [
-  { title: 'Charcoal',      year: '2019', publisher: 'Self Published',              id: null },
-  { title: 'Ovidian',       year: '2023', publisher: 'Self Published',              id: '1tf9k3ifuwkK_-7RWYYCA99lZY_7jXvsS' },
-  { title: 'Drawing Room',  year: '2022', publisher: 'Published by The Modern House', id: '1uOJr_fPKEoTzEeKy_bPmr9tygXePdxnI' },
+  { title: 'Charcoal',     year: '2019', publisher: 'Self Published',               id: null },
+  { title: 'Ovidian',      year: '2023', publisher: 'Self Published',               id: '1tf9k3ifuwkK_-7RWYYCA99lZY_7jXvsS' },
+  { title: 'Drawing Room', year: '2022', publisher: 'Published by The Modern House', id: '1uOJr_fPKEoTzEeKy_bPmr9tygXePdxnI' },
+];
+
+// Mobile section metadata for the drawer
+const sections = [
+  { view: 'photographs', label: 'Photographs',       count: '15' },
+  { view: 'commissions', label: 'Commissions',       count: '10' },
+  { view: 'books',       label: 'Books & Exhibitions', count: '3' },
+  { view: 'info',        label: 'Info',              count: ''   },
 ];
 
 /* ============================================================
    STATE
 ============================================================ */
-let currentView    = 'shuffler';
-let shufflerIndex  = 0;
-let photoIndex     = 0;
-let detailProject  = null;
-let detailIndex    = 0;
-let overviewOpen   = false;
-let shufflerReady  = false;
-let isMobile       = false;
+let currentView   = 'shuffler';
+let shufflerIndex = 0;
+let photoIndex    = 0;
+let detailProject = null;
+let detailIndex   = 0;
+let overviewOpen  = false;
+let shufflerReady = false;
+let isMobile      = false;
+let drawerOpen    = false;
 
 /* ============================================================
    HELPERS
 ============================================================ */
-// Fluid GSAP fade in
-function fadeIn(el, duration = 0.35) {
-  gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration, ease: 'power2.out' });
+function fadeIn(el, dur = 0.35) {
+  gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: dur, ease: 'power2.out' });
 }
-// Fluid GSAP fade out
-function fadeOut(el, cb, duration = 0.2) {
-  gsap.to(el, { opacity: 0, duration, ease: 'power2.in', onComplete: cb });
+function fadeOut(el, cb, dur = 0.2) {
+  gsap.to(el, { opacity: 0, duration: dur, ease: 'power2.in', onComplete: cb });
 }
-
-// Graceful image error fallback
 function onImgError(img) {
   img.style.background = '#e8e5e0';
   img.style.minWidth   = '1px';
   img.removeAttribute('src');
 }
-
-// Swipe binding
 function bindSwipe(el, onLeft, onRight) {
   let sx = 0, sy = 0;
   el.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
   el.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - sx;
     const dy = e.changedTouches[0].clientY - sy;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      dx < 0 ? onLeft() : onRight();
-    }
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) dx < 0 ? onLeft() : onRight();
   }, { passive: true });
 }
-
-// Set --nav-height from real rendered nav
 function syncNavHeight() {
-  const h = document.getElementById('main-nav').offsetHeight;
+  const el = isMobile
+    ? document.getElementById('mobile-nav')
+    : document.getElementById('main-nav');
+  const h = el ? el.offsetHeight : 58;
   document.documentElement.style.setProperty('--nav-height', h + 'px');
 }
-
-// Update document title
 function setTitle(suffix) {
   document.title = suffix ? 'DJ Shiflet — ' + suffix : 'DJ Shiflet';
+}
+function makePlaceholder(ratio) {
+  const d = document.createElement('div');
+  d.className = 'placeholder-img';
+  d.style.cssText = 'width:100%;aspect-ratio:' + ratio + ';';
+  return d;
+}
+function makeThumbPH(w, h) {
+  const d = document.createElement('div');
+  d.style.cssText = 'width:' + w + 'px;height:' + h + 'px;background:#e8e5e0;display:inline-block;flex-shrink:0;';
+  return d;
 }
 
 /* ============================================================
@@ -874,7 +947,6 @@ function setTitle(suffix) {
 document.addEventListener('DOMContentLoaded', () => {
   isMobile = window.innerWidth <= 767;
 
-  // Define bindSwipe before buildShuffler uses it (hoisted via function declaration — safe)
   buildShuffler();
   buildPhotographsPreview();
   buildCommissionsGrid();
@@ -884,12 +956,13 @@ document.addEventListener('DOMContentLoaded', () => {
   bindCursor();
   bindPhotoViewer();
   bindDetailViewer();
-  initMobileNav();
+
+  if (isMobile) initMobileNav();
 
   requestAnimationFrame(syncNavHeight);
   window.addEventListener('resize', () => {
-    syncNavHeight();
     isMobile = window.innerWidth <= 767;
+    syncNavHeight();
   });
 
   runPreloader();
@@ -897,17 +970,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* ============================================================
    PRELOADER
-   Phase 1: name visible (700ms)
-   Phase 2: name fades, images cycle visibly at 80ms/frame
-   Phase 3: preloader lifts, nav reveals
 ============================================================ */
 function runPreloader() {
-  const preloader   = document.getElementById('preloader');
-  const nameEl      = preloader.querySelector('span');
-  const imgCont     = document.getElementById('preloader-images');
-  const pool        = [...photographs].sort(() => Math.random() - 0.5);
+  const preloader = document.getElementById('preloader');
+  const nameEl    = preloader.querySelector('span');
+  const imgCont   = document.getElementById('preloader-images');
+  const pool      = [...photographs].sort(() => Math.random() - 0.5);
 
-  // Populate preloader images using THUMB size — faster loads
   pool.forEach((p, i) => {
     const img = document.createElement('img');
     img.src = DRIVE_THUMB + p.id;
@@ -916,14 +985,14 @@ function runPreloader() {
     imgCont.appendChild(img);
   });
 
-  const imgs  = imgCont.querySelectorAll('img');
+  const imgs = imgCont.querySelectorAll('img');
   const total = imgs.length;
-  let ci      = 0;
+  let ci = 0;
 
   setTimeout(() => {
     gsap.timeline()
-      .to(nameEl,   { opacity: 0, duration: 0.2, ease: 'power2.out' })
-      .to(imgCont,  { opacity: 1, duration: 0.15, ease: 'none' })
+      .to(nameEl,  { opacity: 0, duration: 0.2, ease: 'power2.out' })
+      .to(imgCont, { opacity: 1, duration: 0.15, ease: 'none' })
       .call(() => {
         const timer = setInterval(() => {
           imgs[ci % total].classList.remove('active');
@@ -934,11 +1003,9 @@ function runPreloader() {
 
         setTimeout(() => {
           clearInterval(timer);
-
-          // Sync the actual shuffler to the same frame
-          const shufflerImgs = document.querySelectorAll('.shuffler-img');
-          shufflerImgs.forEach(el => el.classList.remove('current'));
-          shufflerImgs[shufflerIndex]?.classList.add('current');
+          const sImgs = document.querySelectorAll('.shuffler-img');
+          sImgs.forEach(el => el.classList.remove('current'));
+          sImgs[shufflerIndex]?.classList.add('current');
 
           gsap.to(preloader, {
             opacity: 0, duration: 0.6, ease: 'power2.out',
@@ -954,11 +1021,15 @@ function runPreloader() {
 }
 
 function revealNav() {
-  gsap.fromTo(
-    document.querySelectorAll('#main-nav .nav-item'),
-    { opacity: 0 },
-    { opacity: 1, duration: 0.4, stagger: 0.07, ease: 'power2.out' }
-  );
+  if (isMobile) {
+    gsap.fromTo('#mobile-nav', { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+  } else {
+    gsap.fromTo(
+      document.querySelectorAll('#main-nav .nav-item'),
+      { opacity: 0 },
+      { opacity: 1, duration: 0.4, stagger: 0.07, ease: 'power2.out' }
+    );
+  }
 }
 
 /* ============================================================
@@ -972,15 +1043,14 @@ function buildShuffler() {
     const div = document.createElement('div');
     div.className = 'shuffler-img' + (i === 0 ? ' current' : '');
     const img = document.createElement('img');
-    img.src    = DRIVE_BASE + p.id;
-    img.alt    = p.caption;
+    img.src = DRIVE_BASE + p.id;
+    img.alt = p.caption;
     img.onerror = () => onImgError(img);
     div.appendChild(img);
     wrapper.appendChild(div);
   });
 
   shufflerIndex = 0;
-
   const stage = document.getElementById('view-shuffler');
   stage.addEventListener('click', advanceShuffler);
   bindSwipe(stage, advanceShuffler, advanceShuffler);
@@ -990,7 +1060,6 @@ function advanceShuffler() {
   if (!shufflerReady) return;
   const imgs    = document.querySelectorAll('.shuffler-img');
   const overlay = document.getElementById('shuffle-overlay');
-
   gsap.timeline()
     .to(overlay, { opacity: 1, duration: 0.05, ease: 'none' })
     .call(() => {
@@ -1002,13 +1071,13 @@ function advanceShuffler() {
 }
 
 /* ============================================================
-   PHOTOGRAPHS PREVIEW (nav)
+   PHOTOGRAPHS PREVIEW
 ============================================================ */
 function buildPhotographsPreview() {
   const preview = document.getElementById('preview-photographs');
-  const img     = document.createElement('img');
-  img.src       = DRIVE_THUMB + photographs[0].id;
-  img.onerror   = () => onImgError(img);
+  const img = document.createElement('img');
+  img.src = DRIVE_THUMB + photographs[0].id;
+  img.onerror = () => onImgError(img);
   preview.appendChild(img);
 }
 
@@ -1017,10 +1086,10 @@ function buildPhotographsPreview() {
 ============================================================ */
 function showPhotograph(index) {
   photoIndex = ((index % photographs.length) + photographs.length) % photographs.length;
-  const photo    = photographs[photoIndex];
-  const imgEl    = document.getElementById('photo-img');
-  imgEl.src      = DRIVE_BASE + photo.id;
-  imgEl.onerror  = () => onImgError(imgEl);
+  const photo = photographs[photoIndex];
+  const imgEl = document.getElementById('photo-img');
+  imgEl.src = DRIVE_BASE + photo.id;
+  imgEl.onerror = () => onImgError(imgEl);
   document.getElementById('photo-caption').textContent = photo.caption;
 }
 
@@ -1041,14 +1110,14 @@ function buildCommissionsGrid() {
   const preview = document.getElementById('preview-commissions');
 
   commissions.forEach((c, i) => {
-    const card  = document.createElement('div');
+    const card = document.createElement('div');
     card.className = 'commission-card';
 
     if (c.thumb) {
-      const img   = document.createElement('img');
-      img.src     = DRIVE_BASE + c.thumb;
+      const img = document.createElement('img');
+      img.src = DRIVE_BASE + c.thumb;
       img.loading = 'lazy';
-      img.onerror = () => { img.replaceWith(makePlaceholder('3/4')); };
+      img.onerror = () => img.replaceWith(makePlaceholder('3/4'));
       card.appendChild(img);
     } else {
       card.appendChild(makePlaceholder('3/4'));
@@ -1061,7 +1130,6 @@ function buildCommissionsGrid() {
     card.addEventListener('click', () => openDetail(i, 'commissions'));
     grid.appendChild(card);
 
-    // Nav preview placeholder thumb
     const ph = document.createElement('div');
     ph.style.cssText = 'width:17px;height:22px;background:#e8e5e0;display:inline-block;flex-shrink:0;';
     preview.appendChild(ph);
@@ -1080,11 +1148,11 @@ function buildBooksGrid() {
     card.className = 'book-card';
 
     if (b.id) {
-      const img   = document.createElement('img');
-      img.src     = DRIVE_BASE + b.id;
-      img.alt     = b.title;
+      const img = document.createElement('img');
+      img.src = DRIVE_BASE + b.id;
+      img.alt = b.title;
       img.loading = 'lazy';
-      img.onerror = () => { img.replaceWith(makePlaceholder('4/5')); };
+      img.onerror = () => img.replaceWith(makePlaceholder('4/5'));
       card.appendChild(img);
     } else {
       card.appendChild(makePlaceholder('4/5'));
@@ -1103,42 +1171,24 @@ function buildBooksGrid() {
     card.addEventListener('click', () => openDetail(i, 'books'));
     grid.appendChild(card);
 
-    // Nav preview thumb
     if (b.id) {
-      const img   = document.createElement('img');
-      img.src     = DRIVE_THUMB + b.id;
+      const img = document.createElement('img');
+      img.src = DRIVE_THUMB + b.id;
       img.style.cssText = 'height:35px;width:auto;flex-shrink:0;';
-      img.onerror = () => { img.replaceWith(makeThumbPlaceholder(28, 35)); };
+      img.onerror = () => img.replaceWith(makeThumbPH(28, 35));
       preview.appendChild(img);
     } else {
-      preview.appendChild(makeThumbPlaceholder(28, 35));
+      preview.appendChild(makeThumbPH(28, 35));
     }
   });
-}
-
-function makePlaceholder(ratio) {
-  const d = document.createElement('div');
-  d.className = 'placeholder-img';
-  d.style.cssText = 'width:100%;aspect-ratio:' + ratio + ';';
-  return d;
-}
-function makeThumbPlaceholder(w, h) {
-  const d = document.createElement('div');
-  d.style.cssText = 'width:' + w + 'px;height:' + h + 'px;background:#e8e5e0;display:inline-block;flex-shrink:0;';
-  return d;
 }
 
 /* ============================================================
    DETAIL VIEWER
 ============================================================ */
 function openDetail(index, type) {
-  prevView      = currentView;
   detailProject = { index, type };
   detailIndex   = 0;
-
-  const nav = document.getElementById('main-nav');
-  nav.classList.add('detail-mode');
-  setDetailNavVisibility(true);
 
   let project, images, titleStr;
   if (type === 'commissions') {
@@ -1151,12 +1201,18 @@ function openDetail(index, type) {
     titleStr = project.title.toUpperCase() + ' (' + project.year + ')';
   }
 
-  document.getElementById('detail-title-text').textContent = titleStr;
   setTitle(titleStr);
-
   detailProject.images = images;
   showDetailImage(0);
   buildOverviewStrip(images);
+
+  if (isMobile) {
+    updateMobileDetailBar(titleStr);
+  } else {
+    document.getElementById('main-nav').classList.add('detail-mode');
+    setDetailNavVisibility(true);
+    document.getElementById('detail-title-text').textContent = titleStr;
+  }
 
   const currentEl = document.querySelector('.view.active');
   const detailEl  = document.getElementById('view-detail');
@@ -1170,20 +1226,24 @@ function openDetail(index, type) {
 }
 
 function showDetailImage(index) {
-  detailIndex        = index;
-  const images       = detailProject.images;
-  const img          = document.getElementById('detail-img');
-  img.src            = DRIVE_BASE + images[detailIndex].id;
-  img.onerror        = () => onImgError(img);
-  document.getElementById('counter-text').textContent = (detailIndex + 1) + ' / ' + images.length;
+  detailIndex = index;
+  const images = detailProject.images;
+  const img    = document.getElementById('detail-img');
+  img.src      = DRIVE_BASE + images[detailIndex].id;
+  img.onerror  = () => onImgError(img);
+  const counterText = (detailIndex + 1) + ' / ' + images.length;
+  document.getElementById('counter-text').textContent = counterText;
+  if (isMobile) {
+    document.getElementById('mobile-nav-count').textContent = counterText;
+  }
 }
 
 function buildOverviewStrip(images) {
-  const strip   = document.getElementById('overview-strip');
+  const strip = document.getElementById('overview-strip');
   strip.innerHTML = '';
   images.forEach((im, i) => {
-    const img   = document.createElement('img');
-    img.src     = DRIVE_THUMB + im.id;
+    const img = document.createElement('img');
+    img.src = DRIVE_THUMB + im.id;
     img.onerror = () => onImgError(img);
     img.addEventListener('click', e => { e.stopPropagation(); showDetailImage(i); closeOverview(); });
     strip.appendChild(img);
@@ -1217,23 +1277,19 @@ function closeOverview() {
 }
 
 function closeDetail() {
-  const nav = document.getElementById('main-nav');
-  nav.classList.remove('detail-mode');
-  setDetailNavVisibility(false);
+  if (!isMobile) {
+    document.getElementById('main-nav').classList.remove('detail-mode');
+    setDetailNavVisibility(false);
+  }
   closeOverview();
   setTitle();
-
-  // Restore correct mobile row structure
   if (isMobile) restoreMobileNav();
-
   switchView(detailProject.type === 'commissions' ? 'commissions' : 'books');
 }
 
-// Show/hide the detail vs normal nav items correctly on both desktop and mobile
 function setDetailNavVisibility(isDetail) {
   const normal = ['nav-photographs', 'nav-commissions', 'nav-books', 'nav-info'];
   const detail = ['detail-nav-title', 'detail-nav-overview', 'detail-nav-counter', 'detail-nav-close'];
-
   if (isDetail) {
     normal.forEach(id => { document.getElementById(id).style.display = 'none'; });
     detail.forEach(id => { document.getElementById(id).style.display = 'block'; });
@@ -1247,80 +1303,97 @@ function setDetailNavVisibility(isDetail) {
    MOBILE NAV
 ============================================================ */
 function initMobileNav() {
-  if (!isMobile) return;
+  const mobileNav = document.getElementById('mobile-nav');
+  mobileNav.style.display = 'block';
 
-  const nav  = document.getElementById('main-nav');
-  const row1 = document.getElementById('nav-row-1');
-  const row2 = document.getElementById('nav-row-2');
-
-  row1.appendChild(document.getElementById('nav-logo'));
-  row1.appendChild(document.getElementById('nav-info'));
-  row2.appendChild(document.getElementById('nav-photographs'));
-  row2.appendChild(document.getElementById('nav-commissions'));
-  row2.appendChild(document.getElementById('nav-books'));
-
-  nav.classList.remove('grid');
-}
-
-// After closing detail on mobile, put section items back in row2
-function restoreMobileNav() {
-  if (!isMobile) return;
-  const row2 = document.getElementById('nav-row-2');
-  ['nav-photographs', 'nav-commissions', 'nav-books'].forEach(id => {
-    row2.appendChild(document.getElementById(id));
-  });
-}
-
-/* ============================================================
-   VIEW SWITCHING
-============================================================ */
-function switchView(viewName) {
-  const currentEl = document.querySelector('.view.active');
-  const targetEl  = document.getElementById('view-' + viewName);
-  if (!targetEl || viewName === currentView) return;
-
-  const nav        = document.getElementById('main-nav');
-  const infoToggle = document.getElementById('info-toggle');
-
-  const doSwap = () => {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    targetEl.classList.add('active');
-    currentView = viewName;
-
-    if (viewName === 'info') {
-      nav.classList.add('info-mode');
-      document.querySelectorAll('.nav-preview').forEach(p => p.classList.add('visible'));
-      infoToggle.textContent = 'Close';
-      document.querySelectorAll('[data-view]').forEach(a => a.classList.remove('active'));
-      setTitle('Info');
-    } else {
-      nav.classList.remove('info-mode');
-      document.querySelectorAll('.nav-preview').forEach(p => p.classList.remove('visible'));
-      infoToggle.textContent = 'Info';
+  // Build drawer list
+  const list = document.getElementById('mobile-nav-drawer-list');
+  sections.forEach(s => {
+    const li = document.createElement('li');
+    li.dataset.view = s.view;
+    const labelSpan = document.createElement('span');
+    labelSpan.textContent = s.label;
+    li.appendChild(labelSpan);
+    if (s.count) {
+      const countSpan = document.createElement('span');
+      countSpan.className = 'drawer-count';
+      countSpan.textContent = s.count;
+      li.appendChild(countSpan);
     }
-
-    document.querySelectorAll('[data-view]').forEach(a => {
-      a.classList.toggle('active', a.dataset.view === viewName);
+    li.addEventListener('click', () => {
+      closeDrawer();
+      switchView(s.view);
     });
-    document.querySelector('#nav-logo a').classList.add('active');
+    list.appendChild(li);
+  });
 
-    if (viewName === 'photographs') {
-      showPhotograph(photoIndex); // remember position
-      setTitle('Photographs');
-    }
-    if (viewName === 'commissions') setTitle('Commissions');
-    if (viewName === 'books')       setTitle('Books & Exhibitions');
-    if (viewName === 'shuffler')    setTitle();
+  // Toggle drawer
+  document.getElementById('mobile-nav-toggle').addEventListener('click', toggleDrawer);
 
-    requestAnimationFrame(syncNavHeight);
-    fadeIn(targetEl);
-  };
+  // Logo taps home
+  document.getElementById('mobile-nav-logo').addEventListener('click', () => {
+    closeDrawer();
+    switchView('shuffler');
+  });
+  document.getElementById('mobile-nav-logo-info').addEventListener('click', () => switchView('shuffler'));
+  document.getElementById('mobile-info-close').addEventListener('click', () => switchView('shuffler'));
 
-  currentEl && currentEl !== targetEl ? fadeOut(currentEl, doSwap) : doSwap();
+  // Set initial state
+  updateMobileBar('shuffler');
+  syncNavHeight();
+}
+
+function toggleDrawer() {
+  drawerOpen = !drawerOpen;
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const toggle = document.getElementById('mobile-nav-toggle');
+  drawer.classList.toggle('open', drawerOpen);
+  toggle.textContent = drawerOpen ? 'Less' : 'More';
+}
+
+function closeDrawer() {
+  drawerOpen = false;
+  document.getElementById('mobile-nav-drawer').classList.remove('open');
+  document.getElementById('mobile-nav-toggle').textContent = 'More';
+}
+
+function updateMobileBar(viewName) {
+  const mobileNav = document.getElementById('mobile-nav');
+  const section   = document.getElementById('mobile-nav-section');
+  const count     = document.getElementById('mobile-nav-count');
+
+  // Info mode — nav moves to top
+  mobileNav.classList.toggle('info-mode', viewName === 'info');
+
+  const s = sections.find(x => x.view === viewName);
+  if (s && viewName !== 'shuffler') {
+    section.textContent = s.label;
+    count.textContent   = s.count;
+  } else {
+    section.textContent = '';
+    count.textContent   = '';
+  }
+
+  // Update active state in drawer
+  document.querySelectorAll('#mobile-nav-drawer-list li').forEach(li => {
+    li.classList.toggle('active', li.dataset.view === viewName);
+  });
+
+  requestAnimationFrame(syncNavHeight);
+}
+
+function updateMobileDetailBar(titleStr) {
+  document.getElementById('mobile-nav-section').textContent = titleStr;
+  document.getElementById('mobile-nav-count').textContent   = '1 / ' + (detailProject?.images?.length || 1);
+  closeDrawer();
+}
+
+function restoreMobileNav() {
+  updateMobileBar(detailProject.type === 'commissions' ? 'commissions' : 'books');
 }
 
 /* ============================================================
-   NAV BINDING
+   DESKTOP NAV BINDING
 ============================================================ */
 function bindNav() {
   document.querySelectorAll('[data-view]').forEach(el => {
@@ -1332,7 +1405,6 @@ function bindNav() {
     });
   });
 
-  // Hover previews — desktop only
   ['nav-photographs', 'nav-commissions', 'nav-books'].forEach(id => {
     const el      = document.getElementById(id);
     const preview = el.querySelector('.nav-preview');
@@ -1343,7 +1415,54 @@ function bindNav() {
 }
 
 /* ============================================================
-   KEYBOARD NAVIGATION
+   VIEW SWITCHING
+============================================================ */
+function switchView(viewName) {
+  const currentEl = document.querySelector('.view.active');
+  const targetEl  = document.getElementById('view-' + viewName);
+  if (!targetEl || viewName === currentView) return;
+
+  const doSwap = () => {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    targetEl.classList.add('active');
+    currentView = viewName;
+
+    if (!isMobile) {
+      const nav        = document.getElementById('main-nav');
+      const infoToggle = document.getElementById('info-toggle');
+      if (viewName === 'info') {
+        nav.classList.add('info-mode');
+        document.querySelectorAll('.nav-preview').forEach(p => p.classList.add('visible'));
+        infoToggle.textContent = 'Close';
+        document.querySelectorAll('[data-view]').forEach(a => a.classList.remove('active'));
+      } else {
+        nav.classList.remove('info-mode');
+        document.querySelectorAll('.nav-preview').forEach(p => p.classList.remove('visible'));
+        infoToggle.textContent = 'Info';
+      }
+      document.querySelectorAll('[data-view]').forEach(a => {
+        a.classList.toggle('active', a.dataset.view === viewName);
+      });
+      document.querySelector('#nav-logo a').classList.add('active');
+    } else {
+      updateMobileBar(viewName);
+    }
+
+    if (viewName === 'photographs') { showPhotograph(photoIndex); setTitle('Photographs'); }
+    if (viewName === 'commissions') setTitle('Commissions');
+    if (viewName === 'books')       setTitle('Books & Exhibitions');
+    if (viewName === 'info')        setTitle('Info');
+    if (viewName === 'shuffler')    setTitle();
+
+    requestAnimationFrame(syncNavHeight);
+    fadeIn(targetEl);
+  };
+
+  currentEl && currentEl !== targetEl ? fadeOut(currentEl, doSwap) : doSwap();
+}
+
+/* ============================================================
+   KEYBOARD
 ============================================================ */
 function bindKeyboard() {
   document.addEventListener('keydown', e => {
@@ -1359,7 +1478,8 @@ function bindKeyboard() {
         showDetailImage((detailIndex - 1 + detailProject.images.length) % detailProject.images.length);
     }
     if (e.key === 'Escape') {
-      if (overviewOpen) { closeOverview(); return; }
+      if (drawerOpen)          { closeDrawer(); return; }
+      if (overviewOpen)        { closeOverview(); return; }
       if (currentView === 'detail') { closeDetail(); return; }
       if (currentView === 'info')   { switchView('shuffler'); }
     }
@@ -1367,16 +1487,14 @@ function bindKeyboard() {
 }
 
 /* ============================================================
-   CUSTOM CURSOR
+   CURSOR
 ============================================================ */
 function bindCursor() {
   const cursor   = document.getElementById('cursor');
   const shuffler = document.getElementById('view-shuffler');
-
   document.addEventListener('mousemove', e => {
     cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
   });
-
   shuffler.addEventListener('mouseenter', () => cursor.classList.add('visible'));
   shuffler.addEventListener('mouseleave', () => cursor.classList.remove('visible'));
 }
