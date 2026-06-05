@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -41,7 +41,7 @@
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
     img { display: block; }
- 
+
     /* ============================================================
        DESIGN TOKENS
     ============================================================ */
@@ -56,7 +56,7 @@
       --transition-fast: opacity 0.05s ease-out;
       --transition-page: opacity 0.45s ease-out;
     }
- 
+
     /* ============================================================
        PAGE TRANSITION — crossfade, no overlay
     ============================================================ */
@@ -76,7 +76,7 @@
       opacity: 0;
       pointer-events: none;
     }
- 
+
     /* ============================================================
        PRELOADER
     ============================================================ */
@@ -98,7 +98,7 @@
       opacity: 0;
       pointer-events: none;
     }
- 
+
     /* ============================================================
        GRID LAYOUT
     ============================================================ */
@@ -111,7 +111,7 @@
     .w-4 { grid-column: span 4; }
     .w-8 { grid-column: span 8; }
     .w-16 { grid-column: span 16; }
- 
+
     /* ============================================================
        MAIN PAGE CONTAINER
     ============================================================ */
@@ -121,7 +121,7 @@
       height: 100svh;
       overflow: hidden;
     }
- 
+
     /* ============================================================
        BOTTOM NAV BAR
     ============================================================ */
@@ -142,13 +142,13 @@
     nav#main-nav.info-nav .nav-item-col {
       /* on info page nav shifts to top — handled by class swap */
     }
- 
+
     .nav-logo { grid-column: span 4; }
     .nav-photographs { grid-column: span 4; }
     .nav-design { grid-column: span 4; }
     .nav-books { grid-column: span 2; }
     .nav-info-link { grid-column: span 2; justify-self: end; }
- 
+
     .nav-link {
       display: block;
       font-size: 11px;
@@ -166,7 +166,7 @@
     .nav-link .nav-label { display: block; }
     .nav-link .nav-count { display: block; color: var(--color-secondary); transition: color 0.2s ease-out; }
     .nav-link:hover .nav-count { color: var(--color-primary); }
- 
+
     /* Nav preview thumbnails */
     .nav-preview {
       position: absolute;
@@ -181,7 +181,7 @@
       transition: var(--transition-default);
     }
     .nav-preview.visible { opacity: 1; }
- 
+
     .nav-preview img {
       height: calc(0.68056vw + 5svh);
       width: auto;
@@ -191,7 +191,7 @@
       height: 35px;
       width: auto;
     }
- 
+
     /* ============================================================
        IMAGE REVEAL — darkroom wipe
        Applied via JS by adding .reveal class after load
@@ -208,7 +208,7 @@
       overflow: hidden;
       display: block;
     }
- 
+
     /* ============================================================
        SHUFFLER VIEW
     ============================================================ */
@@ -241,7 +241,7 @@
       transform: translateX(-50%);
     }
     .shuffler-img.current { opacity: 1; }
- 
+
     /* White flash overlay */
     #shuffle-flash {
       position: absolute;
@@ -253,7 +253,7 @@
       transition: opacity 0.05s ease-out;
     }
     #shuffle-flash.flash { opacity: 1; }
- 
+
     /* Custom cursor — minimal dot */
     #custom-cursor {
       position: fixed;
@@ -274,7 +274,7 @@
     #custom-cursor.clicking {
       transform: translate(-50%, -50%) scale(1.8);
     }
- 
+
     /* ============================================================
        PHOTOGRAPHS VIEW
     ============================================================ */
@@ -314,7 +314,7 @@
       opacity: 0;
       transform: translateY(10px);
     }
- 
+
     /* ============================================================
        DESIGN VIEW (was Commissions)
     ============================================================ */
@@ -350,7 +350,7 @@
       text-transform: uppercase;
       color: var(--color-primary);
     }
- 
+
     /* ============================================================
        BOOKS VIEW
     ============================================================ */
@@ -392,7 +392,7 @@
       text-transform: uppercase;
       color: var(--color-secondary);
     }
- 
+
     /* ============================================================
        INFO VIEW
     ============================================================ */
@@ -448,7 +448,7 @@
       line-height: 1.8;
     }
     .info-listing a:hover { color: var(--color-primary); }
- 
+
     /* ============================================================
        DETAIL VIEW — scroll-sequenced
     ============================================================ */
@@ -483,7 +483,7 @@
     #detail-scroll {
       width: 100%;
     }
- 
+
     /* Detail nav bar — fixed over scroll */
     #detail-nav {
       position: fixed;
@@ -506,7 +506,7 @@
     .detail-nav-counter { grid-column: span 2; color: var(--color-secondary); text-align: right; }
     .detail-nav-close { grid-column: span 3; justify-self: end; cursor: pointer; }
     .detail-nav-close:hover { color: var(--color-primary); }
- 
+
     /* Overview filmstrip — fixed over scroll */
     #overview-strip {
       position: fixed;
@@ -537,7 +537,7 @@
     #overview-strip img:hover,
     #overview-strip img.active-thumb { opacity: 1; }
     /* Overview strip shows above nav */
- 
+
     /* ============================================================
        INFO TOP NAV (info page uses nav at top)
     ============================================================ */
@@ -560,7 +560,7 @@
     .info-nav-design { grid-column: span 4; }
     .info-nav-books { grid-column: span 2; }
     .info-nav-close { grid-column: span 2; justify-self: end; }
- 
+
     /* ============================================================
        MOBILE NAV
     ============================================================ */
@@ -630,7 +630,7 @@
       cursor: pointer;
     }
     .mobile-drawer-item.active { color: var(--color-primary); }
- 
+
     /* ============================================================
        RESPONSIVE — MOBILE
     ============================================================ */
@@ -647,7 +647,7 @@
         width: calc(100% - var(--grid-gutter) * 2);
         transition: none; /* no parallax on touch */
       }
- 
+
       /* Photos */
       .photo-stage img {
         left: 0;
@@ -656,24 +656,24 @@
         max-height: 100%;
         object-fit: contain;
       }
- 
+
       /* Design grid → 2 col */
       .design-grid {
         grid-template-columns: repeat(2, 1fr);
       }
- 
+
       /* Books grid → 1 col */
       .books-grid {
         grid-template-columns: 1fr;
       }
- 
+
       /* Info full width */
       .info-content {
         width: 100%;
       }
       .info-listing ul { padding-left: 6vw; }
       .info-listing { margin-bottom: 9vw; }
- 
+
       /* Detail — mobile: image fills width */
       .detail-slide img {
         left: 0;
@@ -683,14 +683,14 @@
         object-fit: contain;
       }
     }
- 
+
     @media (min-width: 1440px) {
       html { font-size: 10.8px; }
     }
     @media (min-width: 1728px) {
       html { font-size: 11.6px; }
     }
- 
+
     /* ============================================================
        UTILITY
     ============================================================ */
@@ -704,18 +704,18 @@
   </style>
 </head>
 <body>
- 
+
 <!-- Preloader -->
 <div id="preloader">Rich Stapleton</div>
- 
+
 <!-- Custom cursor (desktop shuffler only) -->
 <div id="custom-cursor"></div>
- 
+
 <!-- ============================================================
      APP SHELL
 ============================================================ -->
 <div id="app">
- 
+
   <!-- ── MAIN NAV (desktop bottom bar) ─────────────────────── -->
   <nav id="main-nav">
     <div class="nav-logo">
@@ -754,7 +754,7 @@
       <a class="nav-link" id="nav-info" data-view="info">Info</a>
     </div>
   </nav>
- 
+
   <!-- ── SHUFFLER VIEW ──────────────────────────────────────── -->
   <section class="view active" id="view-shuffler">
     <div class="shuffler-wrapper" id="shuffler-wrapper">
@@ -762,7 +762,7 @@
       <!-- Images inserted by JS -->
     </div>
   </section>
- 
+
   <!-- ── PHOTOGRAPHS VIEW ───────────────────────────────────── -->
   <section class="view" id="view-photographs">
     <div class="photo-stage" id="photo-stage">
@@ -770,21 +770,21 @@
     </div>
     <div class="photo-caption" id="photo-caption"></div>
   </section>
- 
+
   <!-- ── DESIGN VIEW ────────────────────────────────────────── -->
   <section class="view" id="view-design">
     <div class="design-grid" id="design-grid">
       <!-- Cards inserted by JS -->
     </div>
   </section>
- 
+
   <!-- ── BOOKS VIEW ─────────────────────────────────────────── -->
   <section class="view" id="view-books">
     <div class="books-grid" id="books-grid">
       <!-- Cards inserted by JS -->
     </div>
   </section>
- 
+
   <!-- ── INFO VIEW ──────────────────────────────────────────── -->
   <section class="view" id="view-info">
     <!-- Info nav at top -->
@@ -798,7 +798,7 @@
             <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=60&h=75&fit=crop&crop=center" alt="">
           </div>
           <span class="nav-label">Photographs</span>
-          <span class="nav-count">28</span>
+          <span class="nav-count">26</span>
         </a>
       </div>
       <div class="info-nav-design">
@@ -821,11 +821,11 @@
         <a class="nav-link" data-view="shuffler" data-from-info="true" style="color:var(--color-secondary)">Close</a>
       </div>
     </nav>
- 
+
     <div style="height:var(--nav-height)"></div>
     <div class="info-content">
       <p class="info-bio">Rich Stapleton is a British photographer based in Los Angeles.</p>
- 
+
       <div class="info-listing">
         <span class="info-listing-title">Exhibitions</span>
         <ul>
@@ -836,7 +836,7 @@
           <li>Palm, Phillips London (September 2017)</li>
         </ul>
       </div>
- 
+
       <div class="info-listing">
         <span class="info-listing-title">Books</span>
         <ul>
@@ -845,7 +845,7 @@
           <li>Drawing Room (2022)</li>
         </ul>
       </div>
- 
+
       <div class="info-listing">
         <span class="info-listing-title">Contact</span>
         <ul>
@@ -853,7 +853,7 @@
           <a href="https://lairdandgoodcompany.com" target="_blank" rel="noopener">Represented by Laird &amp; Good Company</a>
         </ul>
       </div>
- 
+
       <div class="info-listing">
         <span class="info-listing-title">Credits</span>
         <ul>
@@ -863,7 +863,7 @@
       </div>
     </div>
   </section>
- 
+
   <!-- ── DETAIL VIEW ────────────────────────────────────────── -->
   <section class="view" id="view-detail">
     <div id="detail-scroll"></div>
@@ -878,7 +878,7 @@
       <div class="detail-nav-close nav-link" id="detail-close">Close</div>
     </nav>
   </section>
- 
+
   <!-- ── MOBILE NAV ─────────────────────────────────────────── -->
   <nav id="mobile-nav">
     <div class="mobile-nav-logo" data-view="shuffler" id="mobile-logo">Rich Stapleton</div>
@@ -902,166 +902,70 @@
       <span>Info</span><span></span>
     </div>
   </div>
- 
+
 </div><!-- /#app -->
- 
+
 <script>
 (function() {
   'use strict';
- 
+
   /* ============================================================
      DATA
   ============================================================ */
- 
-  // Photographs — 28 images using curated Unsplash (consistent IDs)
+
+  const D = id => `https://drive.google.com/uc?export=view&id=${id}`;
+
   const photographs = [
-    { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&q=80', caption: 'Butterfly on Mirror' },
-    { src: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=800&auto=format&q=80', caption: 'Korean Furniture Museum' },
-    { src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&q=80', caption: 'Egg Reflected, 2018' },
-    { src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&q=80', caption: 'Mist, 2019' },
-    { src: 'https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?w=800&auto=format&q=80', caption: 'Graanmarkt 13' },
-    { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&auto=format&q=80', caption: 'Mountain Study' },
-    { src: 'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=800&auto=format&q=80', caption: 'Yvon for Anest' },
-    { src: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=800&auto=format&q=80', caption: 'Still Life I' },
-    { src: 'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=800&auto=format&q=80', caption: 'Still Life II' },
-    { src: 'https://images.unsplash.com/photo-1519750783826-e2420f4d687f?w=800&auto=format&q=80', caption: 'Light Study' },
-    { src: 'https://images.unsplash.com/photo-1510784722466-f2aa240af693?w=800&auto=format&q=80', caption: 'Interior I' },
-    { src: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=800&auto=format&q=80', caption: 'Form Study' },
-    { src: 'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&q=80', caption: 'Winter, 2020' },
-    { src: 'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=800&auto=format&q=80', caption: 'Landscape I' },
-    { src: 'https://images.unsplash.com/photo-1499678329028-101435549a4e?w=800&auto=format&q=80', caption: 'Shore, 2021' },
-    { src: 'https://images.unsplash.com/photo-1476231682828-37e571bc172f?w=800&auto=format&q=80', caption: 'Interior II' },
-    { src: 'https://images.unsplash.com/photo-1487088678257-3a541e6e3922?w=800&auto=format&q=80', caption: 'Dusk' },
-    { src: 'https://images.unsplash.com/photo-1494791368093-85217fbbf8de?w=800&auto=format&q=80', caption: 'Vessel' },
-    { src: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&auto=format&q=80', caption: 'Field' },
-    { src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&q=80', caption: 'Forest' },
-    { src: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&auto=format&q=80', caption: 'Meadow' },
-    { src: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&auto=format&q=80', caption: 'Valley' },
-    { src: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&auto=format&q=80', caption: 'Dawn' },
-    { src: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&auto=format&q=80', caption: 'Waterfall' },
-    { src: 'https://images.unsplash.com/photo-1482192505345-5852cc77f7a8?w=800&auto=format&q=80', caption: 'Coast' },
-    { src: 'https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5?w=800&auto=format&q=80', caption: 'Horizon' },
-    { src: 'https://images.unsplash.com/photo-1447684808650-354ae64db5b8?w=800&auto=format&q=80', caption: 'Road' },
-    { src: 'https://images.unsplash.com/photo-1458442310124-dde6edb43d10?w=800&auto=format&q=80', caption: 'Sky' },
+    { src: D('1CQpMJbEQK8vCmRQkzzftjjVnctX7_7Py'), caption: 'Palazzo Ventidue' },
+    { src: D('1aqg2DhxWaXfnSterBSjCgSoyA-qjKqqK'), caption: 'Palazzo Ventidue II' },
+    { src: D('10kX0j2NgDg-5x5KR7sWV-eQdsUWRZ718'), caption: 'Daniel Faro' },
+    { src: D('1tgw79q9BtB_M5UrkDYNGdVyTBjkxw52l'), caption: 'Blurred Landscape' },
+    { src: D('1Ue0hdNTdOAvl-dgcNVqURBmEch0ON5jH'), caption: 'Study I' },
+    { src: D('1pICNbG-UR9ntppNNiQAaf-n09aXsP_SU'), caption: 'Study II' },
+    { src: D('1q4HO0-4bsEj_2-6j5baPAW4DCBUYs29f'), caption: 'Untitled' },
+    { src: D('1xxRP1-A06GAQVfSth7O0MAALVH5zMt3Q'), caption: 'C0036' },
+    { src: D('12KS1q1Vp31C1f0W5fU2q0yY2sNBvIX1C'), caption: 'Qme Study' },
+    { src: D('1QvEJSzMaihkGWhiJQu2LL1uXYs3zMr1W'), caption: 'Modern Interior' },
+    { src: D('1Lt-mnGy6PTUACFOQE-v8E9iAAJ661NOv'), caption: 'Chimi' },
+    { src: D('1XlHSmUgpofhhHWbtSu66CLHwjNNe9EsU'), caption: 'Hand Study' },
+    { src: D('1LTkieEwoLcWHqOqG8o4yO1q6Q3lkEcsA'), caption: 'RAW 025' },
+    { src: D('1mbv3r9SmlgBNdz3Ya7TevfWPBJQcbeeG'), caption: 'Dusk, Mediterranean' },
+    { src: D('12JM5QSRgqtnsn5KBUR9I9X56Ut8w4103'), caption: 'Mediterranean' },
+    { src: D('1ybnCuhDx2HBvg284P9mdCZiqw9YVNhvr'), caption: 'Artisanal Bread' },
+    { src: D('1qjxq_qvmdIlJADEqwM3m2nm85oJZfhhD'), caption: 'Bread with Tools' },
+    { src: D('1TcDHRkNs1sqLAm5Uzp_9efUA9R4lxK4n'), caption: 'Blooming Branch' },
+    { src: D('13O_TpVD_MHjmKYnd_IZTWMkvxZqg0Na_'), caption: 'Wine Glass Still Life' },
+    { src: D('1EKaA3COduAC_fva-nz9au8R12VQ-SgjH'), caption: 'Hands Kneading Dough' },
+    { src: D('1IgmY_e9Q4SRKFbxTmHL3VxUS0AQDYDJf'), caption: 'Record Store' },
+    { src: D('1yxlrehgSdXcwE_un3VIdkMlnBAXtv4-g'), caption: 'Minimalist Record Store' },
+    { src: D('1BKAf6euvA4iE5Qu09QHcJUqeqwIHiv-z'), caption: 'Flower Study' },
+    { src: D('1QDa6yvxy66tdAnf9XgELjH7_1hL8IgpN'), caption: 'DTS Charros' },
+    { src: D('1J2O9SFjvw4EY7JKhiQRDODWPb0HA0Cxv'), caption: 'IMG 2308' },
+    { src: D('1H5Hbdi99nwn9bOarJe9ZEsxQvu4jOvEc'), caption: 'IMG 1874' },
   ];
- 
-  // Design projects — 12 items
+
+  // Design projects — real files from Drive commissions folder
   const designProjects = [
     {
-      title: 'Holiday – Uzbekistan (2025)',
-      images: [
-        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1551887196-72e32bfc7bf3?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'Objection – 835 N Kings Road (2022)',
-      images: [
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'The World of Interiors, Nigel Slater (2022)',
-      images: [
-        'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'FT HTSI – Courteney Cox at Home (2023)',
-      images: [
-        'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'Cereal – Sir John Soane\'s Museum (2021)',
-      images: [
-        'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'Potters House (2019)',
-      images: [
-        'https://images.unsplash.com/photo-1507149833265-60c372daea22?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1532009324734-20a7a5813719?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'FT HTSI – Emma Watson (2023)',
-      images: [
-        'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'Cereal – Korea Furniture Museum (2019)',
-      images: [
-        'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'Holiday – Drogo Castle (2025)',
-      images: [
-        'https://images.unsplash.com/photo-1533154683836-84ea7a0bc310?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1543968996-ee822b8176ba?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'The World of Interiors – Bernard Maybeck Home (2026)',
-      images: [
-        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1505843513577-22bb7d21e455?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'Architectural Digest – Palm Springs (2024)',
-      images: [
-        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=900&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'T Magazine – Still Life Series (2024)',
-      images: [
-        'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&auto=format&q=80',
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&auto=format&q=80',
-      ]
+      title: 'Stonge',
+      images: [ D('14YyItTa6m5Js0GCcgvVp546oHq3aBw3Y'), D('17awt-bNViOgJTiLbCVFd3iuFhO5eWp5q') ]
     },
   ];
- 
-  // Books & Exhibitions
+
+  // Books & Exhibitions — real files from Drive books folder
   const books = [
     {
-      title: 'Charcoal (2019)',
+      title: 'Explosive (2024)',
       publisher: 'Self Published',
-      images: [
-        'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=700&auto=format&q=80',
-        'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&auto=format&q=80',
-      ]
+      images: [ D('1uOJr_fPKEoTzEeKy_bPmr9tygXePdxnI') ]
     },
     {
-      title: 'Penumbra (2023)',
-      publisher: 'Published by Libraryman',
-      images: [
-        'https://images.unsplash.com/photo-1529422643029-d4585747aaf2?w=700&auto=format&q=80',
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&auto=format&q=80',
-      ]
-    },
-    {
-      title: 'Drawing Room (2022)',
-      publisher: 'Published by The Modern House',
-      images: [
-        'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=700&auto=format&q=80',
-        'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=700&auto=format&q=80',
-      ]
+      title: 'Ovidian',
+      publisher: 'Book Design',
+      images: [ D('1tf9k3ifuwkK_-7RWYYCA99lZY_7jXvsS'), D('1lbqu5G7xla0YusbUMCf5kh-w5WmiLviJ') ]
     },
   ];
- 
+
   /* ============================================================
      STATE
   ============================================================ */
@@ -1073,7 +977,7 @@
   let overviewOpen = false;
   let isTransitioning = false;
   let mobileDrawerOpen = false;
- 
+
   /* ============================================================
      ELEMENTS
   ============================================================ */
@@ -1095,7 +999,7 @@
   const mobileDrawer = $('mobile-drawer');
   const mobileSectionName = $('mobile-section-name');
   const mobileSectionCount = $('mobile-section-count');
- 
+
   /* ============================================================
      PAGE TRANSITION — crossfade
   ============================================================ */
@@ -1119,13 +1023,13 @@
       isTransitioning = false;
     }, 50);
   }
- 
+
   /* ============================================================
      VIEW SWITCHING
   ============================================================ */
   function switchView(view, useTransition) {
     if (view === currentView && view !== 'detail') return;
- 
+
     const doSwitch = () => {
       // hide all views
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -1139,14 +1043,14 @@
       const titles = { shuffler:'Rich Stapleton', photographs:'Photographs – Rich Stapleton', design:'Design – Rich Stapleton', books:'Books & Exhibitions – Rich Stapleton', info:'Info – Rich Stapleton', detail: detailProject ? detailProject.title + ' – Rich Stapleton' : 'Rich Stapleton' };
       document.title = titles[view] || 'Rich Stapleton';
     };
- 
+
     if (useTransition) {
       transitionTo(doSwitch);
     } else {
       doSwitch();
     }
   }
- 
+
   function updateNav(view) {
     document.querySelectorAll('#main-nav .nav-link').forEach(l => l.classList.remove('active'));
     const map = { shuffler:'nav-home', photographs:'nav-photographs', design:'nav-design', books:'nav-books', info:'nav-info' };
@@ -1160,7 +1064,7 @@
     // info view handles its own top nav — main nav visible on all other views
     // (info view nav is inside the view itself, so no extra action needed)
   }
- 
+
   function updateMobileNav(view) {
     const labels = { shuffler:['',''], photographs:['Photographs','28'], design:['Design','12'], books:['Books & Exhibitions','3'], info:['Info',''], detail: detailProject ? [detailProject.title,''] : ['',''] };
     const l = labels[view] || ['',''];
@@ -1171,7 +1075,7 @@
       item.classList.toggle('active', item.dataset.view === view);
     });
   }
- 
+
   /* ============================================================
      NAV EVENT DELEGATION
   ============================================================ */
@@ -1184,7 +1088,7 @@
     // close mobile drawer if open
     closeMobileDrawer();
   }
- 
+
   document.getElementById('main-nav').addEventListener('click', handleNavClick);
   document.getElementById('info-nav-bar').addEventListener('click', handleNavClick);
   document.getElementById('mobile-nav').addEventListener('click', e => {
@@ -1192,7 +1096,7 @@
     if (logo) { switchView(logo.dataset.view, true); return; }
   });
   document.getElementById('mobile-drawer').addEventListener('click', handleNavClick);
- 
+
   /* ============================================================
      NAV HOVER PREVIEWS (desktop)
   ============================================================ */
@@ -1203,7 +1107,7 @@
     link.addEventListener('mouseenter', () => preview.classList.add('visible'));
     link.addEventListener('mouseleave', () => preview.classList.remove('visible'));
   });
- 
+
   /* ============================================================
      BUILD NAV PREVIEW THUMBNAILS
   ============================================================ */
@@ -1221,7 +1125,7 @@
         container.appendChild(img);
       });
     });
- 
+
     // Books previews
     const bp = $('preview-books');
     const bip = $('info-preview-books');
@@ -1236,7 +1140,7 @@
       });
     });
   }
- 
+
   /* ============================================================
      SHUFFLER
   ============================================================ */
@@ -1252,16 +1156,16 @@
       img.onerror = () => { img.style.background = '#e0e0e0'; img.src=''; };
       shufflerWrapper.appendChild(img);
     });
- 
+
     shufflerWrapper.addEventListener('click', advanceShuffler);
   }
- 
+
   function advanceShuffler() {
     const imgs = shufflerWrapper.querySelectorAll('.shuffler-img');
     if (!imgs.length) return;
     const prev = imgs[shufflerIndex];
     shufflerIndex = (shufflerIndex + 1) % imgs.length;
- 
+
     // White flash
     shuffleFlash.classList.add('flash');
     setTimeout(() => {
@@ -1270,7 +1174,7 @@
       shuffleFlash.classList.remove('flash');
     }, 55);
   }
- 
+
   // Shuffler: custom cursor + parallax
   const shufflerSection = $('view-shuffler');
   let parallaxRaf = null;
@@ -1297,7 +1201,7 @@
   shufflerSection.addEventListener('mouseup', () => {
     customCursor.classList.remove('clicking');
   });
- 
+
   // Touch swipe on shuffler — 40px threshold
   let touchStartX = 0;
   let touchStartY = 0;
@@ -1313,7 +1217,7 @@
       advanceShuffler();
     }
   }, { passive: true });
- 
+
   /* ============================================================
      PHOTOGRAPHS
   ============================================================ */
@@ -1330,7 +1234,7 @@
     photoCaption.textContent = photographs[0].caption;
     photoStage.addEventListener('click', advancePhoto);
   }
- 
+
   function advancePhoto() {
     const imgs = photoStage.querySelectorAll('img');
     imgs[photoIndex].classList.remove('current');
@@ -1343,7 +1247,7 @@
       photoCaption.classList.remove('animating');
     }, 160);
   }
- 
+
   /* ============================================================
      DESIGN GRID
   ============================================================ */
@@ -1371,7 +1275,7 @@
     });
     $('design-count').textContent = designProjects.length;
   }
- 
+
   /* ============================================================
      BOOKS GRID
   ============================================================ */
@@ -1402,17 +1306,17 @@
       booksGrid.appendChild(card);
     });
   }
- 
+
   /* ============================================================
      DETAIL VIEW — scroll-sequenced
   ============================================================ */
   const detailScroll = $('detail-scroll');
- 
+
   function openDetail(project, fromView) {
     detailProject = project;
     detailProject._fromView = fromView;
     detailIndex = 0;
- 
+
     // Build scroll slides
     detailScroll.innerHTML = '';
     project.images.forEach((src, i) => {
@@ -1429,7 +1333,7 @@
       slide.appendChild(img);
       detailScroll.appendChild(slide);
     });
- 
+
     // Build overview strip
     overviewStrip.innerHTML = '';
     project.images.forEach((src, i) => {
@@ -1440,23 +1344,23 @@
       img.addEventListener('click', e => { e.stopPropagation(); jumpToDetail(i); });
       overviewStrip.appendChild(img);
     });
- 
+
     detailTitle.textContent = project.title;
     detailIndex = 0;
     updateDetailCounter();
     overviewOpen = false;
     $('view-detail').classList.remove('overview-open');
     overviewStrip.classList.remove('visible');
- 
+
     // Reset scroll to top before switching
     $('view-detail').scrollTop = 0;
     switchView('detail', true);
   }
- 
+
   function updateDetailCounter() {
     detailCounter.textContent = (detailIndex + 1) + ' / ' + detailProject.images.length;
   }
- 
+
   // Track scroll position to update counter and overview thumbs
   $('view-detail').addEventListener('scroll', () => {
     const vh = $('view-detail').clientHeight;
@@ -1468,24 +1372,24 @@
       overviewStrip.querySelectorAll('img').forEach((img, i) => img.classList.toggle('active-thumb', i === detailIndex));
     }
   }, { passive: true });
- 
+
   function jumpToDetail(index) {
     const vh = $('view-detail').clientHeight;
     $('view-detail').scrollTo({ top: index * vh, behavior: 'smooth' });
     // counter updates via scroll listener
   }
- 
+
   detailClose.addEventListener('click', () => {
     switchView(detailProject._fromView || 'design', true);
   });
- 
+
   detailOverviewBtn.addEventListener('click', e => {
     e.stopPropagation();
     overviewOpen = !overviewOpen;
     $('view-detail').classList.toggle('overview-open', overviewOpen);
     overviewStrip.classList.toggle('visible', overviewOpen);
   });
- 
+
   /* ============================================================
      MOBILE NAV
   ============================================================ */
@@ -1494,20 +1398,20 @@
     mobileDrawer.classList.toggle('open', mobileDrawerOpen);
     mobileMoreBtn.textContent = mobileDrawerOpen ? 'Less' : 'More';
   });
- 
+
   function closeMobileDrawer() {
     mobileDrawerOpen = false;
     mobileDrawer.classList.remove('open');
     mobileMoreBtn.textContent = 'More';
   }
- 
+
   // Close drawer on outside tap
   document.addEventListener('click', e => {
     if (mobileDrawerOpen && !mobileDrawer.contains(e.target) && !mobileMoreBtn.contains(e.target)) {
       closeMobileDrawer();
     }
   });
- 
+
   /* ============================================================
      KEYBOARD NAVIGATION
   ============================================================ */
@@ -1543,7 +1447,7 @@
     }
     if (e.key === 'Escape' && currentView === 'info') switchView('shuffler', true);
   });
- 
+
   /* ============================================================
      INIT
   ============================================================ */
@@ -1554,23 +1458,22 @@
     buildDesignGrid();
     buildBooksGrid();
     updateMobileNav('shuffler');
- 
+
     // Preloader out
     setTimeout(() => {
       preloader.classList.add('hidden');
       setTimeout(() => { preloader.remove(); }, 700);
     }, 600);
   }
- 
+
   // Wait for DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
- 
+
 })();
 </script>
 </body>
 </html>
- 
