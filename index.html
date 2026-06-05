@@ -798,7 +798,7 @@
             <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=60&h=75&fit=crop&crop=center" alt="">
           </div>
           <span class="nav-label">Photographs</span>
-          <span class="nav-count">26</span>
+          <span class="nav-count">20</span>
         </a>
       </div>
       <div class="info-nav-design">
@@ -913,56 +913,62 @@
      DATA
   ============================================================ */
 
-  const D = id => `https://drive.google.com/uc?export=view&id=${id}`;
+  const C = (id, folder) => `https://res.cloudinary.com/masterserver/image/upload/f_auto,q_auto/${folder ? folder + '/' : ''}${id}`;
 
   const photographs = [
-    { src: D('1CQpMJbEQK8vCmRQkzzftjjVnctX7_7Py'), caption: 'Palazzo Ventidue' },
-    { src: D('1aqg2DhxWaXfnSterBSjCgSoyA-qjKqqK'), caption: 'Palazzo Ventidue II' },
-    { src: D('10kX0j2NgDg-5x5KR7sWV-eQdsUWRZ718'), caption: 'Daniel Faro' },
-    { src: D('1tgw79q9BtB_M5UrkDYNGdVyTBjkxw52l'), caption: 'Blurred Landscape' },
-    { src: D('1Ue0hdNTdOAvl-dgcNVqURBmEch0ON5jH'), caption: 'Study I' },
-    { src: D('1pICNbG-UR9ntppNNiQAaf-n09aXsP_SU'), caption: 'Study II' },
-    { src: D('1q4HO0-4bsEj_2-6j5baPAW4DCBUYs29f'), caption: 'Untitled' },
-    { src: D('1xxRP1-A06GAQVfSth7O0MAALVH5zMt3Q'), caption: 'C0036' },
-    { src: D('12KS1q1Vp31C1f0W5fU2q0yY2sNBvIX1C'), caption: 'Qme Study' },
-    { src: D('1QvEJSzMaihkGWhiJQu2LL1uXYs3zMr1W'), caption: 'Modern Interior' },
-    { src: D('1Lt-mnGy6PTUACFOQE-v8E9iAAJ661NOv'), caption: 'Chimi' },
-    { src: D('1XlHSmUgpofhhHWbtSu66CLHwjNNe9EsU'), caption: 'Hand Study' },
-    { src: D('1LTkieEwoLcWHqOqG8o4yO1q6Q3lkEcsA'), caption: 'RAW 025' },
-    { src: D('1mbv3r9SmlgBNdz3Ya7TevfWPBJQcbeeG'), caption: 'Dusk, Mediterranean' },
-    { src: D('12JM5QSRgqtnsn5KBUR9I9X56Ut8w4103'), caption: 'Mediterranean' },
-    { src: D('1ybnCuhDx2HBvg284P9mdCZiqw9YVNhvr'), caption: 'Artisanal Bread' },
-    { src: D('1qjxq_qvmdIlJADEqwM3m2nm85oJZfhhD'), caption: 'Bread with Tools' },
-    { src: D('1TcDHRkNs1sqLAm5Uzp_9efUA9R4lxK4n'), caption: 'Blooming Branch' },
-    { src: D('13O_TpVD_MHjmKYnd_IZTWMkvxZqg0Na_'), caption: 'Wine Glass Still Life' },
-    { src: D('1EKaA3COduAC_fva-nz9au8R12VQ-SgjH'), caption: 'Hands Kneading Dough' },
-    { src: D('1IgmY_e9Q4SRKFbxTmHL3VxUS0AQDYDJf'), caption: 'Record Store' },
-    { src: D('1yxlrehgSdXcwE_un3VIdkMlnBAXtv4-g'), caption: 'Minimalist Record Store' },
-    { src: D('1BKAf6euvA4iE5Qu09QHcJUqeqwIHiv-z'), caption: 'Flower Study' },
-    { src: D('1QDa6yvxy66tdAnf9XgELjH7_1hL8IgpN'), caption: 'DTS Charros' },
-    { src: D('1J2O9SFjvw4EY7JKhiQRDODWPb0HA0Cxv'), caption: 'IMG 2308' },
-    { src: D('1H5Hbdi99nwn9bOarJe9ZEsxQvu4jOvEc'), caption: 'IMG 1874' },
+    { src: C('palazzo-ventidue_p0eazf'), caption: 'Palazzo Ventidue' },
+    { src: C('daniel-faro_240707_auiki-kerakoll-colors_manuel_0077final-copy-1638x2048_rhobkg'), caption: 'Daniel Faro' },
+    { src: C('blurred-landscape-fuchsia-1_t8zrj3'), caption: 'Blurred Landscape' },
+    { src: C('C0036T01_wpny9z'), caption: 'C0036' },
+    { src: C('photograph-untitled-3'), caption: 'Untitled III' },
+    { src: C('chimi-5'), caption: 'Chimi' },
+    { src: C('hand_img-gen-16_rlmzvt'), caption: 'Hand Study' },
+    { src: C('charros-gabriela-henrik'), caption: 'DTS Charros – Gabriela & Henrik' },
+    { src: C('photograph-untitled-2'), caption: 'Untitled II' },
+    { src: C('photograph-untitled-1'), caption: 'Untitled I' },
+    { src: C('Dusk_Serenity_at_the_Mediterranean_Villa_wnwcfs'), caption: 'Dusk, Mediterranean Villa' },
+    { src: C('Mediterranean_Building_with_Terracotta_Pots_1_t56ceq'), caption: 'Mediterranean' },
+    { src: C('wine-glass-still-life'), caption: 'Wine Glass Still Life' },
+    { src: C('blooming-branch'), caption: 'Blooming Branch' },
+    { src: C('Artisanal_Bread_Display_abndil'), caption: 'Artisanal Bread' },
+    { src: C('minimalist-record-store'), caption: 'Minimalist Record Store' },
+    { src: C('cozy-record-store-interior'), caption: 'Record Store Interior' },
+    { src: C('estate-of-nature-minimalist-interior'), caption: 'Estate of Nature' },
+    { src: C('b17218233254037.68ac668219506_srcwek'), caption: 'Study' },
+    { src: C('re-edited'), caption: 'Re-edited' },
   ];
 
-  // Design projects — real files from Drive commissions folder
   const designProjects = [
     {
-      title: 'Stonge',
-      images: [ D('14YyItTa6m5Js0GCcgvVp546oHq3aBw3Y'), D('17awt-bNViOgJTiLbCVFd3iuFhO5eWp5q') ]
+      title: 'St. Onge Hair Studio',
+      images: [
+        C('stonge_xwrb4y'),
+        C('foileblack-st_onge_rmdiyz'),
+        C('Screenshot_2026-02-10_at_8.52.30_PM_hwqlpc'),
+        C('stonge_rc8qen'),
+        C('st.ongehairstudio_1733546855_3517568433548173949_584468435_kcvo5e'),
+      ]
+    },
+    {
+      title: 'Friends Furniture',
+      images: [
+        C('friends-furniture-chair'),
+        C('friends-furniture-visualization-2'),
+        C('friends-furniture-untitled'),
+      ]
     },
   ];
 
-  // Books & Exhibitions — real files from Drive books folder
   const books = [
     {
       title: 'Explosive (2024)',
       publisher: 'Self Published',
-      images: [ D('1uOJr_fPKEoTzEeKy_bPmr9tygXePdxnI') ]
+      images: [ C('explosive') ]
     },
     {
       title: 'Ovidian',
       publisher: 'Book Design',
-      images: [ D('1tf9k3ifuwkK_-7RWYYCA99lZY_7jXvsS'), D('1lbqu5G7xla0YusbUMCf5kh-w5WmiLviJ') ]
+      images: [ C('ovidian-book-design-5') ]
     },
   ];
 
