@@ -1,120 +1,129 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-  <meta name="description" content="Selected works by Photographer, DJ Shiflet.">
-  <meta name="author" content="DJ Shiflet">
-  <meta property="og:site_name" content="DJ Shiflet">
-  <meta property="og:locale" content="en_us">
+  <meta name="description" content="Selected works by Photographer, Rich Stapleton.">
+  <meta name="author" content="Rich Stapleton">
+  <meta property="og:site_name" content="Rich Stapleton">
+  <meta property="og:locale" content="en_gb">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="DJ Shiflet">
-  <meta property="og:description" content="Selected works by Photographer, DJ Shiflet.">
+  <meta property="og:title" content="Rich Stapleton">
+  <meta property="og:description" content="Selected works by Photographer, Rich Stapleton.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#000000">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23000'/></svg>">
-  <title>DJ Shiflet</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <title>Rich Stapleton</title>
   <style>
     /* ============================================================
-       RESET
+       RESET & BASE
     ============================================================ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html {
       font-size: 10px;
-      line-height: 1.5;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overscroll-behavior: none;
     }
     body {
-      font-family: Perpetua, 'Helvetica Neue', sans-serif;
+      font-family: Georgia, "Times New Roman", serif;
       font-size: 11px;
       font-weight: 400;
       letter-spacing: 1px;
       text-transform: uppercase;
+      line-height: normal;
       color: rgb(177, 177, 177);
       background: #fff;
       overflow: hidden;
       height: 100svh;
-      width: 100vw;
+      width: 100%;
+      overscroll-behavior: none;
     }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
-
+    img { display: block; }
+ 
     /* ============================================================
        DESIGN TOKENS
     ============================================================ */
     :root {
       --grid-columns: 16;
-      --grid-gutter: max(1.25vw, 12px);
+      --grid-gutter: 1.25vw;
       --nav-height: 58px;
-      --stage-height: calc(100svh - var(--nav-height));
-      --color-primary: rgb(0, 0, 0);
-      --color-secondary: rgb(177, 177, 177);
-      --color-surface: rgb(255, 255, 255);
-      --transition-default: opacity 0.3s ease-out;
+      --color-primary: rgb(0,0,0);
+      --color-secondary: rgb(177,177,177);
+      --color-surface: rgb(255,255,255);
+      --transition-default: opacity 0.35s ease-out;
       --transition-fast: opacity 0.05s ease-out;
-      --z-page: 1;
-      --z-overlay: 4;
-      --z-cursor: 5;
-      --z-nav: 10;
-      --z-preloader: 12;
+      --transition-page: opacity 0.45s ease-out;
     }
-
+ 
     /* ============================================================
-       GRID
+       PAGE TRANSITION — crossfade, no overlay
     ============================================================ */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(var(--grid-columns), 1fr);
-      column-gap: var(--grid-gutter);
-      max-width: 100vw;
+    .view {
+      position: absolute;
+      inset: 0;
+      bottom: var(--nav-height);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease-out;
     }
-    .w-2 { grid-column: span 2; }
-    .w-4 { grid-column: span 4; }
-    .w-8 { grid-column: span 8; }
-
+    .view.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .view.leaving {
+      opacity: 0;
+      pointer-events: none;
+    }
+ 
     /* ============================================================
        PRELOADER
     ============================================================ */
     #preloader {
       position: fixed;
       inset: 0;
-      background: var(--color-surface);
+      background: #fff;
+      z-index: 200;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: var(--z-preloader);
-      font-size: 1.25em;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+      transition: opacity 0.6s ease-out;
     }
-    #preloader span { position: relative; z-index: 1; }
-    #preloader-images {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    #preloader.hidden {
       opacity: 0;
+      pointer-events: none;
     }
-    #preloader-images img {
-      position: absolute;
-      height: 50vh;
-      width: auto;
-      max-width: 90vw;
-      display: none;
-      left: 50%;
-      transform: translateX(-50%);
-      object-fit: cover;
-    }
-    #preloader-images img.active { display: block; }
-
+ 
     /* ============================================================
-       PAGE SHELL
+       GRID LAYOUT
     ============================================================ */
-    #app { position: absolute; inset: 0; overflow: hidden; }
-
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      column-gap: var(--grid-gutter);
+    }
+    .w-2 { grid-column: span 2; }
+    .w-4 { grid-column: span 4; }
+    .w-8 { grid-column: span 8; }
+    .w-16 { grid-column: span 16; }
+ 
     /* ============================================================
-       DESKTOP NAVIGATION
+       MAIN PAGE CONTAINER
+    ============================================================ */
+    #app {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      overflow: hidden;
+    }
+ 
+    /* ============================================================
+       BOTTOM NAV BAR
     ============================================================ */
     nav#main-nav {
       position: absolute;
@@ -122,98 +131,94 @@
       left: 0;
       width: 100%;
       height: var(--nav-height);
-      z-index: var(--z-nav);
-      align-items: end;
-      padding-bottom: 22px;
-      padding-left: var(--grid-gutter);
-      padding-right: var(--grid-gutter);
-      background: var(--color-surface);
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      column-gap: var(--grid-gutter);
+      align-items: center;
+      z-index: 20;
+      background: #fff;
+      padding: 0 var(--grid-gutter);
     }
-    nav#main-nav.info-mode {
-      top: 0;
-      bottom: auto;
-      padding-top: 22px;
-      padding-bottom: 0;
-      align-items: start;
+    nav#main-nav.info-nav .nav-item-col {
+      /* on info page nav shifts to top — handled by class swap */
     }
-    .nav-item {
-      position: relative;
-      cursor: pointer;
-      opacity: 0;
-    }
-    .nav-item a,
-    .nav-item span {
+ 
+    .nav-logo { grid-column: span 4; }
+    .nav-photographs { grid-column: span 4; }
+    .nav-design { grid-column: span 4; }
+    .nav-books { grid-column: span 2; }
+    .nav-info-link { grid-column: span 2; justify-self: end; }
+ 
+    .nav-link {
       display: block;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       color: var(--color-secondary);
-      line-height: normal;
-      white-space: nowrap;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: color 0.2s ease-out;
     }
-    .nav-item a.active,
-    .nav-item span.active { color: var(--color-primary); }
-    .nav-item .count { display: block; color: var(--color-secondary); }
-    #nav-logo a { color: var(--color-primary); }
-
-    /* Desktop nav previews */
+    .nav-link:hover { color: var(--color-primary); }
+    .nav-link.active { color: var(--color-primary); }
+    .nav-link .nav-label { display: block; }
+    .nav-link .nav-count { display: block; color: var(--color-secondary); transition: color 0.2s ease-out; }
+    .nav-link:hover .nav-count { color: var(--color-primary); }
+ 
+    /* Nav preview thumbnails */
     .nav-preview {
       position: absolute;
-      bottom: calc(100% + 8px);
+      bottom: calc(100% + 2px);
       left: 0;
+      display: flex;
+      gap: 0.277778vw;
+      flex-wrap: wrap;
+      align-items: flex-end;
       opacity: 0;
       pointer-events: none;
       transition: var(--transition-default);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.277778vw;
-      align-items: flex-end;
     }
-    .nav-preview.visible { opacity: 1; pointer-events: auto; }
+    .nav-preview.visible { opacity: 1; }
+ 
     .nav-preview img {
-      display: block;
       height: calc(0.68056vw + 5svh);
       width: auto;
-      object-fit: cover;
+      display: block;
     }
-    #nav-books .nav-preview img { height: 35px; }
-    nav#main-nav.info-mode .nav-preview {
-      opacity: 1;
-      bottom: auto;
-      top: calc(100% + 8px);
+    .nav-preview.books-preview img {
+      height: 35px;
+      width: auto;
     }
-
+ 
     /* ============================================================
-       VIEWS  (desktop)
+       IMAGE REVEAL — darkroom wipe
+       Applied via JS by adding .reveal class after load
     ============================================================ */
-    .view {
-      position: absolute;
-      inset: 0;
-      bottom: var(--nav-height);
-      display: none;
-      background: var(--color-surface);
+    @keyframes imgReveal {
+      from { clip-path: inset(100% 0 0 0); }
+      to   { clip-path: inset(0% 0 0 0); }
     }
-    .view.active { display: block; }
-
+    .img-reveal {
+      animation: imgReveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    /* wrapper needed so clip-path doesn't fight with other transforms */
+    .img-reveal-wrap {
+      overflow: hidden;
+      display: block;
+    }
+ 
     /* ============================================================
-       SHUFFLER
+       SHUFFLER VIEW
     ============================================================ */
     #view-shuffler {
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: none;
-      user-select: none;
-      -webkit-user-select: none;
     }
-    #view-shuffler * {
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-user-drag: none;
-      pointer-events: none;
-    }
-    #view-shuffler,
-    #shuffle-overlay,
-    .shuffler-wrapper { pointer-events: auto; }
-    #view-shuffler.active { display: flex; }
-
     .shuffler-wrapper {
       position: relative;
       height: 50vh;
@@ -221,1662 +226,1351 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      will-change: transform;
+      transition: transform 0.08s linear;
     }
     .shuffler-img {
       position: absolute;
       height: 100%;
       width: auto;
-      display: none;
+      opacity: 0;
+      transition: opacity 0.05s ease-out;
+      object-fit: contain;
+      pointer-events: none;
       left: 50%;
       transform: translateX(-50%);
     }
-    .shuffler-img.current { display: block; }
-    .shuffler-img img { height: 100%; width: auto; display: block; object-fit: cover; }
-
-    #shuffle-overlay {
+    .shuffler-img.current { opacity: 1; }
+ 
+    /* White flash overlay */
+    #shuffle-flash {
       position: absolute;
       inset: 0;
-      background: var(--color-surface);
-      z-index: var(--z-overlay);
+      background: #fff;
       opacity: 0;
       pointer-events: none;
+      z-index: 5;
+      transition: opacity 0.05s ease-out;
     }
-
-    #cursor {
+    #shuffle-flash.flash { opacity: 1; }
+ 
+    /* Custom cursor — minimal dot */
+    #custom-cursor {
       position: fixed;
-      top: 0; left: 0;
-      width: 16px; height: 16px;
+      width: 6px;
+      height: 6px;
+      background: #000;
+      border-radius: 50%;
       pointer-events: none;
-      z-index: var(--z-cursor);
-      opacity: 0;
+      z-index: 50;
       transform: translate(-50%, -50%);
-      transition: var(--transition-default);
-      will-change: transform;
-      color: white;
-    }
-    #cursor.visible { opacity: 1; }
-    #cursor svg { width: 16px; height: 16px; }
-
-    #helper {
-      position: absolute;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
       opacity: 0;
-      transition: var(--transition-default);
-      pointer-events: none;
-      white-space: nowrap;
+      transition: opacity 0.25s ease-out, transform 0.1s ease-out;
+      will-change: transform;
     }
-    #view-shuffler:hover #helper { opacity: 1; }
-
+    #custom-cursor.visible { opacity: 1; }
+    /* Expand slightly on click */
+    #view-shuffler:active ~ #custom-cursor,
+    #custom-cursor.clicking {
+      transform: translate(-50%, -50%) scale(1.8);
+    }
+ 
     /* ============================================================
-       PHOTOGRAPHS VIEWER
+       PHOTOGRAPHS VIEW
     ============================================================ */
-    #view-photographs { cursor: pointer; }
-    #view-photographs.active { display: block; }
-    #photo-stage {
+    #view-photographs {
+      background: #fff;
+      cursor: pointer;
+    }
+    .photo-stage {
       position: absolute;
       inset: 0;
       display: flex;
       align-items: flex-start;
-      justify-content: center;
     }
-    #photo-stage img {
-      height: var(--stage-height);
+    .photo-stage img {
+      height: 100%;
       width: auto;
-      max-width: 100%;
-      display: block;
-      object-fit: cover;
-    }
-    #photo-caption {
+      object-fit: contain;
       position: absolute;
-      bottom: 14px;
-      right: var(--grid-gutter);
-      color: var(--color-secondary);
-      line-height: normal;
+      left: 27%;
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
     }
-
+    .photo-stage img.current { opacity: 1; }
+    .photo-caption {
+      position: absolute;
+      bottom: 8px;
+      right: var(--grid-gutter);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.35s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .photo-caption.animating {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+ 
     /* ============================================================
-       COMMISSIONS GRID  (desktop)
+       DESIGN VIEW (was Commissions)
     ============================================================ */
-    #view-commissions { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    #view-commissions.active { display: block; }
-    #commissions-grid {
+    #view-design {
+      overflow-y: auto;
+      background: #fff;
+      -webkit-overflow-scrolling: touch;
+    }
+    .design-grid {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
       column-gap: var(--grid-gutter);
       row-gap: calc(var(--grid-gutter) * 2);
       padding: var(--grid-gutter);
-      max-width: 100vw;
+      padding-bottom: calc(var(--grid-gutter) * 2);
     }
-    .commission-card { cursor: pointer; }
-    .commission-card img,
-    .commission-card .placeholder-img {
+    .design-card {
+      cursor: pointer;
       display: block;
+    }
+    .design-card-img {
       width: 100%;
       aspect-ratio: 3/4;
       object-fit: cover;
-      background: #f0eeeb;
-    }
-    .commission-card .card-label {
-      margin-top: 6px;
       display: block;
-      color: var(--color-primary);
-      line-height: normal;
+      background: #f0f0f0;
     }
-
+    .design-card-label {
+      display: block;
+      margin-top: 6px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--color-primary);
+    }
+ 
     /* ============================================================
-       BOOKS GRID  (desktop)
+       BOOKS VIEW
     ============================================================ */
-    #view-books { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    #view-books.active { display: block; }
-    #books-grid {
+    #view-books {
+      overflow-y: auto;
+      background: #fff;
+      -webkit-overflow-scrolling: touch;
+    }
+    .books-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       column-gap: var(--grid-gutter);
       row-gap: calc(var(--grid-gutter) * 2);
       padding: var(--grid-gutter);
-      max-width: 100vw;
     }
-    .book-card { cursor: pointer; }
-    .book-card img,
-    .book-card .placeholder-img {
+    .book-card {
+      cursor: pointer;
       display: block;
+    }
+    .book-card-img {
       width: 100%;
       aspect-ratio: 4/5;
       object-fit: cover;
-      background: #f0eeeb;
+      display: block;
+      background: #e8e8e8;
     }
-    .book-card .book-title {
+    .book-card-title {
+      display: block;
       margin-top: 6px;
-      display: block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       color: var(--color-primary);
-      line-height: normal;
     }
-    .book-card .book-publisher {
+    .book-card-publisher {
       display: block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       color: var(--color-secondary);
-      line-height: normal;
     }
-
+ 
     /* ============================================================
-       INFO PANEL  (desktop)
+       INFO VIEW
     ============================================================ */
     #view-info {
       overflow-y: auto;
+      background: #fff;
       -webkit-overflow-scrolling: touch;
-      padding-top: calc(var(--nav-height) + 20px);
       bottom: 0;
     }
-    #view-info.active { display: block; }
-    .info-content {
-      grid-column: span 4;
-      padding: var(--grid-gutter);
+    /* Info view has nav at TOP */
+    #view-info nav#info-nav {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 10;
     }
-    .about {
+    .info-content {
+      padding: var(--grid-gutter);
+      padding-top: calc(var(--grid-gutter) * 2);
+      width: calc(4 * (100% / 16));
+      min-width: 280px;
+    }
+    .info-bio {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       color: var(--color-primary);
-      line-height: normal;
+      margin-bottom: calc(var(--grid-gutter) * 2);
+      line-height: 1.6;
+    }
+    .info-listing {
       margin-bottom: calc(var(--grid-gutter) * 2);
     }
-    .listing { margin-bottom: calc(var(--grid-gutter) * 2); }
-    .listing .title {
+    .info-listing-title {
       display: block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       color: var(--color-primary);
       margin-bottom: 6px;
-      line-height: normal;
     }
-    .listing ul { padding: 0; }
-    .listing li,
-    .listing a {
+    .info-listing ul {
+      padding-left: 2.08333vw;
+    }
+    .info-listing li,
+    .info-listing a {
       display: block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       color: var(--color-secondary);
       line-height: 1.8;
     }
-
+    .info-listing a:hover { color: var(--color-primary); }
+ 
     /* ============================================================
-       DETAIL VIEWER  (desktop)
+       DETAIL VIEW — scroll-sequenced
     ============================================================ */
-    #view-detail { display: none; cursor: pointer; }
-    #view-detail.active { display: block; }
-    #detail-stage {
-      position: absolute;
-      inset: 0;
+    #view-detail {
+      background: #fff;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+      cursor: default;
+    }
+    /* Each image occupies exactly one viewport-minus-nav frame */
+    .detail-slide {
+      height: calc(100svh - var(--nav-height));
+      scroll-snap-align: start;
+      position: relative;
       display: flex;
       align-items: flex-start;
-      justify-content: center;
+      flex-shrink: 0;
     }
-    #detail-stage img {
-      height: var(--stage-height);
+    .detail-slide img {
+      height: 100%;
       width: auto;
-      max-width: 100%;
-      display: block;
-      object-fit: cover;
-    }
-
-    nav#main-nav.detail-mode .nav-item { display: none; }
-    nav#main-nav.detail-mode #nav-logo,
-    nav#main-nav.detail-mode #detail-nav-title,
-    nav#main-nav.detail-mode #detail-nav-overview,
-    nav#main-nav.detail-mode #detail-nav-counter,
-    nav#main-nav.detail-mode #detail-nav-close { display: block; }
-
-    #detail-nav-title,
-    #detail-nav-overview,
-    #detail-nav-counter,
-    #detail-nav-close { display: none; }
-    #detail-nav-title span { color: var(--color-primary); }
-    #detail-nav-overview span,
-    #detail-nav-counter span,
-    #detail-nav-close span { color: var(--color-secondary); cursor: pointer; }
-
-    /* Overview filmstrip  (desktop) */
-    #overview-strip {
+      object-fit: contain;
       position: absolute;
-      top: 50%;
+      left: 27%;
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+    }
+    .detail-slide img.loaded { opacity: 1; }
+    /* Scroll container holds all slides */
+    #detail-scroll {
+      width: 100%;
+    }
+ 
+    /* Detail nav bar — fixed over scroll */
+    #detail-nav {
+      position: fixed;
+      bottom: 0;
       left: 0;
       width: 100%;
-      transform: translateY(-50%);
-      display: none;
+      height: var(--nav-height);
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      column-gap: var(--grid-gutter);
+      align-items: center;
+      z-index: 20;
+      background: #fff;
+      padding: 0 var(--grid-gutter);
+    }
+    .detail-nav-logo { grid-column: span 4; }
+    .detail-nav-title { grid-column: span 5; color: var(--color-primary); }
+    .detail-nav-overview { grid-column: span 2; text-align: center; cursor: pointer; }
+    .detail-nav-overview:hover { color: var(--color-primary); }
+    .detail-nav-counter { grid-column: span 2; color: var(--color-secondary); text-align: right; }
+    .detail-nav-close { grid-column: span 3; justify-self: end; cursor: pointer; }
+    .detail-nav-close:hover { color: var(--color-primary); }
+ 
+    /* Overview filmstrip — fixed over scroll */
+    #overview-strip {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: calc(var(--nav-height) + 20px);
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 4px;
-      z-index: 3;
+      z-index: 15;
+      opacity: 0;
       pointer-events: none;
-      padding: 0 var(--grid-gutter);
-      flex-wrap: wrap;
+      transition: opacity 0.3s ease-out;
     }
-    #overview-strip.visible { display: flex; pointer-events: auto; }
+    #overview-strip.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
     #overview-strip img {
-      height: calc(0.68056vw + 5svh);
+      height: 60px;
       width: auto;
       cursor: pointer;
-      opacity: 0.9;
-      transition: opacity 0.2s ease;
+      opacity: 0.6;
+      transition: opacity 0.2s ease-out;
+      flex-shrink: 0;
     }
-    #overview-strip img:hover { opacity: 1; }
-    #detail-stage.overview-open img { opacity: 0.15; }
-
-    .placeholder-img { background: #e8e5e0; }
-
+    #overview-strip img:hover,
+    #overview-strip img.active-thumb { opacity: 1; }
+    /* Overview strip shows above nav */
+ 
     /* ============================================================
-       TABLET  (≤1024px)
+       INFO TOP NAV (info page uses nav at top)
     ============================================================ */
-    @media (max-width: 1024px) {
-      #commissions-grid { grid-template-columns: repeat(4, 1fr); }
+    #info-nav-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-height);
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      column-gap: var(--grid-gutter);
+      align-items: center;
+      z-index: 20;
+      background: #fff;
+      padding: 0 var(--grid-gutter);
     }
-
+    .info-nav-logo { grid-column: span 4; }
+    .info-nav-photographs { grid-column: span 4; }
+    .info-nav-design { grid-column: span 4; }
+    .info-nav-books { grid-column: span 2; }
+    .info-nav-close { grid-column: span 2; justify-self: end; }
+ 
     /* ============================================================
-       LARGE DESKTOP
+       MOBILE NAV
     ============================================================ */
-    @media (min-width: 1440px) { html { font-size: 11px; } }
-    @media (min-width: 1728px) { html { font-size: 12px; } }
-
+    #mobile-nav {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-height);
+      align-items: center;
+      z-index: 20;
+      background: #fff;
+      padding: 0 3.6vw;
+    }
+    .mobile-nav-logo {
+      flex: 1;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      cursor: pointer;
+    }
+    .mobile-nav-section {
+      flex: 1;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+    }
+    .mobile-nav-section span { display: block; }
+    .mobile-nav-more {
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      padding: 0;
+    }
+    /* Mobile drawer */
+    #mobile-drawer {
+      position: absolute;
+      bottom: var(--nav-height);
+      left: 0;
+      width: 100%;
+      background: #fff;
+      padding: 0 3.6vw;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      z-index: 19;
+    }
+    #mobile-drawer.open { max-height: 200px; }
+    .mobile-drawer-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: none;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--color-secondary);
+      cursor: pointer;
+    }
+    .mobile-drawer-item.active { color: var(--color-primary); }
+ 
     /* ============================================================
-
-       MOBILE  (≤767px)
-       Everything below here is the complete mobile overhaul.
-       Desktop styles above are untouched.
-
+       RESPONSIVE — MOBILE
     ============================================================ */
     @media (max-width: 767px) {
-
-      /* -- tokens -- */
       :root {
-        --grid-columns: 8;
-        --grid-gutter: 3.6144578313vw;
-        --nav-height: 52px;
+        --grid-gutter: 3.6vw;
+        --nav-height: 50px;
       }
-
-      body { overflow: hidden; }
-      #cursor { display: none !important; }
-
-      /* -- hide desktop nav entirely -- */
-      nav#main-nav { display: none !important; }
-
-      /* ==========================================================
-         MOBILE NAV
-         Structure: 8-col grid, last col fixed 30px
-         Col 1–3 : logo
-         Col 4–7 : active section label  (or drawer list)
-         Col 8   : More / Less button (30px)
-      ========================================================== */
-      #mobile-nav {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        z-index: var(--z-nav);
-        background: var(--color-surface);
-        padding: 0 var(--grid-gutter);
-        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-      }
-
-      /* info mode — nav moves to top */
-      #mobile-nav.info-mode {
-        top: 0;
-        bottom: auto;
-        padding-top: 16px;
-        padding-bottom: 16px;
-      }
-
-      /* the persistent bottom bar row */
-      #mobile-nav-bar {
-        display: grid;
-        grid-template-columns: 3fr 4fr 30px;
-        align-items: end;
-        padding-top: 16px;
-        column-gap: 0;
-      }
-
-      #mobile-nav-logo {
-        color: var(--color-primary);
-        cursor: pointer;
-        white-space: nowrap;
-        line-height: normal;
-      }
-
-      /* centre cell: shows either nothing (home), or "section \n count" */
-      #mobile-nav-center {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        line-height: normal;
-      }
-      #mobile-nav-section {
-        color: var(--color-secondary);
-        display: block;
-        line-height: normal;
-      }
-      #mobile-nav-section.active-label { color: var(--color-primary); }
-      #mobile-nav-count {
-        color: var(--color-secondary);
-        display: block;
-        line-height: normal;
-      }
-
-      /* right cell: More / Less */
-      #mobile-nav-toggle {
-        color: var(--color-secondary);
-        cursor: pointer;
-        line-height: normal;
-        text-align: right;
-        align-self: end;
-      }
-
-      /* info-mode bar swap */
-      #mobile-nav-bar.info-bar #mobile-nav-section { color: var(--color-secondary); }
-      #mobile-nav.info-mode #mobile-nav-toggle { display: none; }
-      #mobile-nav-close-btn {
-        display: none;
-        color: var(--color-secondary);
-        cursor: pointer;
-        line-height: normal;
-        text-align: right;
-        align-self: end;
-      }
-      #mobile-nav.info-mode #mobile-nav-close-btn { display: block; }
-
-      /* ==========================================================
-         DRAWER
-         Slides open above the bar. Lists all sections.
-         Each item: 3fr label | 4fr empty | 30px count
-      ========================================================== */
-      #mobile-nav-drawer {
-        overflow: hidden;
-        max-height: 0;
-        opacity: 0;
-        transition: max-height 0.3s ease-out, opacity 0.25s ease-out;
-        pointer-events: none;
-      }
-      #mobile-nav-drawer.open {
-        max-height: 260px;
-        opacity: 1;
-        pointer-events: auto;
-      }
-      #mobile-nav-drawer ul {
-        padding-top: 18px;
-        padding-bottom: 4px;
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
-      #mobile-nav-drawer li {
-        display: grid;
-        grid-template-columns: 3fr 4fr 30px;
-        align-items: baseline;
-        cursor: pointer;
-        color: var(--color-secondary);
-        line-height: normal;
-      }
-      /* label col */
-      #mobile-nav-drawer li .d-label { grid-column: 1; }
-      /* count col — right-aligned in the 30px cell */
-      #mobile-nav-drawer li .d-count {
-        grid-column: 3;
-        text-align: right;
-        color: var(--color-secondary);
-      }
-      #mobile-nav-drawer li.active .d-label { color: var(--color-primary); }
-
-      /* ==========================================================
-         VIEWS  (mobile overrides)
-      ========================================================== */
-      .view { bottom: var(--nav-height); }
-
-      /* ---- SHUFFLER (mobile) ---- */
+      #main-nav { display: none !important; }
+      #mobile-nav { display: flex; }
+      #custom-cursor { display: none; }
       .shuffler-wrapper {
         height: 40vh;
         width: calc(100% - var(--grid-gutter) * 2);
-        margin: 0 auto;
+        transition: none; /* no parallax on touch */
       }
-      .shuffler-img {
-        /* vertically center within wrapper too */
-        top: 50%;
-        transform: translate(-50%, -50%);
-        height: 100%;
-        max-height: 80svh;
-      }
-      #preloader-images img { height: 40vh; max-width: calc(100% - var(--grid-gutter) * 2); }
-
-      /* helper text: visible on mobile, fades after first tap */
-      #helper {
-        opacity: 1;
-        bottom: 16px;
-        transition: opacity 0.5s ease-out;
-      }
-      #helper.faded { opacity: 0; }
-
-      /* ---- PHOTOGRAPHS (mobile) ---- */
-      #photo-stage {
-        align-items: flex-start;
-        justify-content: center;
-      }
-      #photo-stage img {
-        height: auto;
-        width: 100%;
-        max-height: 80svh;
-        object-fit: cover;
-      }
-      #photo-caption {
-        bottom: 10px;
-        right: var(--grid-gutter);
-      }
-
-      /* ---- COMMISSIONS (mobile) — horizontal carousel ---- */
-
-      /* Hide the desktop grid on mobile */
-      #commissions-grid { display: none; }
-
-      /* Mobile slider lives inside #view-commissions */
-      #mobile-commissions-slider {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .mobile-slider-track-wrap {
-        position: relative;
-        height: 38dvh;
-        width: 100%;
-        overflow: hidden;
-      }
-
-      .mobile-slider-track {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        position: relative;
-      }
-
-      .mobile-slide {
-        position: absolute;
-        top: 0;
+ 
+      /* Photos */
+      .photo-stage img {
         left: 0;
-        height: 100%;
         width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: opacity 0.35s ease-out;
-        opacity: 0.2;
-        pointer-events: none;
-      }
-      .mobile-slide.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-      .mobile-slide img,
-      .mobile-slide .placeholder-img {
-        height: 100%;
-        width: auto;
-        max-width: 90%;
-        object-fit: cover;
-        display: block;
-        background: #e8e5e0;
-      }
-      .mobile-slide .placeholder-img {
-        width: 60vw;
-      }
-
-      /* data row below the track */
-      .mobile-slider-data {
-        padding: 12px var(--grid-gutter) 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        line-height: normal;
-      }
-      .mobile-slider-data .slide-title { color: var(--color-primary); }
-      .mobile-slider-data .slide-counter { color: var(--color-secondary); }
-
-      /* tap zones: left half = prev, right half = next */
-      .mobile-slider-tap {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 50%;
-        cursor: pointer;
-        z-index: 2;
-      }
-      .mobile-slider-tap.prev { left: 0; }
-      .mobile-slider-tap.next { right: 0; }
-
-      /* ---- BOOKS (mobile) — same horizontal carousel ---- */
-      #books-grid { display: none; }
-
-      #mobile-books-slider {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      /* reuse .mobile-slider-* classes above */
-
-      /* ---- INFO (mobile) ---- */
-      #view-info {
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        padding-top: calc(var(--nav-height) + 16px);
-        bottom: 0;
-      }
-      .info-content {
-        grid-column: 1 / -1;
-        padding: var(--grid-gutter);
-      }
-      .about {
-        width: 100%;
-        margin-top: calc(9.03614vw - var(--grid-gutter));
-        margin-bottom: 9.03614vw;
-      }
-      .listing {
-        margin-bottom: 9.03614vw;
-      }
-      .listing ul { padding-left: 6.0241vw; }
-
-      /* ---- DETAIL (mobile) ---- */
-      #view-detail { cursor: default; }
-
-      #detail-stage {
-        bottom: 80px; /* leave room for filmstrip */
-        align-items: flex-start;
-        justify-content: center;
-      }
-      #detail-stage img {
         height: auto;
+        max-height: 100%;
+        object-fit: contain;
+      }
+ 
+      /* Design grid → 2 col */
+      .design-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+ 
+      /* Books grid → 1 col */
+      .books-grid {
+        grid-template-columns: 1fr;
+      }
+ 
+      /* Info full width */
+      .info-content {
         width: 100%;
-        max-height: calc(var(--stage-height) - 80px);
-        object-fit: cover;
       }
-
-      /* mobile detail nav — repurposes mobile-nav-bar */
-      /* section cell shows project title, count cell shows index */
-
-      /* Filmstrip: always visible on mobile, pinned above nav */
-      #overview-strip {
-        display: flex !important;
-        pointer-events: auto !important;
-        position: absolute;
-        top: auto;
-        bottom: 0;
-        transform: none;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        justify-content: flex-start;
-        align-items: center;
-        padding: 8px var(--grid-gutter);
-        gap: 5px;
-        background: var(--color-surface);
-        height: 80px;
-        scrollbar-width: none;
+      .info-listing ul { padding-left: 6vw; }
+      .info-listing { margin-bottom: 9vw; }
+ 
+      /* Detail — mobile: image fills width */
+      .detail-slide img {
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: contain;
       }
-      #overview-strip::-webkit-scrollbar { display: none; }
-      #overview-strip img {
-        height: 56px;
-        width: auto;
-        flex-shrink: 0;
-        opacity: 1;
-        cursor: pointer;
-      }
-      #overview-strip .strip-ph {
-        height: 56px;
-        width: 42px;
-        background: #e8e5e0;
-        flex-shrink: 0;
-        display: inline-block;
-      }
-      /* never dim main image on mobile */
-      #detail-stage.overview-open img { opacity: 1; }
     }
-
+ 
+    @media (min-width: 1440px) {
+      html { font-size: 10.8px; }
+    }
+    @media (min-width: 1728px) {
+      html { font-size: 11.6px; }
+    }
+ 
     /* ============================================================
-       SMALL MOBILE  (≤375px)
+       UTILITY
     ============================================================ */
-    @media (max-width: 375px) {
-      body { font-size: 10px; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+    }
+    .placeholder-img {
+      background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
     }
   </style>
 </head>
 <body>
-
-<div id="preloader">
-  <div id="preloader-images"></div>
-  <span>DJ Shiflet</span>
-</div>
-
-<div id="cursor">
-  <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M8 2.5A5.5 5.5 0 1 0 13.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-    <path d="M11 2l2.5 0.5L12 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</div>
-
+ 
+<!-- Preloader -->
+<div id="preloader">Rich Stapleton</div>
+ 
+<!-- Custom cursor (desktop shuffler only) -->
+<div id="custom-cursor"></div>
+ 
+<!-- ============================================================
+     APP SHELL
+============================================================ -->
 <div id="app">
-
-  <!-- SHUFFLER -->
-  <div id="view-shuffler" class="view active">
-    <div id="shuffle-overlay"></div>
-    <div class="shuffler-wrapper" id="shuffler-wrapper"></div>
-    <div id="helper">Tap to shuffle</div>
-  </div>
-
-  <!-- PHOTOGRAPHS -->
-  <div id="view-photographs" class="view">
-    <div id="photo-stage">
-      <img id="photo-img" src="" alt="" loading="lazy">
+ 
+  <!-- ── MAIN NAV (desktop bottom bar) ─────────────────────── -->
+  <nav id="main-nav">
+    <div class="nav-logo">
+      <a class="nav-link active" id="nav-home" data-view="shuffler">Rich Stapleton</a>
     </div>
-    <span id="photo-caption"></span>
-  </div>
-
-  <!-- COMMISSIONS -->
-  <div id="view-commissions" class="view">
-    <div id="commissions-grid"></div>
-    <!-- mobile carousel injected by JS -->
-  </div>
-
-  <!-- BOOKS -->
-  <div id="view-books" class="view">
-    <div id="books-grid"></div>
-    <!-- mobile carousel injected by JS -->
-  </div>
-
-  <!-- INFO -->
-  <div id="view-info" class="view">
-    <div class="grid">
-      <div class="info-content">
-        <p class="about">DJ Shiflet is a photographer based in New York.</p>
-        <div class="listing">
-          <span class="title">Exhibitions</span>
-          <ul>
-            <li>Drawing Room, The Cold Press (October 2022)</li>
-            <li>(Of) Bath, MMXXII, Francis Gallery (July 2022)</li>
-            <li>Forma, Numeroventi (October 2018)</li>
-            <li>Botany, Connolly (May 2018)</li>
-            <li>Palm, Phillips London (September 2017)</li>
-          </ul>
+    <div class="nav-photographs">
+      <a class="nav-link" id="nav-photographs" data-view="photographs">
+        <!-- preview -->
+        <div class="nav-preview" id="preview-photographs">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=60&h=75&fit=crop&crop=center" alt="">
         </div>
-        <div class="listing">
-          <span class="title">Books</span>
-          <ul>
-            <li>Charcoal (2019)</li>
-            <li>Ovidian (2023)</li>
-            <li>Drawing Room (2022)</li>
-          </ul>
-        </div>
-        <div class="listing">
-          <span class="title">Contact</span>
-          <a href="mailto:hello@djshiflet.com">hello@djshiflet.com</a>
-          <a href="#">Represented by Laird &amp; Good Company</a>
-        </div>
-        <div class="listing">
-          <span class="title">Credits</span>
-          <ul>
-            <li>Design by Vincent Tavano</li>
-            <li>Code by Paul Soulhiard</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DETAIL -->
-  <div id="view-detail" class="view">
-    <div id="detail-stage">
-      <img id="detail-img" src="" alt="">
-    </div>
-    <div id="overview-strip"></div>
-  </div>
-
-  <!-- ============================================================
-       DESKTOP NAVIGATION
-  ============================================================ -->
-  <nav class="grid" id="main-nav">
-    <div class="nav-item w-4" id="nav-logo">
-      <a href="#" data-view="shuffler" class="active">DJ Shiflet</a>
-    </div>
-    <div class="nav-item w-4" id="nav-photographs">
-      <div class="nav-preview" id="preview-photographs"></div>
-      <a href="#" data-view="photographs">
-        <span>Photographs</span>
-        <span class="count" id="photo-count-desktop">15</span>
+        <span class="nav-label">Photographs</span>
+        <span class="nav-count">28</span>
       </a>
     </div>
-    <div class="nav-item w-4" id="nav-commissions">
-      <div class="nav-preview" id="preview-commissions"></div>
-      <a href="#" data-view="commissions">
-        <span>Commissions</span>
-        <span class="count">10</span>
+    <div class="nav-design">
+      <a class="nav-link" id="nav-design" data-view="design">
+        <!-- preview -->
+        <div class="nav-preview" id="preview-design">
+          <!-- thumbnails injected by JS -->
+        </div>
+        <span class="nav-label">Design</span>
+        <span class="nav-count" id="design-count">12</span>
       </a>
     </div>
-    <div class="nav-item w-2" id="nav-books">
-      <div class="nav-preview" id="preview-books"></div>
-      <a href="#" data-view="books">
-        <span>Books &amp; Exhibitions</span>
-        <span class="count">3</span>
+    <div class="nav-books">
+      <a class="nav-link" id="nav-books" data-view="books">
+        <div class="nav-preview books-preview" id="preview-books">
+          <!-- thumbnails injected by JS -->
+        </div>
+        <span class="nav-label">Books &amp; Exhibitions</span>
+        <span class="nav-count">3</span>
       </a>
     </div>
-    <div class="nav-item w-2" id="nav-info">
-      <a href="#" data-view="info" id="info-toggle">Info</a>
-    </div>
-    <!-- detail mode replacements -->
-    <div class="nav-item w-4" id="detail-nav-title">
-      <span id="detail-title-text" class="active"></span>
-    </div>
-    <div class="nav-item w-2" id="detail-nav-overview">
-      <span id="overview-toggle">Overview</span>
-    </div>
-    <div class="nav-item w-2" id="detail-nav-counter">
-      <span id="counter-text">1 / 1</span>
-    </div>
-    <div class="nav-item w-2" id="detail-nav-close">
-      <span id="detail-close">Close</span>
+    <div class="nav-info-link">
+      <a class="nav-link" id="nav-info" data-view="info">Info</a>
     </div>
   </nav>
-
-  <!-- ============================================================
-       MOBILE NAVIGATION
-       Always in DOM; shown/hidden via CSS media query + JS display.
-  ============================================================ -->
-  <div id="mobile-nav" style="display:none;">
-    <div id="mobile-nav-drawer">
-      <ul id="mobile-nav-drawer-list"></ul>
+ 
+  <!-- ── SHUFFLER VIEW ──────────────────────────────────────── -->
+  <section class="view active" id="view-shuffler">
+    <div class="shuffler-wrapper" id="shuffler-wrapper">
+      <div id="shuffle-flash"></div>
+      <!-- Images inserted by JS -->
     </div>
-    <div id="mobile-nav-bar">
-      <span id="mobile-nav-logo" data-view="shuffler">DJ Shiflet</span>
-      <div id="mobile-nav-center">
-        <span id="mobile-nav-section"></span>
-        <span id="mobile-nav-count"></span>
+  </section>
+ 
+  <!-- ── PHOTOGRAPHS VIEW ───────────────────────────────────── -->
+  <section class="view" id="view-photographs">
+    <div class="photo-stage" id="photo-stage">
+      <!-- Images inserted by JS -->
+    </div>
+    <div class="photo-caption" id="photo-caption"></div>
+  </section>
+ 
+  <!-- ── DESIGN VIEW ────────────────────────────────────────── -->
+  <section class="view" id="view-design">
+    <div class="design-grid" id="design-grid">
+      <!-- Cards inserted by JS -->
+    </div>
+  </section>
+ 
+  <!-- ── BOOKS VIEW ─────────────────────────────────────────── -->
+  <section class="view" id="view-books">
+    <div class="books-grid" id="books-grid">
+      <!-- Cards inserted by JS -->
+    </div>
+  </section>
+ 
+  <!-- ── INFO VIEW ──────────────────────────────────────────── -->
+  <section class="view" id="view-info">
+    <!-- Info nav at top -->
+    <nav id="info-nav-bar">
+      <div class="info-nav-logo">
+        <span class="nav-link active" style="color:var(--color-primary)">Rich Stapleton</span>
       </div>
-      <span id="mobile-nav-toggle">More</span>
-      <span id="mobile-nav-close-btn">Close</span>
+      <div class="info-nav-photographs">
+        <a class="nav-link" data-view="photographs" data-from-info="true">
+          <div class="nav-preview visible" id="info-preview-photographs">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=60&h=75&fit=crop&crop=center" alt="">
+          </div>
+          <span class="nav-label">Photographs</span>
+          <span class="nav-count">28</span>
+        </a>
+      </div>
+      <div class="info-nav-design">
+        <a class="nav-link" data-view="design" data-from-info="true">
+          <div class="nav-preview visible" id="info-preview-design">
+          </div>
+          <span class="nav-label">Design</span>
+          <span class="nav-count">12</span>
+        </a>
+      </div>
+      <div class="info-nav-books">
+        <a class="nav-link" data-view="books" data-from-info="true">
+          <div class="nav-preview books-preview visible" id="info-preview-books">
+          </div>
+          <span class="nav-label">Books &amp; Exhibitions</span>
+          <span class="nav-count">3</span>
+        </a>
+      </div>
+      <div class="info-nav-close">
+        <a class="nav-link" data-view="shuffler" data-from-info="true" style="color:var(--color-secondary)">Close</a>
+      </div>
+    </nav>
+ 
+    <div style="height:var(--nav-height)"></div>
+    <div class="info-content">
+      <p class="info-bio">Rich Stapleton is a British photographer based in Los Angeles.</p>
+ 
+      <div class="info-listing">
+        <span class="info-listing-title">Exhibitions</span>
+        <ul>
+          <li>Drawing Room, The Cold Press (October 2022)</li>
+          <li>(Of) Bath, MMXXII, Francis Gallery (July 2022)</li>
+          <li>Forma, Numeroventi (October 2018)</li>
+          <li>Botany, Connolly (May 2018)</li>
+          <li>Palm, Phillips London (September 2017)</li>
+        </ul>
+      </div>
+ 
+      <div class="info-listing">
+        <span class="info-listing-title">Books</span>
+        <ul>
+          <li>Charcoal (2019)</li>
+          <li>Penumbra (2023)</li>
+          <li>Drawing Room (2022)</li>
+        </ul>
+      </div>
+ 
+      <div class="info-listing">
+        <span class="info-listing-title">Contact</span>
+        <ul>
+          <a href="mailto:hello@richstapleton.com">hello@richstapleton.com</a>
+          <a href="https://lairdandgoodcompany.com" target="_blank" rel="noopener">Represented by Laird &amp; Good Company</a>
+        </ul>
+      </div>
+ 
+      <div class="info-listing">
+        <span class="info-listing-title">Credits</span>
+        <ul>
+          <li>Design by Vincent Tavano</li>
+          <li>Code by Paul Soulhiard</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ── DETAIL VIEW ────────────────────────────────────────── -->
+  <section class="view" id="view-detail">
+    <div id="detail-scroll"></div>
+    <div id="overview-strip"></div>
+    <nav id="detail-nav">
+      <div class="detail-nav-logo">
+        <span class="nav-link" style="color:var(--color-secondary)">Rich Stapleton</span>
+      </div>
+      <div class="detail-nav-title nav-link" id="detail-title"></div>
+      <div class="detail-nav-overview nav-link" id="detail-overview-btn">Overview</div>
+      <div class="detail-nav-counter nav-link" id="detail-counter"></div>
+      <div class="detail-nav-close nav-link" id="detail-close">Close</div>
+    </nav>
+  </section>
+ 
+  <!-- ── MOBILE NAV ─────────────────────────────────────────── -->
+  <nav id="mobile-nav">
+    <div class="mobile-nav-logo" data-view="shuffler" id="mobile-logo">Rich Stapleton</div>
+    <div class="mobile-nav-section" id="mobile-section-label">
+      <span id="mobile-section-name"></span>
+      <span id="mobile-section-count"></span>
+    </div>
+    <button class="mobile-nav-more" id="mobile-more-btn">More</button>
+  </nav>
+  <div id="mobile-drawer">
+    <div class="mobile-drawer-item" data-view="photographs">
+      <span>Photographs</span><span>28</span>
+    </div>
+    <div class="mobile-drawer-item" data-view="design">
+      <span>Design</span><span>12</span>
+    </div>
+    <div class="mobile-drawer-item" data-view="books">
+      <span>Books &amp; Exhibitions</span><span>3</span>
+    </div>
+    <div class="mobile-drawer-item" data-view="info">
+      <span>Info</span><span></span>
     </div>
   </div>
-
-</div><!-- #app -->
-
+ 
+</div><!-- /#app -->
+ 
 <script>
-/* ============================================================
-   DATA
-============================================================ */
-const DRIVE_BASE  = 'https://drive.google.com/thumbnail?sz=w1200&id=';
-const DRIVE_THUMB = 'https://drive.google.com/thumbnail?sz=w200&id=';
-
-const photographs = [
-  { id: '1CQpMJbEQK8vCmRQkzzftjjVnctX7_7Py', caption: 'Palazzo Ventidue' },
-  { id: '1aqg2DhxWaXfnSterBSjCgSoyA-qjKqqK', caption: 'Palazzo Ventidue II' },
-  { id: '10kX0j2NgDg-5x5KR7sWV-eQdsUWRZ718', caption: 'Daniel Faro' },
-  { id: '1q4HO0-4bsEj_2-6j5baPAW4DCBUYs29f', caption: 'Untitled' },
-  { id: '1pICNbG-UR9ntppNNiQAaf-n09aXsP_SU', caption: 'Study I' },
-  { id: '1Ue0hdNTdOAvl-dgcNVqURBmEch0ON5jH', caption: 'Study II' },
-  { id: '1xxRP1-A06GAQVfSth7O0MAALVH5zMt3Q', caption: 'C0036' },
-  { id: '12KS1q1Vp31C1f0W5fU2q0yY2sNBvIX1C', caption: 'Interior' },
-  { id: '1QvEJSzMaihkGWhiJQu2LL1uXYs3zMr1W', caption: 'Interior II' },
-  { id: '1Lt-mnGy6PTUACFOQE-v8E9iAAJ661NOv', caption: 'Chimi V' },
-  { id: '1LTkieEwoLcWHqOqG8o4yO1q6Q3lkEcsA', caption: 'RAW 025' },
-  { id: '1TcDHRkNs1sqLAm5Uzp_9efUA9R4lxK4n', caption: 'Blooming Branch' },
-  { id: '1QDa6yvxy66tdAnf9XgELjH7_1hL8IgpN', caption: 'Charros' },
-  { id: '1J2O9SFjvw4EY7JKhiQRDODWPb0HA0Cxv', caption: 'IMG 2308' },
-  { id: '1H5Hbdi99nwn9bOarJe9ZEsxQvu4jOvEc', caption: 'IMG 1874' },
-];
-
-const commissions = [
-  { title: 'Holiday — Uzbekistan',                         year: '2025', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-  { title: 'Objection — 835 N Kings Road',                 year: '2022', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-  { title: 'The World of Interiors, Nigel Slater',         year: '2022', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-  { title: 'FT HTSI — Courteney Cox at Home',              year: '2023', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-  { title: "Cereal — Sir John Soane's Museum",             year: '2021', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-  { title: 'Potters House',                                year: '2019', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-  { title: 'FT HTSI — Emma Watson',                        year: '2023', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-  { title: 'Cereal — Korea Furniture Museum',              year: '2019', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-  { title: 'Holiday — Drogo Castle',                       year: '2025', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-  { title: 'The World of Interiors — Bernard Maybeck Home',year: '2026', images: [{id:null},{id:null},{id:null},{id:null},{id:null}], thumb: null },
-];
-
-const books = [
-  { title: 'Charcoal',     year: '2019', publisher: 'Self Published',                id: null },
-  { title: 'Ovidian',      year: '2023', publisher: 'Self Published',                id: '1tf9k3ifuwkK_-7RWYYCA99lZY_7jXvsS' },
-  { title: 'Drawing Room', year: '2022', publisher: 'Published by The Modern House',  id: '1uOJr_fPKEoTzEeKy_bPmr9tygXePdxnI' },
-];
-
-const sections = [
-  { view: 'photographs', label: 'Photographs',         count: String(photographs.length) },
-  { view: 'commissions', label: 'Commissions',         count: String(commissions.length) },
-  { view: 'books',       label: 'Books & Exhibitions', count: String(books.length) },
-  { view: 'info',        label: 'Info',                count: '' },
-];
-
-/* ============================================================
-   STATE
-============================================================ */
-let currentView   = 'shuffler';
-let shufflerIndex = 0;
-let photoIndex    = 0;
-let detailProject = null;
-let detailIndex   = 0;
-let overviewOpen  = false;
-let shufflerReady = false;
-let isMobile      = false;
-let drawerOpen    = false;
-// mobile carousel state
-let commSlideIndex  = 0;
-let booksSlideIndex = 0;
-
-/* ============================================================
-   HELPERS
-============================================================ */
-function fadeIn(el, dur = 0.35) {
-  if (!el) return;
-  gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: dur, ease: 'power2.out' });
-}
-function fadeOut(el, cb, dur = 0.2) {
-  if (!el) return;
-  gsap.to(el, { opacity: 0, duration: dur, ease: 'power2.in', onComplete: cb || (() => {}) });
-}
-function onImgError(img) {
-  img.style.background = '#e8e5e0';
-  img.style.minWidth   = '1px';
-  img.removeAttribute('src');
-}
-function bindSwipe(el, onLeft, onRight) {
-  let sx = 0, sy = 0;
-  el.addEventListener('touchstart', e => {
-    sx = e.touches[0].clientX;
-    sy = e.touches[0].clientY;
-  }, { passive: true });
-  el.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - sx;
-    const dy = e.changedTouches[0].clientY - sy;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      dx < 0 ? onLeft() : onRight();
+(function() {
+  'use strict';
+ 
+  /* ============================================================
+     DATA
+  ============================================================ */
+ 
+  // Photographs — 28 images using curated Unsplash (consistent IDs)
+  const photographs = [
+    { src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&q=80', caption: 'Butterfly on Mirror' },
+    { src: 'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=800&auto=format&q=80', caption: 'Korean Furniture Museum' },
+    { src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&q=80', caption: 'Egg Reflected, 2018' },
+    { src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&auto=format&q=80', caption: 'Mist, 2019' },
+    { src: 'https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?w=800&auto=format&q=80', caption: 'Graanmarkt 13' },
+    { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&auto=format&q=80', caption: 'Mountain Study' },
+    { src: 'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=800&auto=format&q=80', caption: 'Yvon for Anest' },
+    { src: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=800&auto=format&q=80', caption: 'Still Life I' },
+    { src: 'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=800&auto=format&q=80', caption: 'Still Life II' },
+    { src: 'https://images.unsplash.com/photo-1519750783826-e2420f4d687f?w=800&auto=format&q=80', caption: 'Light Study' },
+    { src: 'https://images.unsplash.com/photo-1510784722466-f2aa240af693?w=800&auto=format&q=80', caption: 'Interior I' },
+    { src: 'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=800&auto=format&q=80', caption: 'Form Study' },
+    { src: 'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=800&auto=format&q=80', caption: 'Winter, 2020' },
+    { src: 'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=800&auto=format&q=80', caption: 'Landscape I' },
+    { src: 'https://images.unsplash.com/photo-1499678329028-101435549a4e?w=800&auto=format&q=80', caption: 'Shore, 2021' },
+    { src: 'https://images.unsplash.com/photo-1476231682828-37e571bc172f?w=800&auto=format&q=80', caption: 'Interior II' },
+    { src: 'https://images.unsplash.com/photo-1487088678257-3a541e6e3922?w=800&auto=format&q=80', caption: 'Dusk' },
+    { src: 'https://images.unsplash.com/photo-1494791368093-85217fbbf8de?w=800&auto=format&q=80', caption: 'Vessel' },
+    { src: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&auto=format&q=80', caption: 'Field' },
+    { src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&q=80', caption: 'Forest' },
+    { src: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&auto=format&q=80', caption: 'Meadow' },
+    { src: 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&auto=format&q=80', caption: 'Valley' },
+    { src: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&auto=format&q=80', caption: 'Dawn' },
+    { src: 'https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=800&auto=format&q=80', caption: 'Waterfall' },
+    { src: 'https://images.unsplash.com/photo-1482192505345-5852cc77f7a8?w=800&auto=format&q=80', caption: 'Coast' },
+    { src: 'https://images.unsplash.com/photo-1465056836041-7f43ac27dcb5?w=800&auto=format&q=80', caption: 'Horizon' },
+    { src: 'https://images.unsplash.com/photo-1447684808650-354ae64db5b8?w=800&auto=format&q=80', caption: 'Road' },
+    { src: 'https://images.unsplash.com/photo-1458442310124-dde6edb43d10?w=800&auto=format&q=80', caption: 'Sky' },
+  ];
+ 
+  // Design projects — 12 items
+  const designProjects = [
+    {
+      title: 'Holiday – Uzbekistan (2025)',
+      images: [
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1551887196-72e32bfc7bf3?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'Objection – 835 N Kings Road (2022)',
+      images: [
+        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'The World of Interiors, Nigel Slater (2022)',
+      images: [
+        'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'FT HTSI – Courteney Cox at Home (2023)',
+      images: [
+        'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'Cereal – Sir John Soane\'s Museum (2021)',
+      images: [
+        'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'Potters House (2019)',
+      images: [
+        'https://images.unsplash.com/photo-1507149833265-60c372daea22?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1532009324734-20a7a5813719?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'FT HTSI – Emma Watson (2023)',
+      images: [
+        'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'Cereal – Korea Furniture Museum (2019)',
+      images: [
+        'https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'Holiday – Drogo Castle (2025)',
+      images: [
+        'https://images.unsplash.com/photo-1533154683836-84ea7a0bc310?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1543968996-ee822b8176ba?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'The World of Interiors – Bernard Maybeck Home (2026)',
+      images: [
+        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1505843513577-22bb7d21e455?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'Architectural Digest – Palm Springs (2024)',
+      images: [
+        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=900&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'T Magazine – Still Life Series (2024)',
+      images: [
+        'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&auto=format&q=80',
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&auto=format&q=80',
+      ]
+    },
+  ];
+ 
+  // Books & Exhibitions
+  const books = [
+    {
+      title: 'Charcoal (2019)',
+      publisher: 'Self Published',
+      images: [
+        'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=700&auto=format&q=80',
+        'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'Penumbra (2023)',
+      publisher: 'Published by Libraryman',
+      images: [
+        'https://images.unsplash.com/photo-1529422643029-d4585747aaf2?w=700&auto=format&q=80',
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&auto=format&q=80',
+      ]
+    },
+    {
+      title: 'Drawing Room (2022)',
+      publisher: 'Published by The Modern House',
+      images: [
+        'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=700&auto=format&q=80',
+        'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=700&auto=format&q=80',
+      ]
+    },
+  ];
+ 
+  /* ============================================================
+     STATE
+  ============================================================ */
+  let currentView = 'shuffler';
+  let shufflerIndex = 0;
+  let photoIndex = 0;
+  let detailProject = null;
+  let detailIndex = 0;
+  let overviewOpen = false;
+  let isTransitioning = false;
+  let mobileDrawerOpen = false;
+ 
+  /* ============================================================
+     ELEMENTS
+  ============================================================ */
+  const $ = id => document.getElementById(id);
+  const preloader = $('preloader');
+  const customCursor = $('custom-cursor');
+  const shufflerWrapper = $('shuffler-wrapper');
+  const shuffleFlash = $('shuffle-flash');
+  const photoStage = $('photo-stage');
+  const photoCaption = $('photo-caption');
+  const designGrid = $('design-grid');
+  const booksGrid = $('books-grid');
+  const overviewStrip = $('overview-strip');
+  const detailTitle = $('detail-title');
+  const detailCounter = $('detail-counter');
+  const detailClose = $('detail-close');
+  const detailOverviewBtn = $('detail-overview-btn');
+  const mobileMoreBtn = $('mobile-more-btn');
+  const mobileDrawer = $('mobile-drawer');
+  const mobileSectionName = $('mobile-section-name');
+  const mobileSectionCount = $('mobile-section-count');
+ 
+  /* ============================================================
+     PAGE TRANSITION — crossfade
+  ============================================================ */
+  function transitionTo(fn) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    // Find the currently active view and mark it leaving
+    const outgoing = document.querySelector('.view.active');
+    if (outgoing) {
+      outgoing.classList.remove('active');
+      outgoing.classList.add('leaving');
     }
-  }, { passive: true });
-}
-function syncNavHeight() {
-  const el = isMobile
-    ? document.getElementById('mobile-nav')
-    : document.getElementById('main-nav');
-  if (!el) return;
-  document.documentElement.style.setProperty('--nav-height', el.offsetHeight + 'px');
-}
-function setTitle(suffix) {
-  document.title = suffix ? 'DJ Shiflet — ' + suffix : 'DJ Shiflet';
-}
-function makePlaceholder(ratio) {
-  const d = document.createElement('div');
-  d.className = 'placeholder-img';
-  d.style.cssText = 'width:100%;aspect-ratio:' + ratio + ';';
-  return d;
-}
-function makeThumbPH(w, h) {
-  const d = document.createElement('div');
-  d.style.cssText = 'width:' + w + 'px;height:' + h + 'px;background:#e8e5e0;display:inline-block;flex-shrink:0;';
-  return d;
-}
-
-/* ============================================================
-   INIT
-============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-  isMobile = window.innerWidth <= 767;
-
-  buildShuffler();
-  buildPhotographsPreview();
-  buildCommissionsGrid();
-  buildBooksGrid();
-  bindNav();
-  bindKeyboard();
-  bindCursor();
-  bindPhotoViewer();
-  bindDetailViewer();
-
-  if (isMobile) {
-    initMobileNav();
-    buildMobileCommissionsSlider();
-    buildMobileBooksSlider();
+    // Small delay so outgoing starts fading before incoming appears
+    setTimeout(() => {
+      if (outgoing) {
+        outgoing.addEventListener('transitionend', () => {
+          outgoing.classList.remove('leaving');
+        }, { once: true });
+      }
+      fn();
+      isTransitioning = false;
+    }, 50);
   }
-
-  requestAnimationFrame(syncNavHeight);
-  window.addEventListener('resize', () => {
-    const wasM = isMobile;
-    isMobile = window.innerWidth <= 767;
-    if (isMobile !== wasM) {
-      // rebuild if crossing breakpoint — simplest recovery
-      location.reload();
+ 
+  /* ============================================================
+     VIEW SWITCHING
+  ============================================================ */
+  function switchView(view, useTransition) {
+    if (view === currentView && view !== 'detail') return;
+ 
+    const doSwitch = () => {
+      // hide all views
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      // show target
+      const target = document.getElementById('view-' + view);
+      if (target) target.classList.add('active');
+      currentView = view;
+      updateNav(view);
+      updateMobileNav(view);
+      // update page title
+      const titles = { shuffler:'Rich Stapleton', photographs:'Photographs – Rich Stapleton', design:'Design – Rich Stapleton', books:'Books & Exhibitions – Rich Stapleton', info:'Info – Rich Stapleton', detail: detailProject ? detailProject.title + ' – Rich Stapleton' : 'Rich Stapleton' };
+      document.title = titles[view] || 'Rich Stapleton';
+    };
+ 
+    if (useTransition) {
+      transitionTo(doSwitch);
+    } else {
+      doSwitch();
     }
-    syncNavHeight();
-  });
-
-  runPreloader();
-});
-
-/* ============================================================
-   PRELOADER
-============================================================ */
-function runPreloader() {
-  const preloader = document.getElementById('preloader');
-  const nameEl    = preloader.querySelector('span');
-  const imgCont   = document.getElementById('preloader-images');
-  const pool      = [...photographs].sort(() => Math.random() - 0.5);
-
-  pool.forEach((p, i) => {
-    const img = document.createElement('img');
-    img.src = DRIVE_THUMB + p.id;
-    img.onerror = () => onImgError(img);
-    if (i === 0) img.classList.add('active');
-    imgCont.appendChild(img);
-  });
-
-  const imgs  = imgCont.querySelectorAll('img');
-  const total = imgs.length;
-  let ci = 0;
-
-  setTimeout(() => {
-    gsap.timeline()
-      .to(nameEl,  { opacity: 0, duration: 0.2, ease: 'power2.out' })
-      .to(imgCont, { opacity: 1, duration: 0.15, ease: 'none' })
-      .call(() => {
-        const timer = setInterval(() => {
-          imgs[ci % total].classList.remove('active');
-          ci++;
-          imgs[ci % total].classList.add('active');
-          shufflerIndex = ci % total;
-        }, 80);
-
-        setTimeout(() => {
-          clearInterval(timer);
-          const sImgs = document.querySelectorAll('.shuffler-img');
-          sImgs.forEach(el => el.classList.remove('current'));
-          sImgs[shufflerIndex]?.classList.add('current');
-
-          gsap.to(preloader, {
-            opacity: 0, duration: 0.6, ease: 'power2.out',
-            onComplete: () => {
-              preloader.style.display = 'none';
-              revealNav();
-              shufflerReady = true;
-            }
-          });
-        }, 80 * total + 100);
-      });
-  }, 700);
-}
-
-function revealNav() {
-  if (isMobile) {
-    gsap.fromTo('#mobile-nav', { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
-  } else {
-    gsap.fromTo(
-      document.querySelectorAll('#main-nav .nav-item'),
-      { opacity: 0 },
-      { opacity: 1, duration: 0.4, stagger: 0.07, ease: 'power2.out' }
-    );
   }
-}
-
-/* ============================================================
-   SHUFFLER
-============================================================ */
-function buildShuffler() {
-  const wrapper = document.getElementById('shuffler-wrapper');
-  const pool    = [...photographs].sort(() => Math.random() - 0.5);
-
-  pool.forEach((p, i) => {
-    const div = document.createElement('div');
-    div.className = 'shuffler-img' + (i === 0 ? ' current' : '');
-    const img = document.createElement('img');
-    img.src = DRIVE_BASE + p.id;
-    img.alt = p.caption;
-    img.onerror = () => onImgError(img);
-    div.appendChild(img);
-    wrapper.appendChild(div);
-  });
-
-  shufflerIndex = 0;
-  const stage = document.getElementById('view-shuffler');
-  stage.addEventListener('click', () => {
-    advanceShuffler();
-    // fade helper after first tap on mobile
-    if (isMobile) {
-      const h = document.getElementById('helper');
-      if (h) h.classList.add('faded');
+ 
+  function updateNav(view) {
+    document.querySelectorAll('#main-nav .nav-link').forEach(l => l.classList.remove('active'));
+    const map = { shuffler:'nav-home', photographs:'nav-photographs', design:'nav-design', books:'nav-books', info:'nav-info' };
+    if (map[view]) {
+      const el = $(map[view]);
+      if (el) el.classList.add('active');
     }
+    // Show info nav bar only when info view
+    const infoNavBar = $('info-nav-bar');
+    const mainNav = $('main-nav');
+    // info view handles its own top nav — main nav visible on all other views
+    // (info view nav is inside the view itself, so no extra action needed)
+  }
+ 
+  function updateMobileNav(view) {
+    const labels = { shuffler:['',''], photographs:['Photographs','28'], design:['Design','12'], books:['Books & Exhibitions','3'], info:['Info',''], detail: detailProject ? [detailProject.title,''] : ['',''] };
+    const l = labels[view] || ['',''];
+    mobileSectionName.textContent = l[0];
+    mobileSectionCount.textContent = l[1];
+    // highlight drawer items
+    document.querySelectorAll('.mobile-drawer-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.view === view);
+    });
+  }
+ 
+  /* ============================================================
+     NAV EVENT DELEGATION
+  ============================================================ */
+  function handleNavClick(e) {
+    const target = e.target.closest('[data-view]');
+    if (!target) return;
+    e.preventDefault();
+    const view = target.dataset.view;
+    switchView(view, true);
+    // close mobile drawer if open
+    closeMobileDrawer();
+  }
+ 
+  document.getElementById('main-nav').addEventListener('click', handleNavClick);
+  document.getElementById('info-nav-bar').addEventListener('click', handleNavClick);
+  document.getElementById('mobile-nav').addEventListener('click', e => {
+    const logo = e.target.closest('[data-view]');
+    if (logo) { switchView(logo.dataset.view, true); return; }
   });
-  bindSwipe(stage, advanceShuffler, advanceShuffler);
-}
-
-function advanceShuffler() {
-  if (!shufflerReady) return;
-  const imgs    = document.querySelectorAll('.shuffler-img');
-  const overlay = document.getElementById('shuffle-overlay');
-  gsap.timeline()
-    .to(overlay,  { opacity: 1, duration: 0.05, ease: 'none' })
-    .call(() => {
-      imgs[shufflerIndex].classList.remove('current');
-      shufflerIndex = (shufflerIndex + 1) % imgs.length;
-      imgs[shufflerIndex].classList.add('current');
-    })
-    .to(overlay,  { opacity: 0, duration: 0.15, ease: 'power2.out' });
-}
-
-/* ============================================================
-   PHOTOGRAPHS
-============================================================ */
-function buildPhotographsPreview() {
-  const preview = document.getElementById('preview-photographs');
-  if (!preview) return;
-  const img = document.createElement('img');
-  img.src = DRIVE_THUMB + photographs[0].id;
-  img.onerror = () => onImgError(img);
-  preview.appendChild(img);
-}
-
-function showPhotograph(index) {
-  photoIndex = ((index % photographs.length) + photographs.length) % photographs.length;
-  const photo = photographs[photoIndex];
-  const imgEl = document.getElementById('photo-img');
-  imgEl.src = DRIVE_BASE + photo.id;
-  imgEl.onerror = () => onImgError(imgEl);
-  document.getElementById('photo-caption').textContent = photo.caption;
-}
-
-function bindPhotoViewer() {
-  const el = document.getElementById('view-photographs');
-  el.addEventListener('click', () => showPhotograph(photoIndex + 1));
-  bindSwipe(el,
-    () => showPhotograph(photoIndex + 1),
-    () => showPhotograph(photoIndex - 1)
-  );
-}
-
-/* ============================================================
-   COMMISSIONS GRID  (desktop)
-============================================================ */
-function buildCommissionsGrid() {
-  const grid    = document.getElementById('commissions-grid');
-  const preview = document.getElementById('preview-commissions');
-
-  commissions.forEach((c, i) => {
-    const card = document.createElement('div');
-    card.className = 'commission-card';
-
-    if (c.thumb) {
-      const img = document.createElement('img');
-      img.src = DRIVE_BASE + c.thumb;
-      img.loading = 'lazy';
-      img.onerror = () => img.replaceWith(makePlaceholder('3/4'));
-      card.appendChild(img);
-    } else {
-      card.appendChild(makePlaceholder('3/4'));
-    }
-
-    const label = document.createElement('span');
-    label.className   = 'card-label';
-    label.textContent = c.title.toUpperCase() + ' (' + c.year + ')';
-    card.appendChild(label);
-    card.addEventListener('click', () => openDetail(i, 'commissions'));
-    grid.appendChild(card);
-
-    // preview strip thumbnail
-    const ph = document.createElement('div');
-    ph.style.cssText = 'width:17px;height:22px;background:#e8e5e0;display:inline-block;flex-shrink:0;';
-    if (preview) preview.appendChild(ph);
+  document.getElementById('mobile-drawer').addEventListener('click', handleNavClick);
+ 
+  /* ============================================================
+     NAV HOVER PREVIEWS (desktop)
+  ============================================================ */
+  ['photographs','design','books'].forEach(section => {
+    const link = $('nav-' + section);
+    const preview = $('preview-' + section);
+    if (!link || !preview) return;
+    link.addEventListener('mouseenter', () => preview.classList.add('visible'));
+    link.addEventListener('mouseleave', () => preview.classList.remove('visible'));
   });
-}
-
-/* ============================================================
-   BOOKS GRID  (desktop)
-============================================================ */
-function buildBooksGrid() {
-  const grid    = document.getElementById('books-grid');
-  const preview = document.getElementById('preview-books');
-
-  books.forEach((b, i) => {
-    const card = document.createElement('div');
-    card.className = 'book-card';
-
-    if (b.id) {
-      const img = document.createElement('img');
-      img.src = DRIVE_BASE + b.id;
-      img.alt = b.title;
-      img.loading = 'lazy';
-      img.onerror = () => img.replaceWith(makePlaceholder('4/5'));
-      card.appendChild(img);
-    } else {
-      card.appendChild(makePlaceholder('4/5'));
-    }
-
-    const title = document.createElement('span');
-    title.className   = 'book-title';
-    title.textContent = b.title.toUpperCase() + ' (' + b.year + ')';
-
-    const pub = document.createElement('span');
-    pub.className   = 'book-publisher';
-    pub.textContent = b.publisher.toUpperCase();
-
-    card.appendChild(title);
-    card.appendChild(pub);
-    card.addEventListener('click', () => openDetail(i, 'books'));
-    grid.appendChild(card);
-
-    if (preview) {
-      if (b.id) {
+ 
+  /* ============================================================
+     BUILD NAV PREVIEW THUMBNAILS
+  ============================================================ */
+  function buildNavPreviews() {
+    // Design previews
+    const dp = $('preview-design');
+    const dip = $('info-preview-design');
+    designProjects.slice(0,10).forEach(p => {
+      [dp, dip].forEach(container => {
+        if (!container) return;
         const img = document.createElement('img');
-        img.src = DRIVE_THUMB + b.id;
-        img.style.cssText = 'height:35px;width:auto;flex-shrink:0;';
-        img.onerror = () => img.replaceWith(makeThumbPH(28, 35));
-        preview.appendChild(img);
-      } else {
-        preview.appendChild(makeThumbPH(28, 35));
-      }
-    }
-  });
-}
-
-/* ============================================================
-   MOBILE CAROUSELS
-============================================================ */
-function buildMobileSlider(items, containerId, getImageId, getTitle, getYear, onSelect) {
-  const view = document.getElementById(containerId);
-  if (!view) return;
-
-  const wrapper = document.createElement('div');
-  wrapper.id = containerId + '-mobile-slider';
-  wrapper.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;';
-
-  // track wrap
-  const trackWrap = document.createElement('div');
-  trackWrap.className = 'mobile-slider-track-wrap';
-  trackWrap.style.cssText = 'position:relative;height:38dvh;width:100%;overflow:hidden;';
-
-  // slides
-  items.forEach((item, i) => {
-    const slide = document.createElement('div');
-    slide.className = 'mobile-slide' + (i === 0 ? ' active' : '');
-    slide.dataset.index = i;
-
-    const imgId = getImageId(item);
-    if (imgId) {
-      const img = document.createElement('img');
-      img.src = DRIVE_BASE + imgId;
-      img.onerror = () => onImgError(img);
-      slide.appendChild(img);
-    } else {
-      const ph = document.createElement('div');
-      ph.className = 'placeholder-img';
-      ph.style.cssText = 'height:100%;width:60vw;';
-      slide.appendChild(ph);
-    }
-
-    trackWrap.appendChild(slide);
-  });
-
-  // tap zones
-  const prev = document.createElement('div');
-  prev.className = 'mobile-slider-tap prev';
-  const next = document.createElement('div');
-  next.className = 'mobile-slider-tap next';
-
-  let currentIdx = 0;
-
-  function goTo(idx) {
-    idx = ((idx % items.length) + items.length) % items.length;
-    const slides = trackWrap.querySelectorAll('.mobile-slide');
-    slides[currentIdx].classList.remove('active');
-    currentIdx = idx;
-    slides[currentIdx].classList.add('active');
-    updateData();
-    if (onSelect) onSelect(currentIdx);
-  }
-
-  prev.addEventListener('click', e => { e.stopPropagation(); goTo(currentIdx - 1); });
-  next.addEventListener('click', e => { e.stopPropagation(); goTo(currentIdx + 1); });
-
-  // swipe
-  bindSwipe(trackWrap,
-    () => goTo(currentIdx + 1),
-    () => goTo(currentIdx - 1)
-  );
-
-  trackWrap.appendChild(prev);
-  trackWrap.appendChild(next);
-
-  // data row
-  const dataRow = document.createElement('div');
-  dataRow.className = 'mobile-slider-data';
-
-  const titleEl = document.createElement('span');
-  titleEl.className = 'slide-title';
-
-  const counterEl = document.createElement('span');
-  counterEl.className = 'slide-counter';
-
-  dataRow.appendChild(titleEl);
-  dataRow.appendChild(counterEl);
-
-  function updateData() {
-    const item = items[currentIdx];
-    titleEl.textContent   = getTitle(item).toUpperCase() + ' (' + getYear(item) + ')';
-    counterEl.textContent = (currentIdx + 1) + ' / ' + items.length;
-  }
-  updateData();
-
-  wrapper.appendChild(trackWrap);
-  wrapper.appendChild(dataRow);
-  view.appendChild(wrapper);
-}
-
-function buildMobileCommissionsSlider() {
-  buildMobileSlider(
-    commissions,
-    'view-commissions',
-    c => c.thumb || null,
-    c => c.title,
-    c => c.year,
-    idx => { commSlideIndex = idx; }
-  );
-}
-
-function buildMobileBooksSlider() {
-  buildMobileSlider(
-    books,
-    'view-books',
-    b => b.id || null,
-    b => b.title,
-    b => b.year,
-    idx => { booksSlideIndex = idx; }
-  );
-}
-
-/* ============================================================
-   DETAIL VIEWER
-============================================================ */
-function openDetail(index, type) {
-  detailProject = { index, type };
-  detailIndex   = 0;
-
-  let project, images, titleStr;
-  if (type === 'commissions') {
-    project  = commissions[index];
-    images   = project.images.length ? project.images : photographs.slice(0, 3).map(p => ({ id: p.id }));
-    titleStr = project.title.toUpperCase() + ' (' + project.year + ')';
-  } else {
-    project  = books[index];
-    images   = project.id ? [{ id: project.id }] : [{ id: null }, { id: null }, { id: null }];
-    titleStr = project.title.toUpperCase() + ' (' + project.year + ')';
-  }
-
-  setTitle(titleStr);
-  detailProject.images = images;
-  showDetailImage(0);
-  buildOverviewStrip(images);
-
-  if (isMobile) {
-    updateMobileDetailBar(titleStr, images.length);
-  } else {
-    document.getElementById('main-nav').classList.add('detail-mode');
-    setDetailNavVisibility(true);
-    document.getElementById('detail-title-text').textContent = titleStr;
-  }
-
-  const currentEl = document.querySelector('.view.active');
-  const detailEl  = document.getElementById('view-detail');
-  const doOpen    = () => {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    detailEl.classList.add('active');
-    currentView = 'detail';
-    fadeIn(detailEl);
-  };
-  currentEl ? fadeOut(currentEl, doOpen) : doOpen();
-}
-
-function showDetailImage(index) {
-  detailIndex = index;
-  const images = detailProject.images;
-  const img    = document.getElementById('detail-img');
-
-  if (images[detailIndex]?.id) {
-    img.src     = DRIVE_BASE + images[detailIndex].id;
-    img.onerror = () => onImgError(img);
-    img.style.background = '';
-    img.style.width      = '';
-    img.style.height     = '';
-  } else {
-    img.removeAttribute('src');
-    img.style.background = '#e8e5e0';
-    img.style.width      = '100%';
-    img.style.height     = isMobile ? 'calc(var(--stage-height) - 80px)' : 'var(--stage-height)';
-  }
-
-  const counterText = (detailIndex + 1) + ' / ' + images.length;
-  document.getElementById('counter-text').textContent = counterText;
-  if (isMobile) {
-    const mc = document.getElementById('mobile-nav-count');
-    if (mc) mc.textContent = counterText;
-  }
-}
-
-function buildOverviewStrip(images) {
-  const strip = document.getElementById('overview-strip');
-  strip.innerHTML = '';
-
-  images.forEach((im, i) => {
-    if (!im || !im.id) {
-      const ph = document.createElement('div');
-      ph.className = 'strip-ph';
-      strip.appendChild(ph);
-      return;
-    }
-    const img = document.createElement('img');
-    img.src = DRIVE_THUMB + im.id;
-    img.onerror = () => onImgError(img);
-    img.addEventListener('click', e => {
-      e.stopPropagation();
-      showDetailImage(i);
-      if (!isMobile) closeOverview();
-    });
-    strip.appendChild(img);
-  });
-
-  // pad to at least 8 items on mobile so strip looks populated
-  if (isMobile) {
-    const current = strip.children.length;
-    for (let i = current; i < 8; i++) {
-      const ph = document.createElement('div');
-      ph.className = 'strip-ph';
-      strip.appendChild(ph);
-    }
-    strip.classList.add('visible');
-  }
-}
-
-function bindDetailViewer() {
-  const el = document.getElementById('view-detail');
-  el.addEventListener('click', () => {
-    if (overviewOpen) return;
-    showDetailImage((detailIndex + 1) % detailProject.images.length);
-  });
-  bindSwipe(el,
-    () => { if (!overviewOpen) showDetailImage((detailIndex + 1) % detailProject.images.length); },
-    () => { if (!overviewOpen) showDetailImage((detailIndex - 1 + detailProject.images.length) % detailProject.images.length); }
-  );
-  document.getElementById('overview-toggle').addEventListener('click', e => {
-    e.stopPropagation(); toggleOverview();
-  });
-  document.getElementById('detail-close').addEventListener('click', e => {
-    e.stopPropagation(); closeDetail();
-  });
-}
-
-function toggleOverview() {
-  overviewOpen = !overviewOpen;
-  document.getElementById('overview-strip').classList.toggle('visible', overviewOpen);
-  document.getElementById('detail-stage').classList.toggle('overview-open', overviewOpen);
-}
-
-function closeOverview() {
-  overviewOpen = false;
-  document.getElementById('overview-strip').classList.remove('visible');
-  document.getElementById('detail-stage').classList.remove('overview-open');
-}
-
-function closeDetail() {
-  if (!isMobile) {
-    document.getElementById('main-nav').classList.remove('detail-mode');
-    setDetailNavVisibility(false);
-  }
-  closeOverview();
-  setTitle();
-  const returnView = detailProject.type === 'commissions' ? 'commissions' : 'books';
-  switchView(returnView);
-}
-
-function setDetailNavVisibility(isDetail) {
-  const normal = ['nav-photographs', 'nav-commissions', 'nav-books', 'nav-info'];
-  const detail = ['detail-nav-title', 'detail-nav-overview', 'detail-nav-counter', 'detail-nav-close'];
-  if (isDetail) {
-    normal.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    });
-    detail.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'block';
-    });
-  } else {
-    normal.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = '';
-    });
-    detail.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'none';
-    });
-  }
-}
-
-/* ============================================================
-   MOBILE NAV
-============================================================ */
-function initMobileNav() {
-  const mobileNav = document.getElementById('mobile-nav');
-  mobileNav.style.display = 'block';
-
-  // build drawer list
-  const list = document.getElementById('mobile-nav-drawer-list');
-  sections.forEach(s => {
-    const li = document.createElement('li');
-    li.dataset.view = s.view;
-
-    const labelSpan = document.createElement('span');
-    labelSpan.className   = 'd-label';
-    labelSpan.textContent = s.label;
-    li.appendChild(labelSpan);
-
-    if (s.count) {
-      const countSpan = document.createElement('span');
-      countSpan.className   = 'd-count';
-      countSpan.textContent = s.count;
-      li.appendChild(countSpan);
-    }
-
-    li.addEventListener('click', () => {
-      closeDrawer();
-      switchView(s.view);
-    });
-    list.appendChild(li);
-  });
-
-  // toggle
-  document.getElementById('mobile-nav-toggle').addEventListener('click', toggleDrawer);
-
-  // logo
-  document.getElementById('mobile-nav-logo').addEventListener('click', () => {
-    closeDrawer();
-    switchView('shuffler');
-  });
-
-  // close btn (info mode)
-  document.getElementById('mobile-nav-close-btn').addEventListener('click', () => {
-    switchView('shuffler');
-  });
-
-  updateMobileBar('shuffler');
-  requestAnimationFrame(syncNavHeight);
-}
-
-function toggleDrawer() {
-  drawerOpen = !drawerOpen;
-  const drawer = document.getElementById('mobile-nav-drawer');
-  const toggle = document.getElementById('mobile-nav-toggle');
-  drawer.classList.toggle('open', drawerOpen);
-  toggle.textContent = drawerOpen ? 'Less' : 'More';
-}
-
-function closeDrawer() {
-  if (!drawerOpen) return;
-  drawerOpen = false;
-  document.getElementById('mobile-nav-drawer').classList.remove('open');
-  document.getElementById('mobile-nav-toggle').textContent = 'More';
-}
-
-function updateMobileBar(viewName) {
-  const mobileNav = document.getElementById('mobile-nav');
-  const sectionEl = document.getElementById('mobile-nav-section');
-  const countEl   = document.getElementById('mobile-nav-count');
-
-  // info mode shifts nav to top
-  mobileNav.classList.toggle('info-mode', viewName === 'info');
-
-  const s = sections.find(x => x.view === viewName);
-  if (s && viewName !== 'shuffler' && viewName !== 'info') {
-    sectionEl.textContent = s.label;
-    sectionEl.classList.add('active-label');
-    countEl.textContent   = s.count;
-  } else if (viewName === 'info') {
-    sectionEl.textContent = 'Info';
-    sectionEl.classList.remove('active-label');
-    countEl.textContent   = '';
-  } else {
-    sectionEl.textContent = '';
-    sectionEl.classList.remove('active-label');
-    countEl.textContent   = '';
-  }
-
-  // active state in drawer
-  document.querySelectorAll('#mobile-nav-drawer-list li').forEach(li => {
-    li.classList.toggle('active', li.dataset.view === viewName);
-  });
-
-  requestAnimationFrame(syncNavHeight);
-}
-
-function updateMobileDetailBar(titleStr, totalImages) {
-  const sectionEl = document.getElementById('mobile-nav-section');
-  const countEl   = document.getElementById('mobile-nav-count');
-  if (sectionEl) {
-    sectionEl.textContent = titleStr;
-    sectionEl.classList.add('active-label');
-  }
-  if (countEl) countEl.textContent = '1 / ' + totalImages;
-  closeDrawer();
-  requestAnimationFrame(syncNavHeight);
-}
-
-/* ============================================================
-   DESKTOP NAV BINDING
-============================================================ */
-function bindNav() {
-  document.querySelectorAll('[data-view]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.preventDefault();
-      const view = el.dataset.view;
-      if (view === 'info' && currentView === 'info') { switchView('shuffler'); return; }
-      switchView(view);
-    });
-  });
-
-  ['nav-photographs', 'nav-commissions', 'nav-books'].forEach(id => {
-    const el      = document.getElementById(id);
-    const preview = el?.querySelector('.nav-preview');
-    if (!el || !preview) return;
-    el.addEventListener('mouseenter', () => { if (currentView !== 'info') preview.classList.add('visible'); });
-    el.addEventListener('mouseleave', () => { if (currentView !== 'info') preview.classList.remove('visible'); });
-  });
-}
-
-/* ============================================================
-   VIEW SWITCHING
-============================================================ */
-function switchView(viewName) {
-  const currentEl = document.querySelector('.view.active');
-  const targetEl  = document.getElementById('view-' + viewName);
-  if (!targetEl || viewName === currentView) return;
-
-  const doSwap = () => {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    targetEl.classList.add('active');
-    currentView = viewName;
-
-    if (!isMobile) {
-      const nav        = document.getElementById('main-nav');
-      const infoToggle = document.getElementById('info-toggle');
-      if (viewName === 'info') {
-        nav.classList.add('info-mode');
-        document.querySelectorAll('.nav-preview').forEach(p => p.classList.add('visible'));
-        infoToggle.textContent = 'Close';
-      } else {
-        nav.classList.remove('info-mode');
-        document.querySelectorAll('.nav-preview').forEach(p => p.classList.remove('visible'));
-        infoToggle.textContent = 'Info';
-      }
-      // detail mode clean-up when switching away
-      if (viewName !== 'detail') {
-        nav.classList.remove('detail-mode');
-        setDetailNavVisibility(false);
-      }
-      document.querySelectorAll('[data-view]').forEach(a => {
-        a.classList.toggle('active', a.dataset.view === viewName);
+        img.src = p.images[0].replace('w=900','w=40');
+        img.alt = '';
+        img.style.cssText = 'height:calc(0.68056vw + 5svh);width:auto;';
+        container.appendChild(img);
       });
-      document.querySelector('#nav-logo a').classList.add('active');
-    } else {
-      updateMobileBar(viewName);
+    });
+ 
+    // Books previews
+    const bp = $('preview-books');
+    const bip = $('info-preview-books');
+    books.forEach(b => {
+      [bp, bip].forEach(container => {
+        if (!container) return;
+        const img = document.createElement('img');
+        img.src = b.images[0].replace('w=700','w=50');
+        img.alt = '';
+        img.style.cssText = 'height:35px;width:auto;';
+        container.appendChild(img);
+      });
+    });
+  }
+ 
+  /* ============================================================
+     SHUFFLER
+  ============================================================ */
+  function buildShuffler() {
+    // Shuffle array
+    const shuffled = [...photographs].sort(() => Math.random() - 0.5);
+    shuffled.forEach((photo, i) => {
+      const img = document.createElement('img');
+      img.className = 'shuffler-img' + (i === 0 ? ' current' : '');
+      img.src = photo.src;
+      img.alt = photo.caption;
+      img.loading = i < 3 ? 'eager' : 'lazy';
+      img.onerror = () => { img.style.background = '#e0e0e0'; img.src=''; };
+      shufflerWrapper.appendChild(img);
+    });
+ 
+    shufflerWrapper.addEventListener('click', advanceShuffler);
+  }
+ 
+  function advanceShuffler() {
+    const imgs = shufflerWrapper.querySelectorAll('.shuffler-img');
+    if (!imgs.length) return;
+    const prev = imgs[shufflerIndex];
+    shufflerIndex = (shufflerIndex + 1) % imgs.length;
+ 
+    // White flash
+    shuffleFlash.classList.add('flash');
+    setTimeout(() => {
+      prev.classList.remove('current');
+      imgs[shufflerIndex].classList.add('current');
+      shuffleFlash.classList.remove('flash');
+    }, 55);
+  }
+ 
+  // Shuffler: custom cursor + parallax
+  const shufflerSection = $('view-shuffler');
+  let parallaxRaf = null;
+  shufflerSection.addEventListener('mousemove', e => {
+    customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
+    customCursor.classList.add('visible');
+    // Parallax: move image wrapper very subtly opposite to cursor
+    const cx = (e.clientX / window.innerWidth - 0.5);  // -0.5 to 0.5
+    const cy = (e.clientY / window.innerHeight - 0.5);
+    const strength = 12; // px max offset
+    if (parallaxRaf) cancelAnimationFrame(parallaxRaf);
+    parallaxRaf = requestAnimationFrame(() => {
+      shufflerWrapper.style.transform = `translate(${-cx * strength}px, ${-cy * strength}px)`;
+    });
+  });
+  shufflerSection.addEventListener('mouseleave', () => {
+    customCursor.classList.remove('visible');
+    // Return to centre smoothly
+    shufflerWrapper.style.transform = 'translate(0,0)';
+  });
+  shufflerSection.addEventListener('mousedown', () => {
+    customCursor.classList.add('clicking');
+  });
+  shufflerSection.addEventListener('mouseup', () => {
+    customCursor.classList.remove('clicking');
+  });
+ 
+  // Touch swipe on shuffler — 40px threshold
+  let touchStartX = 0;
+  let touchStartY = 0;
+  shufflerSection.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  shufflerSection.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    // Only fire if horizontal movement dominates and exceeds threshold
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      advanceShuffler();
     }
-
-    if (viewName === 'photographs') { showPhotograph(photoIndex); setTitle('Photographs'); }
-    if (viewName === 'commissions') setTitle('Commissions');
-    if (viewName === 'books')       setTitle('Books & Exhibitions');
-    if (viewName === 'info')        setTitle('Info');
-    if (viewName === 'shuffler')    setTitle();
-
-    requestAnimationFrame(syncNavHeight);
-    fadeIn(targetEl);
-  };
-
-  currentEl && currentEl !== targetEl ? fadeOut(currentEl, doSwap) : doSwap();
-}
-
-/* ============================================================
-   KEYBOARD  (desktop)
-============================================================ */
-function bindKeyboard() {
+  }, { passive: true });
+ 
+  /* ============================================================
+     PHOTOGRAPHS
+  ============================================================ */
+  function buildPhotographs() {
+    photographs.forEach((photo, i) => {
+      const img = document.createElement('img');
+      img.className = i === 0 ? 'current' : '';
+      img.src = photo.src;
+      img.alt = photo.caption;
+      img.loading = i < 2 ? 'eager' : 'lazy';
+      img.onerror = () => { img.style.background = '#e0e0e0'; };
+      photoStage.appendChild(img);
+    });
+    photoCaption.textContent = photographs[0].caption;
+    photoStage.addEventListener('click', advancePhoto);
+  }
+ 
+  function advancePhoto() {
+    const imgs = photoStage.querySelectorAll('img');
+    imgs[photoIndex].classList.remove('current');
+    photoIndex = (photoIndex + 1) % imgs.length;
+    imgs[photoIndex].classList.add('current');
+    // Caption: slide down + fade out, then swap text and slide up
+    photoCaption.classList.add('animating');
+    setTimeout(() => {
+      photoCaption.textContent = photographs[photoIndex].caption;
+      photoCaption.classList.remove('animating');
+    }, 160);
+  }
+ 
+  /* ============================================================
+     DESIGN GRID
+  ============================================================ */
+  function buildDesignGrid() {
+    designProjects.forEach((project, i) => {
+      const card = document.createElement('div');
+      card.className = 'design-card';
+      const wrap = document.createElement('span');
+      wrap.className = 'img-reveal-wrap';
+      const img = document.createElement('img');
+      img.className = 'design-card-img placeholder-img';
+      img.alt = project.title;
+      img.loading = 'lazy';
+      img.src = project.images[0];
+      img.onload = () => img.classList.add('img-reveal');
+      img.onerror = () => { img.style.background = '#e0e0e0'; };
+      wrap.appendChild(img);
+      const label = document.createElement('span');
+      label.className = 'design-card-label';
+      label.textContent = project.title;
+      card.appendChild(wrap);
+      card.appendChild(label);
+      card.addEventListener('click', () => openDetail(project, 'design'));
+      designGrid.appendChild(card);
+    });
+    $('design-count').textContent = designProjects.length;
+  }
+ 
+  /* ============================================================
+     BOOKS GRID
+  ============================================================ */
+  function buildBooksGrid() {
+    books.forEach(book => {
+      const card = document.createElement('div');
+      card.className = 'book-card';
+      const wrap = document.createElement('span');
+      wrap.className = 'img-reveal-wrap';
+      const img = document.createElement('img');
+      img.className = 'book-card-img placeholder-img';
+      img.alt = book.title;
+      img.loading = 'lazy';
+      img.src = book.images[0];
+      img.onload = () => img.classList.add('img-reveal');
+      img.onerror = () => { img.style.background = '#e0e0e0'; };
+      wrap.appendChild(img);
+      const title = document.createElement('span');
+      title.className = 'book-card-title';
+      title.textContent = book.title;
+      const pub = document.createElement('span');
+      pub.className = 'book-card-publisher';
+      pub.textContent = book.publisher;
+      card.appendChild(wrap);
+      card.appendChild(title);
+      card.appendChild(pub);
+      card.addEventListener('click', () => openDetail(book, 'books'));
+      booksGrid.appendChild(card);
+    });
+  }
+ 
+  /* ============================================================
+     DETAIL VIEW — scroll-sequenced
+  ============================================================ */
+  const detailScroll = $('detail-scroll');
+ 
+  function openDetail(project, fromView) {
+    detailProject = project;
+    detailProject._fromView = fromView;
+    detailIndex = 0;
+ 
+    // Build scroll slides
+    detailScroll.innerHTML = '';
+    project.images.forEach((src, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'detail-slide';
+      const img = document.createElement('img');
+      img.alt = project.title;
+      img.loading = i === 0 ? 'eager' : 'lazy';
+      img.src = src;
+      img.onload = () => img.classList.add('loaded');
+      img.onerror = () => { img.style.background = '#e0e0e0'; img.classList.add('loaded'); };
+      // If already cached, fire load manually
+      if (img.complete) img.classList.add('loaded');
+      slide.appendChild(img);
+      detailScroll.appendChild(slide);
+    });
+ 
+    // Build overview strip
+    overviewStrip.innerHTML = '';
+    project.images.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.src = src.replace('w=900','w=100').replace('w=700','w=100');
+      img.className = i === 0 ? 'active-thumb' : '';
+      img.alt = '';
+      img.addEventListener('click', e => { e.stopPropagation(); jumpToDetail(i); });
+      overviewStrip.appendChild(img);
+    });
+ 
+    detailTitle.textContent = project.title;
+    detailIndex = 0;
+    updateDetailCounter();
+    overviewOpen = false;
+    $('view-detail').classList.remove('overview-open');
+    overviewStrip.classList.remove('visible');
+ 
+    // Reset scroll to top before switching
+    $('view-detail').scrollTop = 0;
+    switchView('detail', true);
+  }
+ 
+  function updateDetailCounter() {
+    detailCounter.textContent = (detailIndex + 1) + ' / ' + detailProject.images.length;
+  }
+ 
+  // Track scroll position to update counter and overview thumbs
+  $('view-detail').addEventListener('scroll', () => {
+    const vh = $('view-detail').clientHeight;
+    const scrollTop = $('view-detail').scrollTop;
+    const newIndex = Math.round(scrollTop / vh);
+    if (newIndex !== detailIndex && newIndex < detailProject.images.length) {
+      detailIndex = newIndex;
+      updateDetailCounter();
+      overviewStrip.querySelectorAll('img').forEach((img, i) => img.classList.toggle('active-thumb', i === detailIndex));
+    }
+  }, { passive: true });
+ 
+  function jumpToDetail(index) {
+    const vh = $('view-detail').clientHeight;
+    $('view-detail').scrollTo({ top: index * vh, behavior: 'smooth' });
+    // counter updates via scroll listener
+  }
+ 
+  detailClose.addEventListener('click', () => {
+    switchView(detailProject._fromView || 'design', true);
+  });
+ 
+  detailOverviewBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    overviewOpen = !overviewOpen;
+    $('view-detail').classList.toggle('overview-open', overviewOpen);
+    overviewStrip.classList.toggle('visible', overviewOpen);
+  });
+ 
+  /* ============================================================
+     MOBILE NAV
+  ============================================================ */
+  mobileMoreBtn.addEventListener('click', () => {
+    mobileDrawerOpen = !mobileDrawerOpen;
+    mobileDrawer.classList.toggle('open', mobileDrawerOpen);
+    mobileMoreBtn.textContent = mobileDrawerOpen ? 'Less' : 'More';
+  });
+ 
+  function closeMobileDrawer() {
+    mobileDrawerOpen = false;
+    mobileDrawer.classList.remove('open');
+    mobileMoreBtn.textContent = 'More';
+  }
+ 
+  // Close drawer on outside tap
+  document.addEventListener('click', e => {
+    if (mobileDrawerOpen && !mobileDrawer.contains(e.target) && !mobileMoreBtn.contains(e.target)) {
+      closeMobileDrawer();
+    }
+  });
+ 
+  /* ============================================================
+     KEYBOARD NAVIGATION
+  ============================================================ */
   document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-      if (currentView === 'photographs') showPhotograph(photoIndex + 1);
-      if (currentView === 'detail' && !overviewOpen)
-        showDetailImage((detailIndex + 1) % detailProject.images.length);
-      if (currentView === 'shuffler' && shufflerReady) advanceShuffler();
+    if (currentView === 'shuffler' && e.key === ' ') { e.preventDefault(); advanceShuffler(); }
+    if (currentView === 'photographs') {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); advancePhoto(); }
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const imgs = photoStage.querySelectorAll('img');
+        imgs[photoIndex].classList.remove('current');
+        photoIndex = (photoIndex - 1 + imgs.length) % imgs.length;
+        imgs[photoIndex].classList.add('current');
+        photoCaption.classList.add('animating');
+        setTimeout(() => {
+          photoCaption.textContent = photographs[photoIndex].caption;
+          photoCaption.classList.remove('animating');
+        }, 160);
+      }
     }
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      if (currentView === 'photographs') showPhotograph(photoIndex - 1);
-      if (currentView === 'detail' && !overviewOpen)
-        showDetailImage((detailIndex - 1 + detailProject.images.length) % detailProject.images.length);
+    if (currentView === 'detail') {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const next = Math.min(detailIndex + 1, detailProject.images.length - 1);
+        jumpToDetail(next);
+      }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prev = Math.max(detailIndex - 1, 0);
+        jumpToDetail(prev);
+      }
+      if (e.key === 'Escape') switchView(detailProject._fromView || 'design', true);
     }
-    if (e.key === 'Escape') {
-      if (drawerOpen)               { closeDrawer(); return; }
-      if (overviewOpen)             { closeOverview(); return; }
-      if (currentView === 'detail') { closeDetail(); return; }
-      if (currentView === 'info')   { switchView('shuffler'); }
-    }
+    if (e.key === 'Escape' && currentView === 'info') switchView('shuffler', true);
   });
-}
-
-/* ============================================================
-   CURSOR  (desktop only)
-============================================================ */
-function bindCursor() {
-  if (isMobile) return;
-  const cursor   = document.getElementById('cursor');
-  const shuffler = document.getElementById('view-shuffler');
-  document.addEventListener('mousemove', e => {
-    cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-  });
-  shuffler.addEventListener('mouseenter', () => cursor.classList.add('visible'));
-  shuffler.addEventListener('mouseleave', () => cursor.classList.remove('visible'));
-}
+ 
+  /* ============================================================
+     INIT
+  ============================================================ */
+  function init() {
+    buildNavPreviews();
+    buildShuffler();
+    buildPhotographs();
+    buildDesignGrid();
+    buildBooksGrid();
+    updateMobileNav('shuffler');
+ 
+    // Preloader out
+    setTimeout(() => {
+      preloader.classList.add('hidden');
+      setTimeout(() => { preloader.remove(); }, 700);
+    }, 600);
+  }
+ 
+  // Wait for DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+ 
+})();
 </script>
 </body>
 </html>
+ 
