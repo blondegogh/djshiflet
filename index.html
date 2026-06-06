@@ -1,6 +1,3 @@
-
-raw
-Index · HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -222,10 +219,12 @@ Index · HTML
       justify-content: center;
     }
     .shuffler-wrapper {
-      position: absolute;
-      inset: 0;
+      position: relative;
+      height: 65vh;
+      width: auto;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
+      justify-content: center;
     }
     .shuffler-img {
       position: absolute;
@@ -235,7 +234,8 @@ Index · HTML
       transition: opacity 0.05s ease-out;
       object-fit: contain;
       pointer-events: none;
-      left: 27%;
+      left: 50%;
+      transform: translateX(-50%);
     }
     .shuffler-img.current { opacity: 1; }
  
@@ -373,7 +373,7 @@ Index · HTML
     }
  
     /* ============================================================
-       INFO VIEW — slides up from bottom
+       INFO VIEW — slides up from bottom, nav moves to top
     ============================================================ */
     #view-info {
       overflow-y: auto;
@@ -382,7 +382,6 @@ Index · HTML
       -webkit-overflow-scrolling: touch;
       bottom: 0;
       z-index: 10;
-      /* Override the default .view opacity transition */
       opacity: 1 !important;
       pointer-events: none;
       transform: translateY(100%);
@@ -395,6 +394,19 @@ Index · HTML
     #view-info.leaving {
       transform: translateY(100%);
       transition: transform 0.45s cubic-bezier(0.4, 0, 1, 1);
+    }
+    /* Main nav slides to top when info is open */
+    #main-nav {
+      transition: top 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                  bottom 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #main-nav.info-open {
+      bottom: auto;
+      top: 0;
+    }
+    #main-nav.info-closing {
+      transition: top 0.45s cubic-bezier(0.4, 0, 1, 1),
+                  bottom 0.45s cubic-bezier(0.4, 0, 1, 1);
     }
     .info-content {
       padding: var(--grid-gutter);
@@ -525,35 +537,11 @@ Index · HTML
     #overview-strip img.active-thumb { opacity: 1; }
     /* Overview strip shows above nav */
  
-    /* ============================================================
-       INFO TOP NAV (info page uses nav at top)
-    ============================================================ */
-    #info-nav-bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: var(--nav-height);
-      display: grid;
-      grid-template-columns: repeat(16, 1fr);
-      column-gap: var(--grid-gutter);
-      align-items: center;
-      z-index: 20;
-      background: #fff;
-      padding: 0 var(--grid-gutter);
-      overflow: visible;
-    }
-    #view-info {
-      overflow-x: hidden;
-    }
-    #info-nav-bar .nav-preview {
+    /* When info is open, nav is at top — previews flip downward */
+    #main-nav.info-open .nav-preview {
       bottom: auto;
       top: calc(100% + 2px);
     }
-    .info-nav-photographs { grid-column: span 4; }
-    .info-nav-design { grid-column: span 4; }
-    .info-nav-books { grid-column: span 2; }
-    .info-nav-close { grid-column: span 2; justify-self: end; }
  
     /* ============================================================
        MOBILE NAV
@@ -637,15 +625,14 @@ Index · HTML
       #mobile-nav { display: flex; }
       #custom-cursor { display: none; }
       .shuffler-wrapper {
-        position: absolute;
-        inset: 0;
+        height: 50vh;
+        width: auto;
       }
       .shuffler-img {
-        left: 0;
-        width: 100%;
-        height: auto;
-        max-height: 100%;
-        object-fit: contain;
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        height: 100%;
       }
  
       /* Photos */
@@ -723,35 +710,30 @@ Index · HTML
     </div>
     <div class="nav-photographs">
       <a class="nav-link" id="nav-photographs" data-view="photographs">
-        <!-- preview -->
-        <div class="nav-preview" id="preview-photographs">
-          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=60&h=75&fit=crop&crop=center" alt="">
-        </div>
+        <div class="nav-preview" id="preview-photographs"></div>
         <span class="nav-label">Photographs</span>
-        <span class="nav-count">28</span>
+        <span class="nav-count">20</span>
       </a>
     </div>
     <div class="nav-design">
       <a class="nav-link" id="nav-design" data-view="design">
-        <!-- preview -->
-        <div class="nav-preview" id="preview-design">
-          <!-- thumbnails injected by JS -->
-        </div>
+        <div class="nav-preview" id="preview-design"></div>
         <span class="nav-label">Design</span>
-        <span class="nav-count" id="design-count">12</span>
+        <span class="nav-count" id="design-count">2</span>
       </a>
     </div>
     <div class="nav-books">
       <a class="nav-link" id="nav-books" data-view="books">
-        <div class="nav-preview books-preview" id="preview-books">
-          <!-- thumbnails injected by JS -->
-        </div>
+        <div class="nav-preview books-preview" id="preview-books"></div>
         <span class="nav-label">Books &amp; Exhibitions</span>
-        <span class="nav-count">3</span>
+        <span class="nav-count">2</span>
       </a>
     </div>
-    <div class="nav-info-link">
+    <div class="nav-info-link" id="nav-info-wrap">
       <a class="nav-link" id="nav-info" data-view="info">Info</a>
+    </div>
+    <div class="nav-close-link" id="nav-close-wrap" style="display:none; grid-column: span 2; justify-self: end;">
+      <a class="nav-link" id="nav-close" data-view="shuffler">Close</a>
     </div>
   </nav>
  
@@ -787,41 +769,6 @@ Index · HTML
  
   <!-- ── INFO VIEW ──────────────────────────────────────────── -->
   <section class="view" id="view-info">
-    <!-- Info nav at top -->
-    <nav id="info-nav-bar">
-      <div class="info-nav-logo">
-        <span class="nav-link active" style="color:var(--color-primary)">Rich Stapleton</span>
-      </div>
-      <div class="info-nav-photographs">
-        <a class="nav-link" data-view="photographs" data-from-info="true">
-          <div class="nav-preview visible" id="info-preview-photographs">
-            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=60&h=75&fit=crop&crop=center" alt="">
-          </div>
-          <span class="nav-label">Photographs</span>
-          <span class="nav-count">20</span>
-        </a>
-      </div>
-      <div class="info-nav-design">
-        <a class="nav-link" data-view="design" data-from-info="true">
-          <div class="nav-preview visible" id="info-preview-design">
-          </div>
-          <span class="nav-label">Design</span>
-          <span class="nav-count">12</span>
-        </a>
-      </div>
-      <div class="info-nav-books">
-        <a class="nav-link" data-view="books" data-from-info="true">
-          <div class="nav-preview books-preview visible" id="info-preview-books">
-          </div>
-          <span class="nav-label">Books &amp; Exhibitions</span>
-          <span class="nav-count">3</span>
-        </a>
-      </div>
-      <div class="info-nav-close">
-        <a class="nav-link" data-view="shuffler" data-from-info="true" style="color:var(--color-secondary)">Close</a>
-      </div>
-    </nav>
- 
     <div style="height:var(--nav-height)"></div>
     <div class="info-content">
       <p class="info-bio">Rich Stapleton is a British photographer based in Los Angeles.</p>
@@ -1047,19 +994,29 @@ Index · HTML
       document.title = titles[view] || 'Rich Stapleton';
     };
  
-    // Info view: slide up — don't use crossfade, just toggle active
+    // Info view: slide up — move main nav to top, swap Info→Close
     if (view === 'info') {
       doSwitch();
+      const mainNav = document.getElementById('main-nav');
+      mainNav.classList.add('info-open');
+      document.getElementById('nav-info-wrap').style.display = 'none';
+      document.getElementById('nav-close-wrap').style.display = '';
       return;
     }
  
-    // Closing info: slide it down first, then switch
+    // Closing info: slide it down, move nav back to bottom, swap Close→Info
     if (currentView === 'info') {
       const infoEl = document.getElementById('view-info');
+      const mainNav = document.getElementById('main-nav');
       infoEl.classList.remove('active');
       infoEl.classList.add('leaving');
+      mainNav.classList.add('info-closing');
+      mainNav.classList.remove('info-open');
+      document.getElementById('nav-info-wrap').style.display = '';
+      document.getElementById('nav-close-wrap').style.display = 'none';
       infoEl.addEventListener('transitionend', () => {
         infoEl.classList.remove('leaving');
+        mainNav.classList.remove('info-closing');
       }, { once: true });
       setTimeout(() => { doSwitch(); }, 50);
       return;
@@ -1111,7 +1068,6 @@ Index · HTML
   }
  
   document.getElementById('main-nav').addEventListener('click', handleNavClick);
-  document.getElementById('info-nav-bar').addEventListener('click', handleNavClick);
   document.getElementById('mobile-nav').addEventListener('click', e => {
     const logo = e.target.closest('[data-view]');
     if (logo) { switchView(logo.dataset.view, true); return; }
