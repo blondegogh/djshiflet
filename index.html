@@ -41,7 +41,7 @@
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
     img { display: block; }
-
+ 
     /* ============================================================
        DESIGN TOKENS
     ============================================================ */
@@ -56,7 +56,7 @@
       --transition-fast: opacity 0.05s ease-out;
       --transition-page: opacity 0.45s ease-out;
     }
-
+ 
     /* ============================================================
        PAGE TRANSITION — crossfade, no overlay
     ============================================================ */
@@ -76,7 +76,7 @@
       opacity: 0;
       pointer-events: none;
     }
-
+ 
     /* ============================================================
        PRELOADER
     ============================================================ */
@@ -98,7 +98,7 @@
       opacity: 0;
       pointer-events: none;
     }
-
+ 
     /* ============================================================
        GRID LAYOUT
     ============================================================ */
@@ -111,7 +111,7 @@
     .w-4 { grid-column: span 4; }
     .w-8 { grid-column: span 8; }
     .w-16 { grid-column: span 16; }
-
+ 
     /* ============================================================
        MAIN PAGE CONTAINER
     ============================================================ */
@@ -121,7 +121,7 @@
       height: 100svh;
       overflow: hidden;
     }
-
+ 
     /* ============================================================
        BOTTOM NAV BAR
     ============================================================ */
@@ -142,13 +142,13 @@
     nav#main-nav.info-nav .nav-item-col {
       /* on info page nav shifts to top — handled by class swap */
     }
-
+ 
     .nav-logo { grid-column: span 4; }
     .nav-photographs { grid-column: span 4; }
     .nav-design { grid-column: span 4; }
     .nav-books { grid-column: span 2; }
     .nav-info-link { grid-column: span 2; justify-self: end; }
-
+ 
     .nav-link {
       display: block;
       font-size: 11px;
@@ -166,7 +166,7 @@
     .nav-link .nav-label { display: block; }
     .nav-link .nav-count { display: block; color: var(--color-secondary); transition: color 0.2s ease-out; }
     .nav-link:hover .nav-count { color: var(--color-primary); }
-
+ 
     /* Nav preview thumbnails */
     .nav-preview {
       position: absolute;
@@ -181,7 +181,7 @@
       transition: var(--transition-default);
     }
     .nav-preview.visible { opacity: 1; }
-
+ 
     .nav-preview img {
       height: calc(0.68056vw + 5svh);
       width: auto;
@@ -191,7 +191,7 @@
       height: 35px;
       width: auto;
     }
-
+ 
     /* ============================================================
        IMAGE REVEAL — darkroom wipe
        Applied via JS by adding .reveal class after load
@@ -208,7 +208,7 @@
       overflow: hidden;
       display: block;
     }
-
+ 
     /* ============================================================
        SHUFFLER VIEW
     ============================================================ */
@@ -217,7 +217,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: none;
     }
     .shuffler-wrapper {
       position: relative;
@@ -226,8 +225,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      will-change: transform;
-      transition: transform 0.08s linear;
     }
     .shuffler-img {
       position: absolute;
@@ -241,7 +238,7 @@
       transform: translateX(-50%);
     }
     .shuffler-img.current { opacity: 1; }
-
+ 
     /* White flash overlay */
     #shuffle-flash {
       position: absolute;
@@ -253,28 +250,10 @@
       transition: opacity 0.05s ease-out;
     }
     #shuffle-flash.flash { opacity: 1; }
-
-    /* Custom cursor — minimal dot */
-    #custom-cursor {
-      position: fixed;
-      width: 6px;
-      height: 6px;
-      background: #000;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 50;
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      transition: opacity 0.25s ease-out, transform 0.1s ease-out;
-      will-change: transform;
-    }
-    #custom-cursor.visible { opacity: 1; }
-    /* Expand slightly on click */
-    #view-shuffler:active ~ #custom-cursor,
-    #custom-cursor.clicking {
-      transform: translate(-50%, -50%) scale(1.8);
-    }
-
+ 
+    /* Custom cursor — removed */
+    #custom-cursor { display: none; }
+ 
     /* ============================================================
        PHOTOGRAPHS VIEW
     ============================================================ */
@@ -314,7 +293,7 @@
       opacity: 0;
       transform: translateY(10px);
     }
-
+ 
     /* ============================================================
        DESIGN VIEW (was Commissions)
     ============================================================ */
@@ -350,7 +329,7 @@
       text-transform: uppercase;
       color: var(--color-primary);
     }
-
+ 
     /* ============================================================
        BOOKS VIEW
     ============================================================ */
@@ -392,7 +371,7 @@
       text-transform: uppercase;
       color: var(--color-secondary);
     }
-
+ 
     /* ============================================================
        INFO VIEW
     ============================================================ */
@@ -448,7 +427,7 @@
       line-height: 1.8;
     }
     .info-listing a:hover { color: var(--color-primary); }
-
+ 
     /* ============================================================
        DETAIL VIEW — scroll-sequenced
     ============================================================ */
@@ -483,7 +462,7 @@
     #detail-scroll {
       width: 100%;
     }
-
+ 
     /* Detail nav bar — fixed over scroll */
     #detail-nav {
       position: fixed;
@@ -506,7 +485,7 @@
     .detail-nav-counter { grid-column: span 2; color: var(--color-secondary); text-align: right; }
     .detail-nav-close { grid-column: span 3; justify-self: end; cursor: pointer; }
     .detail-nav-close:hover { color: var(--color-primary); }
-
+ 
     /* Overview filmstrip — fixed over scroll */
     #overview-strip {
       position: fixed;
@@ -537,7 +516,7 @@
     #overview-strip img:hover,
     #overview-strip img.active-thumb { opacity: 1; }
     /* Overview strip shows above nav */
-
+ 
     /* ============================================================
        INFO TOP NAV (info page uses nav at top)
     ============================================================ */
@@ -554,13 +533,20 @@
       z-index: 20;
       background: #fff;
       padding: 0 var(--grid-gutter);
+      overflow: visible;
     }
-    .info-nav-logo { grid-column: span 4; }
+    #view-info {
+      overflow-x: hidden;
+    }
+    #info-nav-bar .nav-preview {
+      bottom: auto;
+      top: calc(100% + 2px);
+    }
     .info-nav-photographs { grid-column: span 4; }
     .info-nav-design { grid-column: span 4; }
     .info-nav-books { grid-column: span 2; }
     .info-nav-close { grid-column: span 2; justify-self: end; }
-
+ 
     /* ============================================================
        MOBILE NAV
     ============================================================ */
@@ -630,7 +616,7 @@
       cursor: pointer;
     }
     .mobile-drawer-item.active { color: var(--color-primary); }
-
+ 
     /* ============================================================
        RESPONSIVE — MOBILE
     ============================================================ */
@@ -647,7 +633,7 @@
         width: calc(100% - var(--grid-gutter) * 2);
         transition: none; /* no parallax on touch */
       }
-
+ 
       /* Photos */
       .photo-stage img {
         left: 0;
@@ -656,24 +642,24 @@
         max-height: 100%;
         object-fit: contain;
       }
-
+ 
       /* Design grid → 2 col */
       .design-grid {
         grid-template-columns: repeat(2, 1fr);
       }
-
+ 
       /* Books grid → 1 col */
       .books-grid {
         grid-template-columns: 1fr;
       }
-
+ 
       /* Info full width */
       .info-content {
         width: 100%;
       }
       .info-listing ul { padding-left: 6vw; }
       .info-listing { margin-bottom: 9vw; }
-
+ 
       /* Detail — mobile: image fills width */
       .detail-slide img {
         left: 0;
@@ -683,14 +669,14 @@
         object-fit: contain;
       }
     }
-
+ 
     @media (min-width: 1440px) {
       html { font-size: 10.8px; }
     }
     @media (min-width: 1728px) {
       html { font-size: 11.6px; }
     }
-
+ 
     /* ============================================================
        UTILITY
     ============================================================ */
@@ -704,18 +690,18 @@
   </style>
 </head>
 <body>
-
+ 
 <!-- Preloader -->
 <div id="preloader">Rich Stapleton</div>
-
+ 
 <!-- Custom cursor (desktop shuffler only) -->
 <div id="custom-cursor"></div>
-
+ 
 <!-- ============================================================
      APP SHELL
 ============================================================ -->
 <div id="app">
-
+ 
   <!-- ── MAIN NAV (desktop bottom bar) ─────────────────────── -->
   <nav id="main-nav">
     <div class="nav-logo">
@@ -754,7 +740,7 @@
       <a class="nav-link" id="nav-info" data-view="info">Info</a>
     </div>
   </nav>
-
+ 
   <!-- ── SHUFFLER VIEW ──────────────────────────────────────── -->
   <section class="view active" id="view-shuffler">
     <div class="shuffler-wrapper" id="shuffler-wrapper">
@@ -762,7 +748,7 @@
       <!-- Images inserted by JS -->
     </div>
   </section>
-
+ 
   <!-- ── PHOTOGRAPHS VIEW ───────────────────────────────────── -->
   <section class="view" id="view-photographs">
     <div class="photo-stage" id="photo-stage">
@@ -770,21 +756,21 @@
     </div>
     <div class="photo-caption" id="photo-caption"></div>
   </section>
-
+ 
   <!-- ── DESIGN VIEW ────────────────────────────────────────── -->
   <section class="view" id="view-design">
     <div class="design-grid" id="design-grid">
       <!-- Cards inserted by JS -->
     </div>
   </section>
-
+ 
   <!-- ── BOOKS VIEW ─────────────────────────────────────────── -->
   <section class="view" id="view-books">
     <div class="books-grid" id="books-grid">
       <!-- Cards inserted by JS -->
     </div>
   </section>
-
+ 
   <!-- ── INFO VIEW ──────────────────────────────────────────── -->
   <section class="view" id="view-info">
     <!-- Info nav at top -->
@@ -821,11 +807,11 @@
         <a class="nav-link" data-view="shuffler" data-from-info="true" style="color:var(--color-secondary)">Close</a>
       </div>
     </nav>
-
+ 
     <div style="height:var(--nav-height)"></div>
     <div class="info-content">
       <p class="info-bio">Rich Stapleton is a British photographer based in Los Angeles.</p>
-
+ 
       <div class="info-listing">
         <span class="info-listing-title">Exhibitions</span>
         <ul>
@@ -836,7 +822,7 @@
           <li>Palm, Phillips London (September 2017)</li>
         </ul>
       </div>
-
+ 
       <div class="info-listing">
         <span class="info-listing-title">Books</span>
         <ul>
@@ -845,7 +831,7 @@
           <li>Drawing Room (2022)</li>
         </ul>
       </div>
-
+ 
       <div class="info-listing">
         <span class="info-listing-title">Contact</span>
         <ul>
@@ -853,7 +839,7 @@
           <a href="https://lairdandgoodcompany.com" target="_blank" rel="noopener">Represented by Laird &amp; Good Company</a>
         </ul>
       </div>
-
+ 
       <div class="info-listing">
         <span class="info-listing-title">Credits</span>
         <ul>
@@ -863,7 +849,7 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- ── DETAIL VIEW ────────────────────────────────────────── -->
   <section class="view" id="view-detail">
     <div id="detail-scroll"></div>
@@ -878,7 +864,7 @@
       <div class="detail-nav-close nav-link" id="detail-close">Close</div>
     </nav>
   </section>
-
+ 
   <!-- ── MOBILE NAV ─────────────────────────────────────────── -->
   <nav id="mobile-nav">
     <div class="mobile-nav-logo" data-view="shuffler" id="mobile-logo">Rich Stapleton</div>
@@ -902,19 +888,19 @@
       <span>Info</span><span></span>
     </div>
   </div>
-
+ 
 </div><!-- /#app -->
-
+ 
 <script>
 (function() {
   'use strict';
-
+ 
   /* ============================================================
      DATA
   ============================================================ */
-
+ 
   const C = (id, folder) => `https://res.cloudinary.com/masterserver/image/upload/f_auto,q_auto/${folder ? folder + '/' : ''}${id}`;
-
+ 
   const photographs = [
     { src: C('palazzo-ventidue_p0eazf'), caption: 'Palazzo Ventidue' },
     { src: C('daniel-faro_240707_auiki-kerakoll-colors_manuel_0077final-copy-1638x2048_rhobkg'), caption: 'Daniel Faro' },
@@ -937,7 +923,7 @@
     { src: C('b17218233254037.68ac668219506_srcwek'), caption: 'Study' },
     { src: C('re-edited'), caption: 'Re-edited' },
   ];
-
+ 
   const designProjects = [
     {
       title: 'St. Onge Hair Studio',
@@ -958,7 +944,7 @@
       ]
     },
   ];
-
+ 
   const books = [
     {
       title: 'Explosive (2024)',
@@ -971,7 +957,7 @@
       images: [ C('ovidian-book-design-5') ]
     },
   ];
-
+ 
   /* ============================================================
      STATE
   ============================================================ */
@@ -983,7 +969,7 @@
   let overviewOpen = false;
   let isTransitioning = false;
   let mobileDrawerOpen = false;
-
+ 
   /* ============================================================
      ELEMENTS
   ============================================================ */
@@ -1005,7 +991,7 @@
   const mobileDrawer = $('mobile-drawer');
   const mobileSectionName = $('mobile-section-name');
   const mobileSectionCount = $('mobile-section-count');
-
+ 
   /* ============================================================
      PAGE TRANSITION — crossfade
   ============================================================ */
@@ -1029,13 +1015,13 @@
       isTransitioning = false;
     }, 50);
   }
-
+ 
   /* ============================================================
      VIEW SWITCHING
   ============================================================ */
   function switchView(view, useTransition) {
     if (view === currentView && view !== 'detail') return;
-
+ 
     const doSwitch = () => {
       // hide all views
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -1049,14 +1035,14 @@
       const titles = { shuffler:'Rich Stapleton', photographs:'Photographs – Rich Stapleton', design:'Design – Rich Stapleton', books:'Books & Exhibitions – Rich Stapleton', info:'Info – Rich Stapleton', detail: detailProject ? detailProject.title + ' – Rich Stapleton' : 'Rich Stapleton' };
       document.title = titles[view] || 'Rich Stapleton';
     };
-
+ 
     if (useTransition) {
       transitionTo(doSwitch);
     } else {
       doSwitch();
     }
   }
-
+ 
   function updateNav(view) {
     document.querySelectorAll('#main-nav .nav-link').forEach(l => l.classList.remove('active'));
     const map = { shuffler:'nav-home', photographs:'nav-photographs', design:'nav-design', books:'nav-books', info:'nav-info' };
@@ -1070,7 +1056,7 @@
     // info view handles its own top nav — main nav visible on all other views
     // (info view nav is inside the view itself, so no extra action needed)
   }
-
+ 
   function updateMobileNav(view) {
     const labels = { shuffler:['',''], photographs:['Photographs','28'], design:['Design','12'], books:['Books & Exhibitions','3'], info:['Info',''], detail: detailProject ? [detailProject.title,''] : ['',''] };
     const l = labels[view] || ['',''];
@@ -1081,7 +1067,7 @@
       item.classList.toggle('active', item.dataset.view === view);
     });
   }
-
+ 
   /* ============================================================
      NAV EVENT DELEGATION
   ============================================================ */
@@ -1094,7 +1080,7 @@
     // close mobile drawer if open
     closeMobileDrawer();
   }
-
+ 
   document.getElementById('main-nav').addEventListener('click', handleNavClick);
   document.getElementById('info-nav-bar').addEventListener('click', handleNavClick);
   document.getElementById('mobile-nav').addEventListener('click', e => {
@@ -1102,7 +1088,7 @@
     if (logo) { switchView(logo.dataset.view, true); return; }
   });
   document.getElementById('mobile-drawer').addEventListener('click', handleNavClick);
-
+ 
   /* ============================================================
      NAV HOVER PREVIEWS (desktop)
   ============================================================ */
@@ -1113,7 +1099,7 @@
     link.addEventListener('mouseenter', () => preview.classList.add('visible'));
     link.addEventListener('mouseleave', () => preview.classList.remove('visible'));
   });
-
+ 
   /* ============================================================
      BUILD NAV PREVIEW THUMBNAILS
   ============================================================ */
@@ -1131,7 +1117,7 @@
         container.appendChild(img);
       });
     });
-
+ 
     // Books previews
     const bp = $('preview-books');
     const bip = $('info-preview-books');
@@ -1146,14 +1132,15 @@
       });
     });
   }
-
+ 
   /* ============================================================
      SHUFFLER
   ============================================================ */
   function buildShuffler() {
     // Shuffle array
-    const shuffled = [...photographs].sort(() => Math.random() - 0.5);
-    shuffled.forEach((photo, i) => {
+    // Use first 10 photographs as the curated shuffler pool, then randomise order
+    const pool = photographs.slice(0, 10).sort(() => Math.random() - 0.5);
+    pool.forEach((photo, i) => {
       const img = document.createElement('img');
       img.className = 'shuffler-img' + (i === 0 ? ' current' : '');
       img.src = photo.src;
@@ -1162,16 +1149,16 @@
       img.onerror = () => { img.style.background = '#e0e0e0'; img.src=''; };
       shufflerWrapper.appendChild(img);
     });
-
+ 
     shufflerWrapper.addEventListener('click', advanceShuffler);
   }
-
+ 
   function advanceShuffler() {
     const imgs = shufflerWrapper.querySelectorAll('.shuffler-img');
     if (!imgs.length) return;
     const prev = imgs[shufflerIndex];
     shufflerIndex = (shufflerIndex + 1) % imgs.length;
-
+ 
     // White flash
     shuffleFlash.classList.add('flash');
     setTimeout(() => {
@@ -1180,34 +1167,11 @@
       shuffleFlash.classList.remove('flash');
     }, 55);
   }
-
-  // Shuffler: custom cursor + parallax
+ 
+  // Shuffler: touch swipe
   const shufflerSection = $('view-shuffler');
   let parallaxRaf = null;
-  shufflerSection.addEventListener('mousemove', e => {
-    customCursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
-    customCursor.classList.add('visible');
-    // Parallax: move image wrapper very subtly opposite to cursor
-    const cx = (e.clientX / window.innerWidth - 0.5);  // -0.5 to 0.5
-    const cy = (e.clientY / window.innerHeight - 0.5);
-    const strength = 12; // px max offset
-    if (parallaxRaf) cancelAnimationFrame(parallaxRaf);
-    parallaxRaf = requestAnimationFrame(() => {
-      shufflerWrapper.style.transform = `translate(${-cx * strength}px, ${-cy * strength}px)`;
-    });
-  });
-  shufflerSection.addEventListener('mouseleave', () => {
-    customCursor.classList.remove('visible');
-    // Return to centre smoothly
-    shufflerWrapper.style.transform = 'translate(0,0)';
-  });
-  shufflerSection.addEventListener('mousedown', () => {
-    customCursor.classList.add('clicking');
-  });
-  shufflerSection.addEventListener('mouseup', () => {
-    customCursor.classList.remove('clicking');
-  });
-
+ 
   // Touch swipe on shuffler — 40px threshold
   let touchStartX = 0;
   let touchStartY = 0;
@@ -1223,7 +1187,7 @@
       advanceShuffler();
     }
   }, { passive: true });
-
+ 
   /* ============================================================
      PHOTOGRAPHS
   ============================================================ */
@@ -1240,7 +1204,7 @@
     photoCaption.textContent = photographs[0].caption;
     photoStage.addEventListener('click', advancePhoto);
   }
-
+ 
   function advancePhoto() {
     const imgs = photoStage.querySelectorAll('img');
     imgs[photoIndex].classList.remove('current');
@@ -1253,7 +1217,7 @@
       photoCaption.classList.remove('animating');
     }, 160);
   }
-
+ 
   /* ============================================================
      DESIGN GRID
   ============================================================ */
@@ -1281,7 +1245,7 @@
     });
     $('design-count').textContent = designProjects.length;
   }
-
+ 
   /* ============================================================
      BOOKS GRID
   ============================================================ */
@@ -1312,17 +1276,17 @@
       booksGrid.appendChild(card);
     });
   }
-
+ 
   /* ============================================================
      DETAIL VIEW — scroll-sequenced
   ============================================================ */
   const detailScroll = $('detail-scroll');
-
+ 
   function openDetail(project, fromView) {
     detailProject = project;
     detailProject._fromView = fromView;
     detailIndex = 0;
-
+ 
     // Build scroll slides
     detailScroll.innerHTML = '';
     project.images.forEach((src, i) => {
@@ -1339,7 +1303,7 @@
       slide.appendChild(img);
       detailScroll.appendChild(slide);
     });
-
+ 
     // Build overview strip
     overviewStrip.innerHTML = '';
     project.images.forEach((src, i) => {
@@ -1350,23 +1314,23 @@
       img.addEventListener('click', e => { e.stopPropagation(); jumpToDetail(i); });
       overviewStrip.appendChild(img);
     });
-
+ 
     detailTitle.textContent = project.title;
     detailIndex = 0;
     updateDetailCounter();
     overviewOpen = false;
     $('view-detail').classList.remove('overview-open');
     overviewStrip.classList.remove('visible');
-
+ 
     // Reset scroll to top before switching
     $('view-detail').scrollTop = 0;
     switchView('detail', true);
   }
-
+ 
   function updateDetailCounter() {
     detailCounter.textContent = (detailIndex + 1) + ' / ' + detailProject.images.length;
   }
-
+ 
   // Track scroll position to update counter and overview thumbs
   $('view-detail').addEventListener('scroll', () => {
     const vh = $('view-detail').clientHeight;
@@ -1378,24 +1342,24 @@
       overviewStrip.querySelectorAll('img').forEach((img, i) => img.classList.toggle('active-thumb', i === detailIndex));
     }
   }, { passive: true });
-
+ 
   function jumpToDetail(index) {
     const vh = $('view-detail').clientHeight;
     $('view-detail').scrollTo({ top: index * vh, behavior: 'smooth' });
     // counter updates via scroll listener
   }
-
+ 
   detailClose.addEventListener('click', () => {
     switchView(detailProject._fromView || 'design', true);
   });
-
+ 
   detailOverviewBtn.addEventListener('click', e => {
     e.stopPropagation();
     overviewOpen = !overviewOpen;
     $('view-detail').classList.toggle('overview-open', overviewOpen);
     overviewStrip.classList.toggle('visible', overviewOpen);
   });
-
+ 
   /* ============================================================
      MOBILE NAV
   ============================================================ */
@@ -1404,20 +1368,20 @@
     mobileDrawer.classList.toggle('open', mobileDrawerOpen);
     mobileMoreBtn.textContent = mobileDrawerOpen ? 'Less' : 'More';
   });
-
+ 
   function closeMobileDrawer() {
     mobileDrawerOpen = false;
     mobileDrawer.classList.remove('open');
     mobileMoreBtn.textContent = 'More';
   }
-
+ 
   // Close drawer on outside tap
   document.addEventListener('click', e => {
     if (mobileDrawerOpen && !mobileDrawer.contains(e.target) && !mobileMoreBtn.contains(e.target)) {
       closeMobileDrawer();
     }
   });
-
+ 
   /* ============================================================
      KEYBOARD NAVIGATION
   ============================================================ */
@@ -1453,7 +1417,7 @@
     }
     if (e.key === 'Escape' && currentView === 'info') switchView('shuffler', true);
   });
-
+ 
   /* ============================================================
      INIT
   ============================================================ */
@@ -1464,21 +1428,21 @@
     buildDesignGrid();
     buildBooksGrid();
     updateMobileNav('shuffler');
-
+ 
     // Preloader out
     setTimeout(() => {
       preloader.classList.add('hidden');
       setTimeout(() => { preloader.remove(); }, 700);
     }, 600);
   }
-
+ 
   // Wait for DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
-
+ 
 })();
 </script>
 </body>
