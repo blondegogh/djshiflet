@@ -1,3 +1,6 @@
+
+raw
+Index · HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -219,12 +222,10 @@
       justify-content: center;
     }
     .shuffler-wrapper {
-      position: relative;
-      height: 50vh;
-      width: 100%;
+      position: absolute;
+      inset: 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;
     }
     .shuffler-img {
       position: absolute;
@@ -234,8 +235,7 @@
       transition: opacity 0.05s ease-out;
       object-fit: contain;
       pointer-events: none;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 27%;
     }
     .shuffler-img.current { opacity: 1; }
  
@@ -373,20 +373,28 @@
     }
  
     /* ============================================================
-       INFO VIEW
+       INFO VIEW — slides up from bottom
     ============================================================ */
     #view-info {
       overflow-y: auto;
+      overflow-x: hidden;
       background: #fff;
       -webkit-overflow-scrolling: touch;
       bottom: 0;
-    }
-    /* Info view has nav at TOP */
-    #view-info nav#info-nav {
-      position: sticky;
-      top: 0;
-      background: #fff;
       z-index: 10;
+      /* Override the default .view opacity transition */
+      opacity: 1 !important;
+      pointer-events: none;
+      transform: translateY(100%);
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #view-info.active {
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    #view-info.leaving {
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.4, 0, 1, 1);
     }
     .info-content {
       padding: var(--grid-gutter);
@@ -629,9 +637,15 @@
       #mobile-nav { display: flex; }
       #custom-cursor { display: none; }
       .shuffler-wrapper {
-        height: 40vh;
-        width: calc(100% - var(--grid-gutter) * 2);
-        transition: none; /* no parallax on touch */
+        position: absolute;
+        inset: 0;
+      }
+      .shuffler-img {
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: contain;
       }
  
       /* Photos */
@@ -1023,18 +1037,33 @@
     if (view === currentView && view !== 'detail') return;
  
     const doSwitch = () => {
-      // hide all views
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      // show target
       const target = document.getElementById('view-' + view);
       if (target) target.classList.add('active');
       currentView = view;
       updateNav(view);
       updateMobileNav(view);
-      // update page title
       const titles = { shuffler:'Rich Stapleton', photographs:'Photographs – Rich Stapleton', design:'Design – Rich Stapleton', books:'Books & Exhibitions – Rich Stapleton', info:'Info – Rich Stapleton', detail: detailProject ? detailProject.title + ' – Rich Stapleton' : 'Rich Stapleton' };
       document.title = titles[view] || 'Rich Stapleton';
     };
+ 
+    // Info view: slide up — don't use crossfade, just toggle active
+    if (view === 'info') {
+      doSwitch();
+      return;
+    }
+ 
+    // Closing info: slide it down first, then switch
+    if (currentView === 'info') {
+      const infoEl = document.getElementById('view-info');
+      infoEl.classList.remove('active');
+      infoEl.classList.add('leaving');
+      infoEl.addEventListener('transitionend', () => {
+        infoEl.classList.remove('leaving');
+      }, { once: true });
+      setTimeout(() => { doSwitch(); }, 50);
+      return;
+    }
  
     if (useTransition) {
       transitionTo(doSwitch);
